@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 60" role="img" aria-label="AK Khan Enterprises monogram">
+  <defs>
+    <linearGradient id="akg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EED488"/>
+      <stop offset=".55" stop-color="#C9A227"/>
+      <stop offset="1" stop-color="#9A7414"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#akg)">
+    <path d="M42 0 51 14H33Z"/>
+    <path d="M29.5 19 15 58h9.2L35 27.5Z"/>
+    <path d="M39.5 20h8.4v38h-8.4Z"/>
+    <path d="M48 35.5 63.5 20h9.8L53 41Z"/>
+    <path d="M52.5 39.5 71 58H60.8L47.9 43.5Z"/>
+  </g>
+</svg>
