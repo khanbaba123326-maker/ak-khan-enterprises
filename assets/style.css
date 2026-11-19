@@ -243,7 +243,7 @@ body.no-hero main{padding-top:64px}
 .detail-actions .btn{min-width:200px}
 .detail-hero .confirm-note{color:#9a9a9a;font-size:.92rem;margin-top:16px}
 .detail-photo-wrap{background:#ebebeb;margin-top:48px;min-height:78vh;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:zoom-in}
-.detail-photo-wrap img{margin:0 auto;max-height:78vh;width:auto;max-width:100%;object-fit:contain}
+.detail-photo-wrap img{margin:0 auto;max-height:78vh !important;width:auto;max-width:100%;object-fit:contain}
 .detail-photo-wrap .zoom-hint{color:#767676;font-size:.85rem;padding:14px 0 26px}
 /* product gallery (audionic.co format): main image + thumb strip + dots
    + prev/next arrows. Single-photo products keep the plain block above.
@@ -447,4 +447,4 @@ body.no-hero main{padding-top:64px}
 .featured-banner .fb-cta{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:22px}
 .featured-banner img{margin:26px auto 0;width:min(600px,88vw);height:auto}
 @media(max-width:900px){.feat-quotes{grid-template-columns:1fr}.spec-strip{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh}}
+@media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh !important}}

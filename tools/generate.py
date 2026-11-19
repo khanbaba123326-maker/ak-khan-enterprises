@@ -57,6 +57,10 @@ CATS = {
 # listing head (H1 + subtitle on white, no banner div) instead.
 CAT_ORDER = ["drones", "cctv", "displays", "networking", "audio"]
 
+# Audionic brand page: ONLY these 11 products (ids 30-40). Never rename
+# them here — names are fixed by the shop's listing.
+AUDIONIC_IDS = list(range(30, 41))
+
 # Drones listing order: flagship-first, like DJI's Camera Drones page
 # (Mavic 3 Pro, Mini 4 Pro, Air 3S, Air 3, Mini 5 Pro, Mini 3 Pro, Mini 3,
 # Mini 2, Neo, Avata 2, Mini 4K, Matrice 30T, Agras).
@@ -510,6 +514,16 @@ def nav_links(depth):
             f'<a class="mega-all" href="{depth}categories/{c}.html">View all {CATS[c]["label"]} &rarr;</a></div>')
     return "".join(out)
 
+def brand_links(depth):
+    # Brands mega-menu: Audionic only (the one brand page that exists).
+    items = [by_id(i) for i in AUDIONIC_IDS]
+    prods = "".join(
+        f'<a class="mega-prod" href="{depth}products/{x["slug"]}.html">{esc(x["name"])}</a>'
+        for x in items[:3])
+    return (f'<div class="mega-col"><a class="mega-cat" href="{depth}brands/audionic.html">Audionic</a>'
+            f'<p>Audionic earbuds, speakers and sound systems.</p>{prods}'
+            f'<a class="mega-all" href="{depth}brands/audionic.html">View all Audionic &rarr;</a></div>')
+
 def chrome(depth, title, desc, body, extra_head=""):
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -530,6 +544,9 @@ def chrome(depth, title, desc, body, extra_head=""):
     <nav class="main-nav" id="mainNav" aria-label="Main navigation">
       <div class="nav-item has-mega"><button class="nav-link" aria-haspopup="true">Shop</button>
         <div class="mega-menu">{nav_links(depth)}</div>
+      </div>
+      <div class="nav-item has-mega"><button class="nav-link" aria-haspopup="true">Brands</button>
+        <div class="mega-menu">{brand_links(depth)}</div>
       </div>
       <a class="nav-link" href="{depth}explore.html">Explore</a>
       <a class="nav-link" href="{depth}about.html">About Us</a>
@@ -754,7 +771,7 @@ body.no-hero main{padding-top:64px}
 .card-img img{width:100%;height:100%;object-fit:cover;object-position:center;filter:drop-shadow(0 18px 16px rgba(0,0,0,.18));transition:transform .4s}
 .card:hover .card-img img{transform:scale(1.04)}
 .no-photo{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--grey);color:var(--mut);text-align:center;padding:24px}
-.no-photo span{font-size:1.05rem;font-weight:700;color:#555}
+.no-photo span{font-size:1.05rem;font-weight:700;color:#1a1a1a}
 .no-photo small{font-size:.88rem;max-width:34ch}
 /* Innovation tiles (DJI): 2 per row inside the centred container, ~591x615.
    3rd tile spans both columns as a wide horizontal feature — no orphan gap. */
@@ -898,8 +915,24 @@ body.no-hero main{padding-top:64px}
 .detail-actions .btn{min-width:200px}
 .detail-hero .confirm-note{color:#9a9a9a;font-size:.92rem;margin-top:16px}
 .detail-photo-wrap{background:#ebebeb;margin-top:48px;min-height:78vh;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:zoom-in}
-.detail-photo-wrap img{margin:0 auto;max-height:78vh;width:auto;max-width:100%;object-fit:contain}
+.detail-photo-wrap img{margin:0 auto;max-height:78vh !important;width:auto;max-width:100%;object-fit:contain}
 .detail-photo-wrap .zoom-hint{color:#767676;font-size:.85rem;padding:14px 0 26px}
+/* product gallery (audionic.co format): main image + thumb strip + dots
+   + prev/next arrows. Single-photo products keep the plain block above.
+   Gallery images are base64 data URIs (snapshot pushes are text-only). */
+.g-main{position:relative;display:flex;align-items:center;justify-content:center;width:100%}
+.g-main img{cursor:zoom-in}
+.g-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;background:rgba(0,0,0,.55);color:#fff;border:0;width:48px;height:72px;font-size:2.4rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.g-arrow.prev{left:12px}
+.g-arrow.next{right:12px}
+.g-thumbs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:20px 16px 0;max-width:960px;margin:0 auto}
+.g-thumb{border:2px solid transparent;background:#fff;padding:2px;cursor:pointer}
+.g-thumb img{width:72px;height:72px;object-fit:cover;display:block}
+.g-thumb.active{border-color:#000}
+.g-dots{display:flex;gap:8px;justify-content:center;padding:14px 0 0}
+.g-dots button{width:8px;height:8px;border-radius:50%;border:0;background:#9a9a9a;cursor:pointer;padding:0}
+.g-dots button.active{background:#000}
+@media(max-width:720px){.g-thumb img{width:56px;height:56px}.g-arrow{width:38px;height:56px;font-size:2rem}}
 /* lightbox */
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;z-index:200;cursor:zoom-out}
 .lightbox.open{display:flex}
@@ -971,18 +1004,39 @@ body.no-hero main{padding-top:64px}
   .nav-wa{text-align:center;margin-top:10px}
   .sec{padding:48px 0}
   .footer-inner{grid-template-columns:1fr}
-  .hero{min-height:520px}
-  /* Mobile hero is fully stacked (kicker, name, tagline, two full-width
-     pills) — the prev/current/next rail and the scroll arrow collide with
-     the pills, and mid-height chevrons flank the tagline like quotes.
-     Hide the rail + scroll hint; move the chevrons to the bottom corners
-     (clear photo band on every slide). Arrows + autoplay + swipe remain. */
-  .hero-list{display:none}
+  .hero{min-height:360px}
+  /* Mobile hero (boss's phone, 360-412px): title must fit on ONE line
+     (small vw-based size, low floor — the old 2.6rem floor wrapped
+     "DJI MAVIC 3 PRO" into two huge lines); pills auto-width, never
+     full-width; slide list VISIBLE bottom-left (compact, ellipsis);
+     chevrons parked bottom-right, clear of pills AND list; hero no
+     longer a giant 520px block. Bottom content padding (118px) reserves
+     the band the list + chevrons sit in. */
+  .hero-content{padding:96px 16px 30px}
+  .hero-content h1{font-size:clamp(1.55rem,7vw,2.3rem)}
+  .hero-slide .hero-content{padding:88px 16px 118px}
+  .hero-slide h1{font-size:clamp(1.55rem,7.2vw,2.4rem)}
+  .hero-slide .hero-sub{font-size:clamp(1rem,4.4vw,1.25rem)}
+  .hero-cta{gap:8px}
+  .hero-cta .btn{min-width:0;width:auto;max-width:82vw;padding:10px 18px;font-size:.88rem}
+  .hero-list{display:flex;left:16px;bottom:14px;gap:3px;max-width:56vw}
+  .hero-list button{font-size:11px;padding:2px 0 2px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:56vw}
   .hero-carousel .scroll-hint{display:none}
-  .hero-arrow{top:auto;bottom:14px;width:52px;height:64px;font-size:2.6rem}
+  .hero-arrow{top:auto;bottom:12px;transform:none;width:44px;height:44px;font-size:1.9rem}
+  .hero-arrow.prev{left:auto;right:60px}
+  .hero-arrow.next{right:12px}
+  /* Floating WhatsApp pill: icon-only circle on mobile (a labelled pill
+     still covered card prices while scrolling — a fixed button can only
+     be made minimal, never zero-footprint), and the footer gets safe
+     bottom padding so the pill can never cover footer text. */
+  .wa-float{right:12px;bottom:12px;width:44px;height:44px;padding:0;justify-content:center}
+  .wa-float span{display:none}
+  .wa-float svg{width:22px;height:22px}
+  .to-top{right:12px;bottom:64px;width:44px;height:44px}
+  .footer-bottom{padding-bottom:92px}
   .grid,.grid-fullbleed,.video-grid,.why-grid,.cat-tiles,.contact-grid{grid-template-columns:1fr}
   .cat-tile.wide{grid-column:auto;min-height:340px}
-  .hero-cta .btn,.detail-actions .btn{min-width:0;width:100%}
+  .detail-actions .btn{min-width:0;width:100%}
   .subnav-links{display:none}
   .feature-tile .f-body{padding:28px 24px}
   .feature-tile.wide .f-body{padding:28px 24px}
@@ -1065,7 +1119,7 @@ body.no-hero main{padding-top:64px}
 .featured-banner .fb-cta{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:22px}
 .featured-banner img{margin:26px auto 0;width:min(600px,88vw);height:auto}
 @media(max-width:900px){.feat-quotes{grid-template-columns:1fr}.spec-strip{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh}}
+@media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh !important}}
 """
 
 # ---------- JS ----------
@@ -1102,7 +1156,31 @@ function openLB(src,alt){if(!lb)return;lb.querySelector('img').src=src;lb.queryS
 function closeLB(){if(!lb)return;lb.classList.remove('open');lb.classList.remove('zoomed');document.body.style.overflow='';}
 if(lb){lb.addEventListener('click',function(e){if(e.target.tagName==='IMG'){lb.classList.toggle('zoomed');}else{closeLB();}});document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLB();});}
 var dp=document.getElementById('detailPhoto');
-if(dp){dp.addEventListener('click',function(){openLB(dp.querySelector('img').src,dp.querySelector('img').alt);});}
+if(dp&&!document.getElementById('galleryMain')){dp.addEventListener('click',function(){openLB(dp.querySelector('img').src,dp.querySelector('img').alt);});}
+// product gallery: switch the main image + active thumb/dot; the
+// lightbox opens the CURRENTLY shown image. Thumbs carry data-full for
+// extras (their base64 data URIs) — the primary image's data URI is
+// never copied into an attribute (it is read once from the main img's src).
+var gm=document.getElementById('galleryMain');
+if(gm){
+  var gThumbs=Array.prototype.slice.call(document.querySelectorAll('.g-thumb'));
+  var gDots=Array.prototype.slice.call(document.querySelectorAll('.g-dot'));
+  var gSrcs=gThumbs.map(function(t,i){return i===0?gm.src:(t.getAttribute('data-full')||gm.src);});
+  var gIdx=0;
+  function gShow(i){
+    gIdx=(i+gSrcs.length)%gSrcs.length;
+    gm.src=gSrcs[gIdx];
+    var cap=gThumbs[gIdx].getAttribute('data-cap');
+    if(cap){gm.style.cssText=cap;}
+    gm.alt=gThumbs[gIdx].getAttribute('data-alt')||gm.alt;
+    gThumbs.forEach(function(t,j){t.classList.toggle('active',j===gIdx);});
+    gDots.forEach(function(d,j){d.classList.toggle('active',j===gIdx);});
+  }
+  gThumbs.forEach(function(t,i){t.addEventListener('click',function(e){e.stopPropagation();gShow(i);});});
+  gDots.forEach(function(d,i){d.addEventListener('click',function(e){e.stopPropagation();gShow(i);});});
+  document.querySelectorAll('.g-arrow').forEach(function(a){a.addEventListener('click',function(e){e.stopPropagation();gShow(gIdx+parseInt(a.getAttribute('data-dir'),10));});});
+  gm.addEventListener('click',function(){openLB(gm.src,gm.alt);});
+}
 // category filter + sort
 var grid=document.getElementById('catGrid');
 if(grid){
@@ -1399,12 +1477,17 @@ def build_category(c):
 <div style="overflow-x:auto"><table class="compare-table"><tr><th></th>{head_cells}</tr>{rows}</table></div>
 <p style="text-align:center;margin-top:22px"><a class="more-link" href="../compare.html">Consumer Drones Comparison — Compare Now &rsaquo;</a></p>
 </div></section>"""
+    brand_link = ""
+    if c == "audio":
+        brand_link = ('<div class="wrap" style="text-align:center;padding:0 20px 24px">'
+                      '<a class="btn btn-dark" href="../brands/audionic.html">Audionic — view the brand page &rsaquo;</a></div>')
     body = f"""
 {strip}<section class="cat-head"><div class="wrap">
 <p class="kicker">AK Khan Enterprises</p>
 <h1>{esc(h1)}</h1>
 <p class="cat-sub">{esc(CATS[c]['intro'])}</p>
 </div></section>
+{brand_link}
 {banner}{featured}
 <section class="sec" id="listing"><div class="wrap">
 {section_head(CATS[c]['label'], f"All {CATS[c]['label']} — {len(items)} products", 'Filter by brand or sort the list. Prices shown where the shop has confirmed one; everything else is confirmed on WhatsApp.')}
@@ -1425,6 +1508,27 @@ def build_category(c):
 """
     write(f"categories/{c}.html", chrome("../", f"{CATS[c]['label']} — AK Khan Enterprises, Quetta",
         f"{CATS[c]['label']} at AK Khan Enterprises, Quetta. {CATS[c]['intro']}", body))
+
+# ----- Audionic brand page (DJI-style brand header, B/W only) -----
+# ONLY the 11 Audionic products (ids 30-40), each card linking to its
+# detail page. Names are never changed here.
+def build_audionic():
+    items = [by_id(i) for i in AUDIONIC_IDS]
+    body = f"""
+<section class="cat-head"><div class="wrap">
+<p class="kicker">Brands</p>
+<h1>Audionic</h1>
+<p class="cat-sub">Audionic sound — earbuds, Bluetooth speakers, soundbars, home theatre, party speakers and more.</p>
+</div></section>
+<section class="sec" id="listing"><div class="wrap">
+{section_head('Audionic', 'All Audionic — 11 products', 'Prices shown where the shop has confirmed one; everything else is confirmed on WhatsApp.')}
+</div>
+<div class="grid-fullbleed">{''.join(card(p, depth="../", buy=True) for p in items)}</div>
+</section>
+{cta_band('../')}
+"""
+    write("brands/audionic.html", chrome("../", "Audionic — AK Khan Enterprises, Quetta",
+        "Audionic at AK Khan Enterprises, Quetta — earbuds, Bluetooth speakers, soundbars, home theatre, party speakers and more.", body))
 
 # ----- DJI product pages: spec strip, intro, feature sections, end card -----
 def dji_price_line(p):
@@ -1470,8 +1574,54 @@ def dji_features_html(slug):
 
 # ----- product pages (DJI-style: black hero, huge shot, no invented specs) -----
 def build_product(p):
+    # Gallery = [primary photo] + p["gallery"] extras (audionic.co format).
+    # Extras are embedded as base64 data URIs via img_uri(), exactly like
+    # the primary photo: the GitHub snapshot push rejects binary files,
+    # so no gallery photo may be referenced by URL (verified 19 Nov:
+    # push-files errors "not UTF-8" on any JPEG). "file": True still means
+    # the thumb carries data-full (the JS switches the main image from it);
+    # the primary's data URI is read once from the main img's src.
+    # One photo total -> exactly the old single-image block (no strip,
+    # dots or arrows). Missing gallery files are skipped, never fatal.
+    g_items = []
     if p.get("photo_full"):
-        gallery = f"""<div class="detail-photo-wrap" id="detailPhoto"><img src="{img_uri(p['photo_full'])}" alt="{esc(p['name'])} — product photo" style="{img_cap(p['photo_full'])}"><p class="zoom-hint">Tap the photo to view fullscreen. Tap again to zoom.</p></div>"""
+        g_items.append({"src": img_uri(p["photo_full"]),
+                        "thumb": img_uri(p["photo_thumb"]) if p.get("photo_thumb") else img_uri(p["photo_full"]),
+                        "cap": img_cap(p["photo_full"]),
+                        "alt": f"{p['name']} — product photo",
+                        "file": False})
+    for g in p.get("gallery", []) or []:
+        full = g.get("full", "")
+        thumb = g.get("thumb", "") or full
+        if not full or not (STAGING / full).is_file():
+            continue
+        g_items.append({"src": img_uri(full),
+                        "thumb": (img_uri(thumb)
+                                  if thumb and (STAGING / thumb).is_file()
+                                  else img_uri(full)),
+                        "cap": img_cap(full),
+                        "alt": f"{p['name']} — product photo",
+                        "file": True})
+    if len(g_items) > 1:
+        thumbs = "".join(
+            f'<button class="g-thumb{" active" if i == 0 else ""}" type="button"'
+            + (f' data-full="{esc(it["src"])}"' if it["file"] else "")
+            + f' data-cap="{esc(it["cap"])}" data-alt="{esc(it["alt"])}" aria-label="View photo {i + 1} of {len(g_items)}">'
+              f'<img src="{it["thumb"]}" alt="Photo {i + 1} of {esc(p["name"])}" loading="lazy"></button>'
+            for i, it in enumerate(g_items))
+        dots = "".join(
+            f'<button class="g-dot{" active" if i == 0 else ""}" type="button" aria-label="Go to photo {i + 1}"></button>'
+            for i in range(len(g_items)))
+        main = g_items[0]
+        gallery = (f"""<div class="detail-photo-wrap" id="detailPhoto"><div class="g-main">"""
+                   f"""<img id="galleryMain" src="{main["src"]}" alt="{esc(main["alt"])}" style="{esc(main["cap"])}">"""
+                   f"""<button class="g-arrow prev" type="button" data-dir="-1" aria-label="Previous photo">&lsaquo;</button>"""
+                   f"""<button class="g-arrow next" type="button" data-dir="1" aria-label="Next photo">&rsaquo;</button></div>"""
+                   f"""<div class="g-thumbs">{thumbs}</div><div class="g-dots">{dots}</div>"""
+                   f"""<p class="zoom-hint">Tap the photo to view fullscreen. Tap again to zoom.</p></div>""")
+    elif g_items:
+        it = g_items[0]
+        gallery = f"""<div class="detail-photo-wrap" id="detailPhoto"><img src="{it["src"]}" alt="{esc(it["alt"])}" style="{esc(it["cap"])}"><p class="zoom-hint">Tap the photo to view fullscreen. Tap again to zoom.</p></div>"""
     else:
         gallery = ('<div class="detail-photo-wrap" style="cursor:default"><div class="no-photo" style="background:transparent;min-height:40vh;color:#555">'
                    '<span style="color:#1a1a1a">Photo on request</span>'
@@ -1816,9 +1966,16 @@ def main():
     old = SITE / "assets" / "logo-mark.svg"
     if old.exists():
         old.unlink()
+    # Gallery photos are embedded as base64 data URIs in the product
+    # pages (see build_product) — they are NEVER copied as files: the
+    # GitHub snapshot push rejects binary files ("not UTF-8"). An earlier
+    # file-based gallery build was reverted for exactly this reason
+    # (19 Nov, batch 01 failed on a single JPEG). No assets/gallery/
+    # dirs are produced.
     build_index()
     for c in CAT_ORDER:
         build_category(c)
+    build_audionic()
     for p in products:
         build_product(p)
     build_explore()
@@ -1832,8 +1989,21 @@ Generated by `tools/generate.py` from verified staging data
 (`~/workspace/ak-khan-github-site-redesign/staging/`). Re-run the generator
 to rebuild. Byte-reproducible: run twice, second run produces zero diff.
 
-- 108 product pages, 5 category pages, homepage, explore, about, support,
-  FAQ, contact, privacy, terms, search, compare.
+- 108 product pages, 5 category pages, Audionic brand page
+  (brands/audionic.html — only the 11 Audionic products, ids 30-40),
+  homepage, explore, about, support, FAQ, contact, privacy, terms,
+  search, compare.
+- Product galleries (audionic.co format): main image + thumb strip +
+  dots + prev/next arrows, lightbox opens the currently shown image.
+  Gallery extras are base64 data URIs embedded in the product pages
+  (the GitHub snapshot push rejects binary files, so gallery photos
+  can never be separate files).
+  One-photo products keep the plain single-image block.
+- Mobile hero (360-412px): title fits on one line (vw-based size, low
+  floor), pills auto-width, slide list visible bottom-left, chevrons
+  parked bottom-right clear of pills and list, hero 360px not 520px.
+  Floating WhatsApp pill is smaller on mobile and the footer has safe
+  bottom padding so it never covers footer text.
 - Black / white / grey only: no gold, navy, cream or green anywhere.
   WhatsApp CTAs are black or white pills, never green.
 - Logos: assets/logo-mark-white.svg (dark header/footer) and
