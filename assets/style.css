@@ -99,7 +99,7 @@ body.no-hero main{padding-top:64px}
 .card-img img{width:100%;height:100%;object-fit:cover;object-position:center;filter:drop-shadow(0 18px 16px rgba(0,0,0,.18));transition:transform .4s}
 .card:hover .card-img img{transform:scale(1.04)}
 .no-photo{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--grey);color:var(--mut);text-align:center;padding:24px}
-.no-photo span{font-size:1.05rem;font-weight:700;color:#555}
+.no-photo span{font-size:1.05rem;font-weight:700;color:#1a1a1a}
 .no-photo small{font-size:.88rem;max-width:34ch}
 /* Innovation tiles (DJI): 2 per row inside the centred container, ~591x615.
    3rd tile spans both columns as a wide horizontal feature — no orphan gap. */
