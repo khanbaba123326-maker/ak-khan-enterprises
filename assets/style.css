@@ -76,49 +76,73 @@ body.no-hero main{padding-top:64px}
 .btn-outline{border-color:#fff;color:#fff;background:transparent}
 .btn-outline:hover{background:rgba(255,255,255,.12)}
 .btn-lg{padding:15px 30px;font-size:1.05rem}
-/* DJI tiles: 2 large per row, 16px gutters, no borders/shadows/radius.
-   Full-bleed variant breaks out of the 1280px .wrap (16px side margins).
-   Tile aspect 1.38:1 (928x~672 at 1919px) applies at desktop widths only;
-   below 1100px cards size naturally so the text never squeezes the photo. */
+/* ROUND 7 — DJI full-bleed tiles: ONE card, photo fills the whole tile
+   (4:3, ~936x702 at 1919px), text overlaid on it. Two gradient scrims —
+   dark at the top (eyebrow/name/tagline) and dark at the bottom
+   (price/CTAs) — fading to clear in the middle so the product stays fully
+   visible. White text throughout: uniform across white studio shots and
+   black shots alike, so the grid reads as one coherent set. 2 per row,
+   16px gutters, no borders/shadows/radius. Full-bleed variant breaks out
+   of the 1280px .wrap (16px side margins). */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .grid-fullbleed{margin:0 16px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-@media(min-width:1101px){.grid-fullbleed .card{aspect-ratio:1.38/1}}
-.card{background:#ebebeb;display:flex;flex-direction:column;overflow:hidden}
-.card-body{padding:30px 24px 8px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
-.card-cat{font-size:.78rem;text-transform:uppercase;letter-spacing:.16em;color:var(--mut);font-weight:700}
-.card-body h3{font-size:1.35rem}
-.card-body h3 a:hover{color:var(--mut)}
-.card-tag{color:var(--mut);font-size:.95rem;max-width:44ch}
+.card{position:relative;aspect-ratio:4/3;overflow:hidden;background:#111}
+.card::before,.card::after{content:"";position:absolute;left:0;right:0;z-index:1;pointer-events:none}
+.card::before{top:0;height:60%;background:linear-gradient(180deg,rgba(0,0,0,.78),rgba(0,0,0,.42) 55%,rgba(0,0,0,0))}
+.card::after{bottom:0;height:55%;background:linear-gradient(0deg,rgba(0,0,0,.82),rgba(0,0,0,.45) 55%,rgba(0,0,0,0))}
+.card-img{position:absolute;inset:0;display:block;padding:0;background:#111}
+.card-img img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .4s}
+.card:hover .card-img img{transform:scale(1.04)}
+.card-body{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;padding:26px 28px;color:#fff;pointer-events:none}
+.card-body a,.card-body .btn{pointer-events:auto}
+.card-top{display:flex;flex-direction:column;gap:8px;align-items:center;min-width:0}
+.card-foot{display:flex;flex-direction:column;gap:6px;align-items:center}
+.card-cat{font-size:.78rem;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.85);font-weight:700}
+.card-body h3{font-size:1.35rem;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.45);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-body h3 a{color:#fff}
+.card-body h3 a:hover{color:rgba(255,255,255,.75)}
+.card-tag{color:rgba(255,255,255,.92);font-size:.95rem;max-width:44ch;text-shadow:0 1px 10px rgba(0,0,0,.4);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .price{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+.card .price .was{color:rgba(255,255,255,.7)}
+.card .price-note{color:rgba(255,255,255,.75)}
+.card .more-link{color:#fff}
+.card .more-link:hover{color:rgba(255,255,255,.75)}
+.card .card-cta{margin-top:8px}
 .price{font-size:1.3rem;font-weight:800}
 .price .was{font-size:.95rem;color:var(--mut);text-decoration:line-through;font-weight:400;margin-left:6px}
 .price.por{font-size:1.1rem}
 .price-note{font-size:.85rem;color:var(--mut)}
 .more-link{display:inline-block;font-size:1rem;font-weight:600;color:var(--ink);padding:6px 0 2px}
 .more-link:hover{color:var(--mut)}
-.card-img{background:#fff;aspect-ratio:4/3;overflow:hidden;padding:0;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
-.card-img img{width:100%;height:100%;object-fit:cover;object-position:center;filter:drop-shadow(0 18px 16px rgba(0,0,0,.18));transition:transform .4s}
-.card:hover .card-img img{transform:scale(1.04)}
 .no-photo{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--grey);color:var(--mut);text-align:center;padding:24px}
 .no-photo span{font-size:1.05rem;font-weight:700;color:#1a1a1a}
 .no-photo small{font-size:.88rem;max-width:34ch}
-/* Innovation tiles (DJI): 2 per row inside the centred container, ~591x615.
-   3rd tile spans both columns as a wide horizontal feature — no orphan gap. */
+.card .no-photo{background:#1c1c1c;color:rgba(255,255,255,.8)}
+.card .no-photo span{color:#fff}
+/* ROUND 7 — Innovation tiles (DJI): same full-bleed overlay language as
+   .card — photo fills the whole tile, text overlaid with twin scrims.
+   2 per row inside the centred container; 3rd tile spans both columns as
+   a wide horizontal feature — no orphan gap. .light keeps its class but
+   renders the same white-on-scrim text (uniform set, no banded panel). */
 .innov-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.feature-tile{background:#000;color:#fff;display:flex;flex-direction:column;overflow:hidden;min-height:615px}
-.feature-tile.light{background:#ebebeb;color:var(--txt)}
-.feature-tile .f-img{height:320px;flex:none;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.feature-tile.light .f-img{background:#ebebeb}
-.feature-tile .f-img img{width:100%;height:100%;object-fit:contain}
-.feature-tile .f-body{padding:28px 32px 32px;display:flex;flex-direction:column;justify-content:center;gap:10px;align-items:flex-start;flex:1}
-.feature-tile.wide{grid-column:1/-1;flex-direction:row;min-height:380px}
-.feature-tile.wide .f-img{flex:1;height:auto;min-height:380px}
-.feature-tile.wide .f-body{flex:1;padding:48px}
-.feature-tile .f-body p{color:#cfcfcf}
-.feature-tile.light .f-body p{color:var(--mut)}
-.feature-tile .f-body h2{font-size:clamp(1.7rem,3.4vw,2.4rem)}
-.feature-tile .f-body .kicker{color:#9a9a9a}
-.feature-tile.light .f-body .kicker{color:var(--mut)}
-.feature-tile .f-cta{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.feature-tile{position:relative;background:#000;color:#fff;overflow:hidden;min-height:615px}
+.feature-tile.light{background:#111;color:#fff}
+.feature-tile::before,.feature-tile::after{content:"";position:absolute;left:0;right:0;z-index:1;pointer-events:none}
+.feature-tile::before{top:0;height:55%;background:linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.35) 55%,rgba(0,0,0,0))}
+.feature-tile::after{bottom:0;height:50%;background:linear-gradient(0deg,rgba(0,0,0,.78),rgba(0,0,0,.4) 55%,rgba(0,0,0,0))}
+.feature-tile .f-img{position:absolute;inset:0;background:#000}
+.feature-tile .f-img img{width:100%;height:100%;object-fit:cover;object-position:center}
+.feature-tile .f-body{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-between;gap:10px;align-items:flex-start;text-align:left;padding:36px;min-height:615px}
+.feature-tile .f-top{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.feature-tile.wide{grid-column:1/-1;min-height:380px}
+.feature-tile.wide .f-body{min-height:380px;max-width:580px;padding:40px 48px}
+.feature-tile.feat-banner{min-height:520px}
+.feature-tile.feat-banner .f-body{min-height:520px}
+.feature-tile .f-body p{color:rgba(255,255,255,.88)}
+.feature-tile .f-body h2{font-size:clamp(1.7rem,3.4vw,2.4rem);color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.45)}
+.feature-tile .f-body .kicker{color:rgba(255,255,255,.8)}
+.feature-tile .price .was{color:rgba(255,255,255,.7)}
+.feature-tile .f-cta{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
 /* Fields tiles (DJI): 3 per row inside the container, ~390x440, full-bleed
    photo, white title top-centre + subtitle + Learn More link. */
 .field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -310,9 +334,8 @@ body.no-hero main{padding-top:64px}
 @media(max-width:900px){
   .innov-grid{grid-template-columns:1fr}
   .feature-tile.wide{flex-direction:column}
-  .feature-tile.wide .f-img{min-height:300px}
-  .feature-tile{min-height:0}
-  .feature-tile .f-img{height:300px}
+  .feature-tile,.feature-tile .f-body,.feature-tile.wide .f-body{min-height:0}
+  .feature-tile .f-img{height:auto}
   .field-grid{grid-template-columns:1fr}
   .why-strip-grid{grid-template-columns:1fr;gap:36px}
   .films-arrow.prev{left:12px}
@@ -353,6 +376,16 @@ body.no-hero main{padding-top:64px}
   .hero-arrow{top:auto;bottom:12px;transform:none;width:44px;height:44px;font-size:1.9rem}
   .hero-arrow.prev{left:auto;right:60px}
   .hero-arrow.next{right:12px}
+  /* ROUND 7 mobile cards: 4:3 tile at ~358px wide is ~268px tall — tighter
+     type + padding so eyebrow/name/tagline + price/CTAs still fit. */
+  .card-body{padding:18px 16px}
+  .card-body h3{font-size:1.12rem}
+  .card-tag{font-size:.85rem}
+  .card .price{font-size:1.1rem}
+  .card .price-note{font-size:.78rem}
+  .card-cta .btn{padding:8px 16px;font-size:.85rem}
+  .feature-tile .f-body{padding:28px 24px}
+  .feature-tile.wide .f-body{padding:28px 24px}
   /* Floating WhatsApp pill: icon-only circle on mobile (a labelled pill
      still covered card prices while scrolling — a fixed button can only
      be made minimal, never zero-footprint), and the footer gets safe
@@ -440,11 +473,5 @@ body.no-hero main{padding-top:64px}
 .end-card .btn{margin-top:22px}
 /* drones featured banner (DJI Camera Drones Flip banner, framed/inset):
    light-grey gradient, text top-centre, product photo bottom-centre */
-.featured-banner{margin:0 16px;background:linear-gradient(180deg,#f4f5f7,#e7e8ea);text-align:center;padding:44px 20px 0;overflow:hidden}
-.featured-banner .kicker{color:var(--mut)}
-.featured-banner h2{font-size:clamp(2rem,4.5vw,3.5rem);font-weight:200;text-transform:uppercase;margin:10px 0 6px}
-.featured-banner .fb-tag{font-size:clamp(1.15rem,2vw,1.4rem);font-weight:700;color:var(--ink)}
-.featured-banner .fb-cta{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:22px}
-.featured-banner img{margin:26px auto 0;width:min(600px,88vw);height:auto}
 @media(max-width:900px){.feat-quotes{grid-template-columns:1fr}.spec-strip{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh !important}}
+@media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh !important}.feature-tile.feat-banner,.feature-tile.feat-banner .f-body{min-height:460px}}

@@ -61,10 +61,55 @@ CAT_ORDER = ["drones", "cctv", "displays", "networking", "audio"]
 # them here — names are fixed by the shop's listing.
 AUDIONIC_IDS = list(range(30, 41))
 
-# Drones listing order: flagship-first, like DJI's Camera Drones page
-# (Mavic 3 Pro, Mini 4 Pro, Air 3S, Air 3, Mini 5 Pro, Mini 3 Pro, Mini 3,
-# Mini 2, Neo, Avata 2, Mini 4K, Matrice 30T, Agras).
-DRONE_ORDER = [4, 0, 2, 3, 51, 52, 1, 53, 5, 6, 7, 8, 9]
+# ---------- ROUND 6 display order (boss order 19 Nov 22:57 — tarteeb) ----------
+# Flagship / series first, newest -> oldest inside a series, brands
+# grouped, never file order. products.json itself is NEVER reordered
+# (id == array index, photo paths are id-based); order is applied at
+# render time only, via order_category() in build_category /
+# build_audionic and INNOVATION_IDS on the homepage. main() asserts
+# every map covers exactly its category's ids — a missing or extra id
+# fails the build loudly instead of silently mis-ordering.
+# Drones: Mavic 3 Pro, Air 3S, Air 3, Mini 5 Pro, Mini 4 Pro, Mini 3 Pro,
+# Mini 3, Mini 2, Mini 4K, Neo, Avata 2, Matrice 30T, Agras Series.
+DRONE_ORDER = [4, 2, 3, 51, 0, 52, 1, 53, 7, 5, 6, 8, 9]
+# CCTV: Dahua cameras (generics, DH-EPC, DH-HAC, DH-IPC, N-series
+# ascending), Dahua recorders (DSS, IVSS, DHI-NVR ascending, NVR6A08
+# trio in NUMERIC order 32/64/128, then N-series NVRs ascending),
+# Hikvision, Tiandy (cameras then recorders), IMOU, EZVIZ, V380, iCSee.
+CCTV_ORDER = [12, 13, 80, 54, 55, 56, 58, 82, 78, 77, 81, 79, 57, 76,
+              84, 85, 83, 86, 87, 88, 89,
+              99, 100, 90, 91, 66, 65, 64, 63, 92, 93, 103, 102, 101,
+              107, 106, 105, 98, 95, 97, 104, 94, 96,
+              10, 11, 59, 60, 14, 15, 68, 67, 69, 18, 74, 75, 16, 17,
+              19, 61, 62]
+# Networking: Ruijie (router, RG-EW300N, RG-EW300 PRO, AP), TP-Link
+# (Archer, TL-WR840N, AP, switch), Tenda (router, N300, AP, switch),
+# Ubiquiti (AP, switch).
+NETWORKING_ORDER = [20, 70, 71, 21, 22, 72, 23, 24, 25, 73, 27, 26, 28, 29]
+# Audio: Earbuds, Bluetooth Speaker, Multimedia Speaker, Vision 35 2.1,
+# Mh-808 Plus Portable, Soundbar, Pace 8 Home Theater, Party Speaker,
+# MEHFIL MH-1212 ADVANCE, Wireless Microphone, Amplifier.
+AUDIO_ORDER = [30, 31, 36, 37, 38, 32, 33, 34, 40, 35, 39]
+# Displays: Samsung 43/55/65, LG 43/55/65, Sony 43/55/65/75 — unchanged,
+# already in order; listed explicitly so the map covers every category.
+DISPLAYS_ORDER = [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
+CAT_ORDER_MAP = {
+    "drones": DRONE_ORDER,
+    "cctv": CCTV_ORDER,
+    "networking": NETWORKING_ORDER,
+    "audio": AUDIO_ORDER,
+    "displays": DISPLAYS_ORDER,
+}
+# Homepage Innovation tiles — flagship-first: Mavic 3 Pro (wide),
+# Air 3S, Mini 4 Pro.
+INNOVATION_IDS = [4, 2, 0]
+def order_category(c, items):
+    """Render-time display order for one category (ROUND 6)."""
+    order = CAT_ORDER_MAP.get(c)
+    if order is None:
+        return items
+    pos = {pid: i for i, pid in enumerate(order)}
+    return sorted(items, key=lambda p: pos[p["id"]])
 
 # Related-category tiles: the old banner images are deleted, so each tile
 # uses a real, existing photo — the native-wide drones banner frame, or a
@@ -332,6 +377,10 @@ DJI_COMPARE = [
         "4K/60fps HDR or 4K/120fps", "45 mins",
         "Nightscape Omnidirectional Obstacle Sensing",
         "DJI O4 up to 20 km (FCC) · 10 km (CE/SRRC/MIC)"]),
+    ("dji-air-3", ["Price on request", "720 g",
+        "1/1.3″ CMOS Wide-Angle Camera · 1/1.3″ CMOS Medium Tele Camera",
+        "4K/60fps HDR or 4K/100fps", "46 mins", "Omnidirectional Obstacle Sensing",
+        "DJI O4 up to 20 km (FCC) · 10 km (CE/SRRC/MIC)"]),
     ("dji-mini-4-pro", ["Rs 275,000", "Under 249 g",
         "1/1.3″ CMOS Wide-Angle Camera · True Vertical Shooting",
         "4K/60fps HDR · Slow Motion 4K/100fps", "34/45 mins (depending on battery)",
@@ -346,10 +395,6 @@ DJI_COMPARE = [
         "1/1.3″ CMOS Wide-Angle Camera · True Vertical Shooting",
         "4K/30fps HDR", "—", "Downward Obstacle Sensing · Smart RTH",
         "DJI O2 up to 10 km — 720p/30fps Live Feed"]),
-    ("dji-air-3", ["Price on request", "720 g",
-        "1/1.3″ CMOS Wide-Angle Camera · 1/1.3″ CMOS Medium Tele Camera",
-        "4K/60fps HDR or 4K/100fps", "46 mins", "Omnidirectional Obstacle Sensing",
-        "DJI O4 up to 20 km (FCC) · 10 km (CE/SRRC/MIC)"]),
 ]
 
 # ---------- image embedding ----------
@@ -453,35 +498,38 @@ def related(p, n=4):
                 and x["brand"] != p["brand"] and x["id"] != p["id"]]
     return (same_brand + same_cat)[:n]
 
-# DJI-style tile: pale-grey panel, text centred at the TOP only, photo fills
-# most of the tile below. One quiet text link per card — no repeated buttons.
-# Photo is the FULL image (sharper than the 400px thumb at tile size),
-# never upscaled beyond its real resolution by the generator.
+# ROUND 7 — DJI-style full-bleed tile: the photo fills the WHOLE tile
+# edge-to-edge (object-fit:cover; NO img_cap here — the audit P3 #10
+# no-upscale cap is deliberately lifted for CARD tiles only, so an 800px
+# photo can fill a 936px tile; detail pages keep the cap). Text is OVERLAID
+# on the photo — eyebrow/name/tagline at the top, price + CTAs at the
+# bottom — white on twin gradient scrims (.card::before/::after), so it
+# stays legible on white studio shots and black shots alike. One tile =
+# one coherent card: no grey text box above the photo (round 6 "sasti").
 def card(p, depth="", buy=False):
     if p.get("photo_full"):
-        # Tile fit (showpiece law): landscape shots fill the tile edge-to-edge
-        # (cover); square/tall shots show the WHOLE product (contain) so a
-        # dome/router is never cropped into a giant partial product.
-        _w, _h = native_size(p["photo_full"])
-        _fit = "cover" if _w / _h >= 1.3 else "contain"
-        thumb = (f'<img src="{img_uri(p["photo_full"])}" alt="{esc(p["name"])}" loading="lazy" style="{img_cap(p["photo_full"])};object-fit:{_fit}">')
+        thumb = (f'<img src="{img_uri(p["photo_full"])}" alt="{esc(p["name"])}" loading="lazy">')
     else:
         thumb = ('<div class="no-photo"><span>Photo on request</span>'
                  '<small>Ask on WhatsApp and the shop will send a photo of the exact unit in stock.</small></div>')
     if buy:
-        cta = (f'<div class="card-cta"><a class="btn btn-dark" href="{wa_link(p["name"])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>'
+        cta = (f'<div class="card-cta"><a class="btn btn-light" href="{wa_link(p["name"])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>'
                f'<a class="more-link" href="{depth}{product_url(p)}">Learn more &rsaquo;</a></div>')
     else:
         cta = f'<a class="more-link" href="{depth}{product_url(p)}">Learn more &rsaquo;</a>'
     return f"""<article class="card" data-brand="{esc(p["brand"])}" data-name="{esc(p["name"].lower())}" data-price="{p["price_pkr"] or ''}">
-  <div class="card-body">
-    <p class="card-cat">{esc(p["brand"])} &middot; {esc(CATS[p["category"]]["label"])}</p>
-    <h3><a href="{depth}{product_url(p)}">{esc(p["name"])}</a></h3>
-    <p class="card-tag">{esc(p["tagline"])}</p>
-    {price_html(p)}
-    {cta}
-  </div>
   <a class="card-img" href="{depth}{product_url(p)}" aria-label="{esc(p["name"])}">{thumb}</a>
+  <div class="card-body">
+    <div class="card-top">
+      <p class="card-cat">{esc(p["brand"])} &middot; {esc(CATS[p["category"]]["label"])}</p>
+      <h3><a href="{depth}{product_url(p)}">{esc(p["name"])}</a></h3>
+      <p class="card-tag">{esc(p["tagline"])}</p>
+    </div>
+    <div class="card-foot">
+      {price_html(p)}
+      {cta}
+    </div>
+  </div>
 </article>"""
 
 # ---------- chrome ----------
@@ -753,49 +801,73 @@ body.no-hero main{padding-top:64px}
 .btn-outline{border-color:#fff;color:#fff;background:transparent}
 .btn-outline:hover{background:rgba(255,255,255,.12)}
 .btn-lg{padding:15px 30px;font-size:1.05rem}
-/* DJI tiles: 2 large per row, 16px gutters, no borders/shadows/radius.
-   Full-bleed variant breaks out of the 1280px .wrap (16px side margins).
-   Tile aspect 1.38:1 (928x~672 at 1919px) applies at desktop widths only;
-   below 1100px cards size naturally so the text never squeezes the photo. */
+/* ROUND 7 — DJI full-bleed tiles: ONE card, photo fills the whole tile
+   (4:3, ~936x702 at 1919px), text overlaid on it. Two gradient scrims —
+   dark at the top (eyebrow/name/tagline) and dark at the bottom
+   (price/CTAs) — fading to clear in the middle so the product stays fully
+   visible. White text throughout: uniform across white studio shots and
+   black shots alike, so the grid reads as one coherent set. 2 per row,
+   16px gutters, no borders/shadows/radius. Full-bleed variant breaks out
+   of the 1280px .wrap (16px side margins). */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .grid-fullbleed{margin:0 16px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-@media(min-width:1101px){.grid-fullbleed .card{aspect-ratio:1.38/1}}
-.card{background:#ebebeb;display:flex;flex-direction:column;overflow:hidden}
-.card-body{padding:30px 24px 8px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
-.card-cat{font-size:.78rem;text-transform:uppercase;letter-spacing:.16em;color:var(--mut);font-weight:700}
-.card-body h3{font-size:1.35rem}
-.card-body h3 a:hover{color:var(--mut)}
-.card-tag{color:var(--mut);font-size:.95rem;max-width:44ch}
+.card{position:relative;aspect-ratio:4/3;overflow:hidden;background:#111}
+.card::before,.card::after{content:"";position:absolute;left:0;right:0;z-index:1;pointer-events:none}
+.card::before{top:0;height:60%;background:linear-gradient(180deg,rgba(0,0,0,.78),rgba(0,0,0,.42) 55%,rgba(0,0,0,0))}
+.card::after{bottom:0;height:55%;background:linear-gradient(0deg,rgba(0,0,0,.82),rgba(0,0,0,.45) 55%,rgba(0,0,0,0))}
+.card-img{position:absolute;inset:0;display:block;padding:0;background:#111}
+.card-img img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .4s}
+.card:hover .card-img img{transform:scale(1.04)}
+.card-body{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;padding:26px 28px;color:#fff;pointer-events:none}
+.card-body a,.card-body .btn{pointer-events:auto}
+.card-top{display:flex;flex-direction:column;gap:8px;align-items:center;min-width:0}
+.card-foot{display:flex;flex-direction:column;gap:6px;align-items:center}
+.card-cat{font-size:.78rem;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.85);font-weight:700}
+.card-body h3{font-size:1.35rem;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.45);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-body h3 a{color:#fff}
+.card-body h3 a:hover{color:rgba(255,255,255,.75)}
+.card-tag{color:rgba(255,255,255,.92);font-size:.95rem;max-width:44ch;text-shadow:0 1px 10px rgba(0,0,0,.4);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .price{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+.card .price .was{color:rgba(255,255,255,.7)}
+.card .price-note{color:rgba(255,255,255,.75)}
+.card .more-link{color:#fff}
+.card .more-link:hover{color:rgba(255,255,255,.75)}
+.card .card-cta{margin-top:8px}
 .price{font-size:1.3rem;font-weight:800}
 .price .was{font-size:.95rem;color:var(--mut);text-decoration:line-through;font-weight:400;margin-left:6px}
 .price.por{font-size:1.1rem}
 .price-note{font-size:.85rem;color:var(--mut)}
 .more-link{display:inline-block;font-size:1rem;font-weight:600;color:var(--ink);padding:6px 0 2px}
 .more-link:hover{color:var(--mut)}
-.card-img{background:#fff;aspect-ratio:4/3;overflow:hidden;padding:0;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
-.card-img img{width:100%;height:100%;object-fit:cover;object-position:center;filter:drop-shadow(0 18px 16px rgba(0,0,0,.18));transition:transform .4s}
-.card:hover .card-img img{transform:scale(1.04)}
 .no-photo{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--grey);color:var(--mut);text-align:center;padding:24px}
 .no-photo span{font-size:1.05rem;font-weight:700;color:#1a1a1a}
 .no-photo small{font-size:.88rem;max-width:34ch}
-/* Innovation tiles (DJI): 2 per row inside the centred container, ~591x615.
-   3rd tile spans both columns as a wide horizontal feature — no orphan gap. */
+.card .no-photo{background:#1c1c1c;color:rgba(255,255,255,.8)}
+.card .no-photo span{color:#fff}
+/* ROUND 7 — Innovation tiles (DJI): same full-bleed overlay language as
+   .card — photo fills the whole tile, text overlaid with twin scrims.
+   2 per row inside the centred container; 3rd tile spans both columns as
+   a wide horizontal feature — no orphan gap. .light keeps its class but
+   renders the same white-on-scrim text (uniform set, no banded panel). */
 .innov-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.feature-tile{background:#000;color:#fff;display:flex;flex-direction:column;overflow:hidden;min-height:615px}
-.feature-tile.light{background:#ebebeb;color:var(--txt)}
-.feature-tile .f-img{height:320px;flex:none;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.feature-tile.light .f-img{background:#ebebeb}
-.feature-tile .f-img img{width:100%;height:100%;object-fit:contain}
-.feature-tile .f-body{padding:28px 32px 32px;display:flex;flex-direction:column;justify-content:center;gap:10px;align-items:flex-start;flex:1}
-.feature-tile.wide{grid-column:1/-1;flex-direction:row;min-height:380px}
-.feature-tile.wide .f-img{flex:1;height:auto;min-height:380px}
-.feature-tile.wide .f-body{flex:1;padding:48px}
-.feature-tile .f-body p{color:#cfcfcf}
-.feature-tile.light .f-body p{color:var(--mut)}
-.feature-tile .f-body h2{font-size:clamp(1.7rem,3.4vw,2.4rem)}
-.feature-tile .f-body .kicker{color:#9a9a9a}
-.feature-tile.light .f-body .kicker{color:var(--mut)}
-.feature-tile .f-cta{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.feature-tile{position:relative;background:#000;color:#fff;overflow:hidden;min-height:615px}
+.feature-tile.light{background:#111;color:#fff}
+.feature-tile::before,.feature-tile::after{content:"";position:absolute;left:0;right:0;z-index:1;pointer-events:none}
+.feature-tile::before{top:0;height:55%;background:linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.35) 55%,rgba(0,0,0,0))}
+.feature-tile::after{bottom:0;height:50%;background:linear-gradient(0deg,rgba(0,0,0,.78),rgba(0,0,0,.4) 55%,rgba(0,0,0,0))}
+.feature-tile .f-img{position:absolute;inset:0;background:#000}
+.feature-tile .f-img img{width:100%;height:100%;object-fit:cover;object-position:center}
+.feature-tile .f-body{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-between;gap:10px;align-items:flex-start;text-align:left;padding:36px;min-height:615px}
+.feature-tile .f-top{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.feature-tile.wide{grid-column:1/-1;min-height:380px}
+.feature-tile.wide .f-body{min-height:380px;max-width:580px;padding:40px 48px}
+.feature-tile.feat-banner{min-height:520px}
+.feature-tile.feat-banner .f-body{min-height:520px}
+.feature-tile .f-body p{color:rgba(255,255,255,.88)}
+.feature-tile .f-body h2{font-size:clamp(1.7rem,3.4vw,2.4rem);color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.45)}
+.feature-tile .f-body .kicker{color:rgba(255,255,255,.8)}
+.feature-tile .price .was{color:rgba(255,255,255,.7)}
+.feature-tile .f-cta{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
 /* Fields tiles (DJI): 3 per row inside the container, ~390x440, full-bleed
    photo, white title top-centre + subtitle + Learn More link. */
 .field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -987,9 +1059,8 @@ body.no-hero main{padding-top:64px}
 @media(max-width:900px){
   .innov-grid{grid-template-columns:1fr}
   .feature-tile.wide{flex-direction:column}
-  .feature-tile.wide .f-img{min-height:300px}
-  .feature-tile{min-height:0}
-  .feature-tile .f-img{height:300px}
+  .feature-tile,.feature-tile .f-body,.feature-tile.wide .f-body{min-height:0}
+  .feature-tile .f-img{height:auto}
   .field-grid{grid-template-columns:1fr}
   .why-strip-grid{grid-template-columns:1fr;gap:36px}
   .films-arrow.prev{left:12px}
@@ -1030,6 +1101,16 @@ body.no-hero main{padding-top:64px}
   .hero-arrow{top:auto;bottom:12px;transform:none;width:44px;height:44px;font-size:1.9rem}
   .hero-arrow.prev{left:auto;right:60px}
   .hero-arrow.next{right:12px}
+  /* ROUND 7 mobile cards: 4:3 tile at ~358px wide is ~268px tall — tighter
+     type + padding so eyebrow/name/tagline + price/CTAs still fit. */
+  .card-body{padding:18px 16px}
+  .card-body h3{font-size:1.12rem}
+  .card-tag{font-size:.85rem}
+  .card .price{font-size:1.1rem}
+  .card .price-note{font-size:.78rem}
+  .card-cta .btn{padding:8px 16px;font-size:.85rem}
+  .feature-tile .f-body{padding:28px 24px}
+  .feature-tile.wide .f-body{padding:28px 24px}
   /* Floating WhatsApp pill: icon-only circle on mobile (a labelled pill
      still covered card prices while scrolling — a fixed button can only
      be made minimal, never zero-footprint), and the footer gets safe
@@ -1117,14 +1198,8 @@ body.no-hero main{padding-top:64px}
 .end-card .btn{margin-top:22px}
 /* drones featured banner (DJI Camera Drones Flip banner, framed/inset):
    light-grey gradient, text top-centre, product photo bottom-centre */
-.featured-banner{margin:0 16px;background:linear-gradient(180deg,#f4f5f7,#e7e8ea);text-align:center;padding:44px 20px 0;overflow:hidden}
-.featured-banner .kicker{color:var(--mut)}
-.featured-banner h2{font-size:clamp(2rem,4.5vw,3.5rem);font-weight:200;text-transform:uppercase;margin:10px 0 6px}
-.featured-banner .fb-tag{font-size:clamp(1.15rem,2vw,1.4rem);font-weight:700;color:var(--ink)}
-.featured-banner .fb-cta{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:22px}
-.featured-banner img{margin:26px auto 0;width:min(600px,88vw);height:auto}
 @media(max-width:900px){.feat-quotes{grid-template-columns:1fr}.spec-strip{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh !important}}
+@media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh !important}.feature-tile.feat-banner,.feature-tile.feat-banner .f-body{min-height:460px}}
 """
 
 # ---------- JS ----------
@@ -1333,20 +1408,25 @@ def product_video(p):
 def build_index():
     featured_ids = [0, 2, 4, 51, 54, 70, 41]
     feats = [by_id(i) for i in featured_ids]
-    f1, f2, f3 = feats[0], feats[1], feats[2]
+    # Innovation tiles — flagship-first (ROUND 6): Mavic 3 Pro (wide),
+    # Air 3S, Mini 4 Pro. featured_ids / feats[3:] (homepage product
+    # tiles) are NOT reordered.
+    f1, f2, f3 = (by_id(i) for i in INNOVATION_IDS)
     def feature_tile(p, light=False, wide=False, eyebrow=None, tagline=None):
+        # ROUND 7: full-bleed overlay — photo fills the tile, text over it
+        # (f-top) with CTAs at the bottom; white pill on the dark scrim.
         cls = "feature-tile light" if light else "feature-tile"
         if wide: cls += " wide"
-        view_cls = "btn-light" if not light else "btn-dark"
+        view_cls = "btn-light"
         # DJI tile copy (eyebrow + tagline) where the product matches and
         # the copy is verified; otherwise the shop's own line.
         eyebrow = eyebrow if eyebrow is not None else (esc(p['brand']) + " &middot; " + esc(CATS[p['category']]['label']))
         tagline = tagline if tagline is not None else p['tagline']
         return f"""<div class="{cls} reveal">
-  <div class="f-img"><img src="{img_uri(p['photo_full'])}" alt="{esc(p['name'])}" loading="lazy" style="{img_cap(p['photo_full'])}"></div>
-  <div class="f-body"><p class="kicker">{eyebrow}</p>
+  <div class="f-img"><img src="{img_uri(p['photo_full'])}" alt="{esc(p['name'])}" loading="lazy"></div>
+  <div class="f-body"><div class="f-top"><p class="kicker">{eyebrow}</p>
   <h2>{esc(p['name'])}</h2><p>{esc(tagline)}</p>
-  {price_html(p)}
+  {price_html(p)}</div>
   <div class="f-cta"><a class="btn {view_cls}" href="products/{p['slug']}.html">View Details</a>
   <a class="more-link" style="color:inherit" href="{wa_link(p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry &rsaquo;</a></div></div></div>"""
     # (a) hero carousel — DJI's exact slide copy for the matching products.
@@ -1392,9 +1472,9 @@ def build_index():
 <section class="sec" id="innovation"><div class="wrap">
 {section_head('Innovation', 'Standing at the Forefront of Innovation', 'As we explore new technology, we push the capabilities of what is possible, driving progress through continuous innovation.')}
 <div class="innov-grid">
-{feature_tile(f1, eyebrow="All-In-One Mini Drone", tagline="Mini to the Max")}
+{feature_tile(f1, wide=True, eyebrow="Multiple Focal Length Triple-Lens Flagship Camera Drone", tagline="Inspiration in Focus")}
 {feature_tile(f2, light=True, eyebrow="Dual-Camera Drone for Travel Photography", tagline="Chase the View")}
-{feature_tile(f3, wide=True, eyebrow="Multiple Focal Length Triple-Lens Flagship Camera Drone", tagline="Inspiration in Focus")}
+{feature_tile(f3, eyebrow="All-In-One Mini Drone", tagline="Mini to the Max")}
 </div>
 </div></section>
 <section class="sec grey" id="fields"><div class="wrap">
@@ -1418,10 +1498,9 @@ def build_index():
 
 # ----- category pages -----
 def build_category(c):
-    items = [p for p in products if p["category"] == c]
-    if c == "drones":
-        # Flagship-first, like DJI's Camera Drones listing.
-        items = sorted(items, key=lambda p: DRONE_ORDER.index(p["id"]))
+    # ROUND 6 display order (render-time only; products.json itself is
+    # never reordered — id == array index).
+    items = order_category(c, [p for p in products if p["category"] == c])
     brands = sorted(set(p["brand"] for p in items))
     opts = "".join(f'<option value="{esc(b)}">{esc(b)}</option>' for b in brands)
     # Related-category tiles: real existing photos only (the old banner
@@ -1458,14 +1537,18 @@ def build_category(c):
         banner = ('<div class="cat-banner" style="background-image:url(\''
                   + hero_uri("hero-drone.jpg") + '\')" role="img" aria-label="Drones"></div>')
         m4p = by_id(0)
-        featured = f"""<div class="featured-banner reveal">
-  <p class="kicker">All-In-One Mini Drone</p>
-  <h2>DJI Mini 4 Pro</h2>
-  <p class="fb-tag">Mini to the Max</p>
-  <div class="fb-cta"><a class="btn btn-dark" href="{wa_link(m4p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>
-  <a class="more-link" href="../products/{m4p['slug']}.html">Learn More &rsaquo;</a></div>
-  <img src="{img_uri(m4p['photo_full'])}" alt="DJI Mini 4 Pro" loading="lazy" style="{img_cap(m4p['photo_full'])}">
-</div>"""
+        # ROUND 7 FIX 1: full-bleed feature-tile banner (was a small
+        # 600px photo centred in a wide light-grey void — read as
+        # empty/cheap). Same photo, same scrims and text positions as
+        # the DJI tiles, so the Mini 4 Pro fills the banner edge to
+        # edge; WhatsApp stays the primary CTA.
+        featured = f"""<div class="feature-tile feat-banner">
+  <div class="f-img"><img src="{img_uri(m4p['photo_full'])}" alt="DJI Mini 4 Pro" loading="lazy"></div>
+  <div class="f-body"><div class="f-top"><p class="kicker">All-In-One Mini Drone</p>
+  <h2>DJI Mini 4 Pro</h2><p>Mini to the Max</p>
+  {price_html(m4p)}</div>
+  <div class="f-cta"><a class="btn btn-light" href="{wa_link(m4p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>
+  <a class="more-link" style="color:inherit" href="../products/{m4p['slug']}.html">Learn More &rsaquo;</a></div></div></div>"""
     # Drones comparison table (DJI: "Which camera drone is suitable for
     # you?") — verified DJI values + our real PKR prices, never DJI USD.
     compare_sec = ""
@@ -1518,7 +1601,10 @@ def build_category(c):
 # ONLY the 11 Audionic products (ids 30-40), each card linking to its
 # detail page. Names are never changed here.
 def build_audionic():
-    items = [by_id(i) for i in AUDIONIC_IDS]
+    # ROUND 6 display order: the same 11 Audionic products (ids 30-40),
+    # flagship-first. AUDIONIC_IDS itself is unchanged (the nav
+    # mega-menu takes its first 3 — deliberately NOT reordered).
+    items = [by_id(i) for i in AUDIO_ORDER]
     body = f"""
 <section class="cat-head"><div class="wrap">
 <p class="kicker">Brands</p>
@@ -1908,8 +1994,8 @@ function run(){
   var list=window.AK_PRODUCTS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>-1||p.brand.toLowerCase().indexOf(q)>-1||p.cat.toLowerCase().indexOf(q)>-1||p.tag.toLowerCase().indexOf(q)>-1;});
   cnt.textContent=list.length+' product'+(list.length===1?'':'s')+(q?' for \\u201c'+input.value.trim()+'\\u201d':'');
   res.innerHTML=list.map(function(p){
-    var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy" style="max-width:min('+p.w+'px,100%);max-height:'+p.h+'px">':'<div class="no-photo"><span>Photo on request</span></div>';
-    return '<article class="card"><div class="card-body"><p class="card-cat">'+p.brand+' &middot; '+p.cat+'</p><h3><a href="products/'+p.slug+'.html">'+p.name+'</a></h3><p class="card-tag">'+p.tag+'</p><p class="price">'+(p.price==='Price on request'?'<span class="price por">Price on request</span>':p.price)+'</p><a class="more-link" href="products/'+p.slug+'.html">Learn more &rsaquo;</a></div><a class="card-img" href="products/'+p.slug+'.html">'+img+'</a></article>';
+    var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy">':'<div class="no-photo"><span>Photo on request</span></div>';
+    return '<article class="card"><a class="card-img" href="products/'+p.slug+'.html">'+img+'</a><div class="card-body"><div class="card-top"><p class="card-cat">'+p.brand+' &middot; '+p.cat+'</p><h3><a href="products/'+p.slug+'.html">'+p.name+'</a></h3><p class="card-tag">'+p.tag+'</p></div><div class="card-foot"><p class="price">'+(p.price==='Price on request'?'<span class="price por">Price on request</span>':p.price)+'</p><a class="more-link" href="products/'+p.slug+'.html">Learn more &rsaquo;</a></div></div></article>';
   }).join('')||'<p>No products match that search. Try a brand name such as Dahua, DJI or Audionic.</p>';
 }
 input.addEventListener('input',run);document.getElementById('searchBtn').addEventListener('click',run);
@@ -1960,6 +2046,21 @@ render();
 
 # ---------- main ----------
 def main():
+    # ROUND 6 order check (verified against products.json before use):
+    # every order map must cover exactly its category's ids, and the
+    # Innovation tiles must be real products — a missing, extra or
+    # duplicate id fails the build loudly instead of silently
+    # mis-ordering.
+    for _c, _order in CAT_ORDER_MAP.items():
+        _actual = sorted(p["id"] for p in products if p["category"] == _c)
+        assert sorted(_order) == _actual, f"order mismatch in {_c}: {sorted(_order)} != {_actual}"
+        assert len(_order) == len(set(_order)), f"duplicate id in {_c} order"
+    assert len(INNOVATION_IDS) == len(set(INNOVATION_IDS)), "duplicate id in INNOVATION_IDS"
+    for _i in INNOVATION_IDS:
+        assert any(p["id"] == _i for p in products), f"bad innovation id {_i}"
+    assert sorted(s for s, _ in DJI_COMPARE) == sorted(
+        ["dji-mavic-3-pro", "dji-air-3s", "dji-air-3",
+         "dji-mini-4-pro", "dji-mini-3-pro", "dji-mini-3"]), "DJI_COMPARE models changed"
     (SITE / "assets").mkdir(parents=True, exist_ok=True)
     write("assets/style.css", CSS)
     write("assets/site.js", JS)
