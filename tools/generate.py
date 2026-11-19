@@ -34,23 +34,319 @@ VID_TITLE = {v["video_id"]: v.get("title_or_null") or "DJI film"
 FAILED_VIDEO = "48_kEK9iFKU"
 
 CATS = {
-    "drones":     {"label": "Drones",     "nav": "Drones",     "hero": "hero-drone.jpg",
-                   "intro": "DJI camera drones — from pocket Minis to enterprise Matrice and Agras platforms. Aerial film, photography and professional work, from the shop floor in Quetta.",
+    "drones":     {"label": "Drones",     "nav": "Drones",
+                   "h1": "Camera Drones",
+                   "intro": "Capture your moments from above with a mini drone, FPV, or professional aerial camera.",
                    "blurb": "Camera drones for creators, travellers and professionals."},
-    "cctv":       {"label": "Cameras",    "nav": "Cameras",    "hero": "cctv-hi.jpg",
+    "cctv":       {"label": "Cameras",    "nav": "Cameras",
                    "intro": "Security cameras, NVRs and video servers from Dahua, Hikvision, Tiandy, EZVIZ, IMOU, V380 Pro and iCSee — for homes, shops and full sites.",
                    "blurb": "CCTV cameras, NVRs and video servers."},
-    "displays":   {"label": "Displays",   "nav": "Displays",   "hero": "tv.jpg",
+    "displays":   {"label": "Displays",   "nav": "Displays",
                    "intro": "LED TVs from Samsung, LG and Sony — from 43 inch to cinema-size 75 inch Bravia.",
                    "blurb": "LED TVs from Samsung, LG and Sony."},
-    "networking": {"label": "Networking", "nav": "Networking", "hero": "networking.jpg",
+    "networking": {"label": "Networking", "nav": "Networking",
                    "intro": "Routers, access points and switches from Ruijie, TP-Link, Tenda and Ubiquiti — home Wi-Fi to business networks.",
                    "blurb": "Routers, access points and switches."},
-    "audio":      {"label": "Sound",      "nav": "Sound",      "hero": "speaker.jpg",
+    "audio":      {"label": "Sound",      "nav": "Sound",
                    "intro": "Audionic sound — earbuds, Bluetooth speakers, soundbars, home theatre, party speakers and more.",
                    "blurb": "Audionic earbuds, speakers and sound systems."},
 }
+# NOTE: the old category banner images (cctv-hi.jpg, tv.jpg, networking.jpg,
+# speaker.jpg) are deleted — no category except drones has a native-wide
+# (≥1919×513) banner photo, so every other category uses DJI's text-led
+# listing head (H1 + subtitle on white, no banner div) instead.
 CAT_ORDER = ["drones", "cctv", "displays", "networking", "audio"]
+
+# Drones listing order: flagship-first, like DJI's Camera Drones page
+# (Mavic 3 Pro, Mini 4 Pro, Air 3S, Air 3, Mini 5 Pro, Mini 3 Pro, Mini 3,
+# Mini 2, Neo, Avata 2, Mini 4K, Matrice 30T, Agras).
+DRONE_ORDER = [4, 0, 2, 3, 51, 52, 1, 53, 5, 6, 7, 8, 9]
+
+# Related-category tiles: the old banner images are deleted, so each tile
+# uses a real, existing photo — the native-wide drones banner frame, or a
+# >=800px product photo of that category (cover scale <= 1, never upscaled).
+RELATED_TILE = {
+    "drones": ("hero", "hero-drone.jpg"),
+    "cctv": ("full", "p89.jpg"),
+    "displays": ("full", "p41.jpg"),
+    "networking": ("full", "p20.jpg"),
+    "audio": ("full", "p32.jpg"),
+}
+
+# ---------- DJI copy (exact words from dji-copy-2026-11-19.md) ----------
+# Hero eyebrow/tagline per DJI product page. Mini 4 Pro has NO eyebrow
+# on DJI's page. Mini 3 Pro's page is retired — only its meta title /
+# description are verified, so it gets no DJI hero copy here.
+DJI_HERO = {
+    "dji-mavic-3-pro": ("Triple-Lens Camera Drone", "Inspiration in Focus"),
+    "dji-air-3s": ("Dual-Camera Drone for Travel Photography", "Chase the View"),
+    "dji-mini-4-pro": (None, "Mini to the Max"),
+}
+
+# 6-item spec strips, footnote numbers exactly as DJI shows them.
+DJI_SPECS = {
+    "dji-mavic-3-pro": ["4/3 CMOS Hasselblad Camera", "Dual Tele Cameras",
+        "Tri-Camera Apple ProRes Support [1]", "43-Min Max Flight Time [2]",
+        "Omnidirectional Obstacle Sensing", "15km HD Video Transmission [3]"],
+    "dji-air-3s": ["1″ CMOS Primary Camera",
+        "Nightscape Omnidirectional Obstacle Sensing [2]",
+        "Dual-Camera 4K/60fps HDR Video & 14 Stops of Dynamic Range [1]",
+        "Free Panorama, Seamless and Detailed",
+        "Next-Gen Smart RTH With Enhanced Precision",
+        "45-Min Flight Time, [3] 20km Video Transmission [4]"],
+    "dji-mini-4-pro": ["Under 249 g [1]", "Extended Battery Life [2]",
+        "4K/60fps HDR True Vertical Shooting", "20km FHD Video Transmission [3]",
+        "Omnidirectional Obstacle Sensing", "ActiveTrack 360°"],
+}
+
+# Verbatim intro paragraphs (heading, paragraph). Mavic and Air 3S have no
+# intro heading on DJI's page; Mini 4 Pro's intro sits under "Go Big With Mini".
+DJI_INTRO = {
+    "dji-mavic-3-pro": (None,
+        "The DJI Mavic 3 Series features next-level imaging performance. Mavic 3 Pro's triple-camera system ushers in a new era of camera drones by housing three sensors and lenses with different focal lengths. Equipped with a Hasselblad camera and dual tele cameras, Mavic 3 Pro is a triple-camera drone that unlocks new shooting perspectives, allowing you to embrace creative freedom further, capture fascinating scenery, explore photographic storytelling, and make cinematic masterpieces."),
+    "dji-air-3s": (None,
+        "A dual-camera drone designed for travel photography, DJI Air 3S integrates a suite of advanced technologies. Featuring a 1-inch-CMOS primary camera and a 70mm medium tele camera, each with up to 14 stops of dynamic range, [1] Air 3S captures landscapes, portraits, and more in stunning detail. Both cameras support the new Free panorama feature, which allows flexible shooting-range selections. Additional new highlights include nightscape obstacle sensing [2] and next-gen Smart RTH for enhanced safety during nighttime photography. In each and every way, DJI Air 3S is designed to maximize every aerial moment."),
+    "dji-mini-4-pro": ("Go Big With Mini",
+        "DJI Mini 4 Pro is our most advanced mini-camera drone to date. [4] It integrates powerful imaging capabilities, omnidirectional obstacle sensing, ActiveTrack 360° with the new Manual Mode, and 20km FHD video transmission, bringing even more things to love for pros and beginners alike."),
+}
+
+# Feature sections in DJI's order. Each block: h (heading or None), b (body
+# copy or None), chips (spec values / tab names), items (named sub-points),
+# quotes (creator cards). Where DJI's copy file has the heading but no
+# verified body, the block is heading-only — body copy is never invented.
+DJI_FEATURES = {
+"dji-mavic-3-pro": [
+    {"h": "Unrivaled Tri-Camera Flagship Imaging",
+     "b": "One camera drone, three lenses, and infinite imagination. Mavic 3 Pro, with the triple-camera system's multiple focal lengths, can achieve an even richer camera language and fully express creativity with superior multi-scenario capabilities. You can tap the display to switch between various focal lengths and easily incorporate distinct composition styles for different scenarios. Turn your inspiration into ingenuity with the improved efficiency of tri-camera aerial photography."},
+    {"h": "4/3 CMOS Hasselblad Camera",
+     "chips": ["24mm eq.", "f/2.8–f/11", "20 MP"]},
+    {"h": "1/1.3″ CMOS Medium Tele Camera",
+     "chips": ["70mm eq.", "3x Optical Zoom", "f/2.8", "48 MP"]},
+    {"h": "1/2″ CMOS Tele Camera",
+     "chips": ["166mm eq.", "7x Optical Zoom", "28x Hybrid Zoom", "f/3.4", "12 MP"]},
+    {"quotes": [
+        ("Wildlife & Nature Photographer", "Paul Nicklen",
+         "I capture images of endangered megafauna to inspire the protection of fragile ecosystems. It's critical for me to follow high standards while creating stunning photos. With Mavic 3 Pro's tele lenses, I can shoot high-res photos without disturbing wildlife."),
+        ("SkyPixel Creator", "Jingyan",
+         "Mavic 3 Pro puts three widely used focal lengths into a compact aircraft to make my work more efficient and creative. The new 70mm lets me shoot unique scenes and delivers stunning image quality and spatial compression along with the 166mm, which supports my visual expression."),
+        ("Travel & Landscape Photographer", "Jason Charles Hill",
+         "My work explores off-beat locales on every continent. The triple camera system allows me to tell rich stories and document the wild and unknown. Also, the 28x hybrid zoom of the Mavic 3 Pro helps me capture wildlife from a safe and ethical distance.")]},
+    {"h": "Artistry From Every Angle",
+     "chips": ["Nature", "Architecture", "Wildlife"]},
+    {"h": "Hasselblad Camera, Immense Detail",
+     "b": "Inheriting the 4/3 CMOS Hasselblad camera of the Mavic 3 Series, Mavic 3 Pro is the next step for professional creation. The Hasselblad camera supports shooting 12-bit RAW photos with a native dynamic range of up to 12.8 stops, presenting unforgettable image details. The Hasselblad Natural Colour Solution (HNCS) accurately restores the colors the human eye perceives, getting impressive shots without the need for heavy post-production or complex color presets.",
+     "b2": "The Hasselblad camera and the 70mm medium tele camera of Mavic 3 Pro support FocusTrack, which includes ActiveTrack 5.0, Spotlight, and Point of Interest, enabling stable tracking shots in multiple directions.",
+     "chips": ["Hasselblad Camera: 5.1K/50fps, 4K/120fps"]},
+    {"h": "Professional Video Specification",
+     "chips": ["5.1K/50fps [4]", "4K/120fps [4]", "10-bit D-Log"]},
+    {"h": ["HLG", "Night Shots", "Hyperlapse"]},
+    {"b": "The new 10-bit D-Log M color mode supports recording up to one billion colors. Even in high-contrast scenarios, like sunrises and sunsets, it delivers natural color gradations with delicate details for a full-spectrum visual experience. In addition, D-Log M mode reduces the difficulty of color grading, allowing you to fully enjoy efficient post-production without losing image quality or clarity."},
+    {"h": "Mavic 3 Pro Cine",
+     "b": "Mavic 3 Pro Cine provides extensive options for professional creators. All three cameras support Apple ProRes 422 HQ, ProRes 422, ProRes 422 LT encoding. It also has a built-in 1TB SSD [5] and a 10Gbps lightspeed data cable to facilitate professional creation further.",
+     "chips": ["Apple ProRes — Codec", "1TB SSD — Internal Storage"]},
+    {"h": "70mm Medium Tele Camera, Dynamic Framing",
+     "b": "The medium tele camera suits various themes and scenarios. It compresses the depth of field and focus to highlight the subject and create a robust visual center of gravity, giving camera movement a unique sense of space. Additionally, the medium tele camera supports Night Shots, presenting brilliant nighttime scenes at a 70mm focal length. Just focus on inspiration, and let Mavic 3 Pro perform a concerto of light and shadow before your eyes.",
+     "chips": ["70 mm, f/3.4, 1/4s, ISO 50"]},
+    {"h": "Versatile Video Specification",
+     "chips": ["4K/60fps", "10-bit D-Log M", "HLG", "Hyperlapse"]},
+    {"h": "166mm Tele Camera, Go With Zoom",
+     "b": "The upgraded tele camera features higher resolution and a wider f/3.4 aperture. It supports shooting 4K/60fps video with 7x optical zoom and 12MP photos. The hybrid zoom reaches up to 28x. Zoom in and immerse yourself in rich image details.",
+     "chips": ["166 mm, f/3.4, 1/4s, ISO 50"]},
+    {"h": "4K/60fps, Telephoto Creativity Unleashed",
+     "b": "The upgraded tele camera features higher resolution and a wider f/3.4 aperture. It supports shooting 4K/60fps video with 7x optical zoom and 12MP photos. The hybrid zoom reaches up to 28x. Zoom in and immerse yourself in rich image details. The tele camera also supports HLG and 10-bit D-Log M color modes, enabling greater flexibility in post-production."},
+    {"h": "Extended Flight Time",
+     "b": "Mavic 3 Pro provides up to 43 minutes of flight time, [2] giving you more confidence to fly further and spend less time worrying about the battery level. Execute every step, from flight route planning to shot composition, all during a single flight.",
+     "chips": ["43 mins — Flight Time"]},
+    {"h": "Omnidirectional Obstacle Sensing and APAS 5.0",
+     "b": "Mavic 3 Pro ensures you fly safely and create with peace of mind. Eight wide-angle vision sensors work seamlessly with a high-performance vision computing engine to precisely sense obstacles in all directions and plan a safe flight route to avoid them. [6]"},
+    {"h": "Vision Assist - Aerial Creation With Enhanced Safety",
+     "b": "Take your aerial creation to the next level with multi-directional visual assistance: front, back, left, and right. A simple tap on the screen swaps your view, helping you anticipate obstacles in every direction during your flight. This heightened awareness empowers you to chart a safer, more efficient course."},
+    {"h": "Flagship Video Transmission",
+     "b": "DJI O3+ features a transmission distance of up to 15 km [3] with stable signals, presenting a more coherent camera view. It can transmit a 1080p/60fps HD live feed, which makes Mavic 3 Pro more responsive to your control and gives you a more vibrant video feed on your monitor.",
+     "chips": ["1080p/60fps — HD Live Feed", "15 km — Video Transmission Distance"]},
+    {"h": "Automatic Flight Experience"},
+    {"h": "Intelligent Creation, Infinite Inspiration",
+     "items": [
+        ("FocusTrack [7]", "The Hasselblad camera and the 70mm medium tele camera of Mavic 3 Pro support FocusTrack, which includes ActiveTrack 5.0, Spotlight, and Point of Interest, enabling stable tracking shots in multiple directions."),
+        ("MasterShots [8]", "Tap to enable MasterShots, and Mavic 3 Pro will automatically shoot, edit, add soundtracks, and generate cinematic footage afterward."),
+        ("QuickShots [8]", "QuickShots empowers Mavic 3 Pro to perform diverse camera movements like Dronie, Rocket, Circle, and Helix."),
+        ("Panorama [8]", "Mavic 3 Pro can directly compose a 100MP lossless panorama photo to capture a more breathtaking landscape."),
+        ("High-Speed QuickTransfer", "Quickly transfer photos and videos to your smartphone without linking the remote controller.")]},
+    {"h": "LightCut",
+     "b": "Connect Mavic 3 Pro wirelessly to the LightCut app on your phone for quick previewing of clips and AI-based One-Tap Edit without downloading the footage, saving storage on your phone. Try templates made especially for MasterShots and effortlessly create amazing aerial videos that impress and awe."},
+    {"h": "Experiencing FPV Flight is Easy",
+     "b": "The Mavic 3 Series camera drones can be used with DJI Goggles Integra, DJI Goggles 2, and DJI RC Motion 2, allowing you to enjoy the fun of FPV flight."},
+    {"h": "Diverse Accessories, Stunning Flight",
+     "note": "Accessories shown are DJI's official accessories for this drone — ask on WhatsApp which are in stock.",
+     "items": [
+        ("DJI RC Pro", "DJI RC Pro is an unmatched option for professional creation with a 1000-nit display, a high-performance processor, and 15km video transmission support."),
+        ("DJI Mavic 3 Pro ND Filters Set", "The set provides ND8/16/32/64 filters, allowing you to create footage and images at slower shutter speeds."),
+        ("DJI Mavic 3 Pro Wide-Angle Lens [9]", "Compatible with the Mavic 3 Pro Hasselblad camera to deliver a 108° super-wide FOV and capture more in every frame."),
+        ("DJI Mavic 3 Series Intelligent Flight Battery", "Provides Mavic 3 Pro with up to 43 minutes of flight time. [2]"),
+        ("DJI Mavic 3 Series 100W Battery Charging Hub", "When connected to the DJI 100W USB-C Power Adapter, the Battery Charging Hub can charge three batteries sequentially for enhanced efficiency."),
+        ("DJI Goggles Integra Motion Combo [9]", "Experience immersive FPV when you use DJI goggles along with the DJI RC Motion 2. Enjoy true-to-life colors, accurate details, and motion controls that make flying captivating."),
+        ("DJI 65W Car Charger [9]", "The car charger is lightweight and portable and uses a universal port. It can charge the battery, remote controller, smartphone, laptop, and other devices.") ]},
+],
+"dji-air-3s": [
+    {"h": "Dual Cameras, Unmatched Imagery",
+     "b": "DJI Air 3S features a dual-camera system consisting of a 1-inch-CMOS primary camera and a 1/1.3-inch-CMOS medium tele camera. The primary camera features a larger CMOS sensor and a 24mm lens, making it ideal for capturing expansive landscapes with enhanced clarity and a wide field of view. The 70mm medium tele camera excels at portrait and vehicle shots, offering compressed depth of field to highlight any subject with a bolder, more cinematic look."},
+    {"h": "1″ CMOS Primary Wide-Angle Camera",
+     "chips": ["3.2μm Large Pixel Size [5]", "24mm Format Equivalent", "50 MP", "f/1.8 Aperture"]},
+    {"h": "1/1.3″ CMOS Medium Tele Camera",
+     "chips": ["2.4μm Large Pixel Size [5]", "70mm Format Equivalent", "48 MP", "f/2.8 Aperture"]},
+    {"h": "1″ CMOS Primary Camera: Breathtaking Detail for Travel Photography",
+     "chips": ["Architecture", "Lakes", "Mountains"]},
+    {"h": "Enhanced Imagery, Stunning Scenery",
+     "chips": ["4K/60fps HDR Video", "4K/120fps Video [6]", "10-bit D-Log M & HLG Video"]},
+    {"h": "Medium Tele Camera: Unforgettable Portraits"},
+    {"h": "Focus on Details, Maximize Focal Power"},
+    {"h": "Free Panorama",
+     "b": "Both the primary camera and medium tele camera of DJI Air 3S offer Free panorama mode, letting you create seamless panoramic shots by stitching together multiple images with a manually selected subject or area. The wide-angle camera offers a broader FOV, boosting efficiency when capturing panorama photos. The medium tele camera significantly reduces image distortion, crafting your masterpieces into expansive shots with a wide perspective from multiple photos and rich details captured through its focal length advantages."},
+    {"b": "Compared with the previous-generation DJI Air 3, DJI Air 3S employs a more advanced video encoding compression algorithm that reduces video file sizes by over 30% without compromising image quality, saving valuable storage space for creators. DJI Air 3S also supports user-favorite features like 2.7K vertical shooting, MasterShots, QuickShots, Hyperlapse, and more, putting a massive creative toolkit together in one compact drone."},
+    {"h": "Safer Nighttime Flying for Expanded Creativity"},
+    {"h": "Omnidirectional Vision Sensing System",
+     "b": "DJI Air 3S supports the Advanced Pilot Assistance Systems (APAS). Additionally, as the first DJI drone to feature forward-facing LiDAR, Air 3S also features a downward infrared time-of-flight (ToF) sensor and six vision sensors (two at the front, rear, and bottom) to achieve nightscape omnidirectional obstacle sensing. [2] This feature enables the drone to automatically identify and circumvent obstacles, such as buildings, during its flight and return paths, ensuring robust safety for nighttime photography."},
+    {"h": "Nightscape Omnidirectional Obstacle Sensing"},
+    {"h": "Next-Gen Smart RTH",
+     "chips": ["Non-GPS RTH", "Nighttime RTH"]},
+    {"h": "Enhanced Vision Assist",
+     "b": "DJI Air 3S's Vision Assist provides a downward view in addition to the front, back, left, and right views to help you better understand your surroundings.",
+     "b2": "DJI Air 3S also provides Waypoint Flight and Cruise Control, among other advanced features, which allow you to pre-set flight paths and camera actions and quickly lock control stick inputs to unleash creativity."},
+    {"h": "ActiveTrack 360° for Effortless Visual Appeal"},
+    {"h": "A New Air Aesthetic",
+     "b": "DJI Air 3S features ActiveTrack 360° to keep any subject optimally in frame. Based on the surrounding flight environment, it automatically plans a flight path and adjusts framing to ensure stronger shots that keep your subject the center of attention."},
+    {"h": "ActiveTrack 360°",
+     "b": "ActiveTrack 360° allows Air 3S to automatically avoid perspectives with cluttered backgrounds."},
+    {"h": "Optimized Tracking Performance",
+     "b": "Once tracking begins, DJI Air 3S can keep the subject in focus even if the lower half of their body is partially obscured by bushes or if they are standing on a bridge."},
+    {"h": "Stay Focused",
+     "b": "DJI Air 3S introduces a new Subject Focusing feature that keeps your subject in sharp focus, even during manual flight or when the subject moves off-center. This feature allows you to fully concentrate on the more creative aspects of your shots like composition and camera movement."},
+    {"h": "Extended Flight & Transmission Distance"},
+    {"h": "Serious Air Time: 45-Min Max [3]",
+     "b": "With up to 45 minutes of flight time, [3] Air 3S gives you enough time to scout locations, compose, nail your shots, and do it all over again and again."},
+    {"h": "10-bit O4 Video Transmission",
+     "b": "Powered by DJI O4 FHD video transmission technology, Air 3S delivers 10-bit video transmission at 1080p/60fps over distances of up to 20 kilometers. [4] Live feeds are reliably smooth and vivid, with ultra-responsive control for an improved overall flight experience."},
+    {"h": "DJI Cellular Dongle 2 Compatibility",
+     "b": "The DJI Cellular Dongle 2 [8] can be inserted directly into DJI Air 3S for seamless integration without the need for any extra accessories. In case of O4 signal obstruction or interference, you can rely on 4G connectivity for stable video transmission and drone control, enhancing flight safety and reducing disconnection risks."},
+    {"h": "Attention to Every Detail"},
+    {"h": "Always Ready: 42GB of Built-in Storage",
+     "b": "DJI Air 3S comes standard with 42GB of built-in storage. This allows you to start recording right away and avoid having to deal with microSD cards."},
+    {"h": "Off-State QuickTransfer",
+     "b": "You can now send files from your Air 3S to a smartphone even when the drone is powered off. [9] Transfers to a computer can also be done with the drone powered off—simply connect Air 3S via a compatible USB cable."},
+    {"h": "Battery Charging Hub with Power Accumulation [10]",
+     "b": "The Battery Charging Hub supports PD fast charging and a power accumulation function, which allows you to transfer the remaining power of multiple low-power batteries into the battery with the highest remaining power. [10]"},
+    {"h": "Tailor to Your Needs",
+     "b": "DJI Air 3S offers various combos and diverse accessories to meet your every need.",
+     "note": "Accessories shown are DJI's official accessories for this drone — ask on WhatsApp which are in stock.",
+     "items": [
+        ("DJI Air 3S (DJI RC-N3)", "Includes the standard DJI RC-N3 remote controller. Use with your smartphone to check the live feed and flight status."),
+        ("DJI Air 3S Intelligent Flight Battery", "Provides Air 3S with up to 45 minutes of flight time, allowing you to get the shots you want in a single flight."),
+        ("DJI Air 3S Wide-Angle Lens", "Adopts a precise optical design that expands the FOV of the wide-angle camera to 114°, offering a wider filming perspective. [8]"),
+        ("DJI Air 3S Fly More Combo (DJI RC-N3)", "Includes the DJI RC-N3 remote controller, an ND filter set, two additional batteries, a battery charging hub, a shoulder bag, and more."),
+        ("DJI Air 3S ND Filter Set (ND8/32/128)", "Includes ND8/32/128 filters, enabling lower shutter speeds for smoother footage."),
+        ("DJI Cellular Dongle 2", "Achieves integrated installation with DJI Air 3S, requiring no additional installation kit. This gives Air 3S a stable connection to a 4G network, reducing the risk of disconnection. [8]"),
+        ("DJI Air 3S Fly More Combo (DJI RC 2)", "Includes DJI RC 2 with a 5.5-inch 1080p 700-nit high-bright screen, an ND filter set, two additional batteries, a battery charging hub, a shoulder bag, and more."),
+        ("DJI Air 3 Series Battery Charging Hub", "Supports sequential fast charging for up to three batteries or fast charging for devices such as remote controllers and smartphones. It can also transfer the remaining power from multiple batteries to the one with the highest charge. [10]") ]},
+],
+"dji-mini-4-pro": [
+    {"h": "Take it Easy",
+     "b": "Take off whenever inspiration strikes. Weighing less than 249 g, Mini 4 Pro was designed for convenience on the go, [1] and the drone's weight means there's no need for training or examinations in most countries and regions."},
+    {"h": "Out-sized Imaging Performance",
+     "b": "Capture more complex details easily with Mini 4 Pro's camera, powered by a 1/1.3-inch CMOS sensor featuring Dual Native ISO Fusion, a f/1.7 aperture, and 2.4μm 4-in-1 pixels. [5] More highlight and shadow details with a high dynamic range means uncompromising results in every frame."},
+    {"h": "Maximum Visual Impact",
+     "b": "Give vibrant scenes the details they deserve with 4K/60fps HDR and 4K/100fps video, while 10-bit D-Log M and HLG help capture a stunning range of colors and provide more flexibility while editing and sharing."},
+    {"h": "4K/60fps HDR",
+     "b": "Preserve the natural wonder of any moment. 4K/60fps HDR lets you share the nuances of sunset or sunrise in true-to-life quality."},
+    {"h": "Slo-Mo 4K/100fps",
+     "b": "Immerse the audience in every frame. With slow motion in 4K clarity, capture the action on the trails, at the beach, or in your own backyard at 100fps."},
+    {"h": "Highlight the Night",
+     "b": "The improved noise reduction algorithm of Mini 4 Pro's Night Shots video effectively suppresses noise and facilitates clearer, cleaner footage right from the camera."},
+    {"h": "1.07 Billion Colors",
+     "b": "Record in 10-bit D-Log M. The natural color gradations and delicate full-spectrum details mean Mini 4 Pro unlocks pro-level post-production control and expert-level creative editing flexibility."},
+    {"h": "Dynamic on Every Platform",
+     "b": "No matter where you publish your content, HLG ensures the natural colors and brightness remain true-to-life without adjustment or format conversion due to its high dynamic range."},
+    {"h": "RAW-Some Photos",
+     "b": "It's often the little things that matter most. Preserve every intricate detail with 48MP RAW and next-gen SmartPhoto [6] which combines HDR imaging, scene recognition, and more for images that pop."},
+    {"h": "More Ways to See it All",
+     "chips": ["Large-Angle Tilt", "True Vertical Shooting", "Digital Zoom"]},
+    {"h": "Intuitive Features, Enhanced Flights"},
+    {"h": "Sense More, Fly Safe",
+     "b": "Omnidirectional obstacle sensing makes Mini 4 Pro mighty safe. With four wide-angle vision sensors and a pair of downward vision sensors, it detects obstacles from all angles. Advanced Pilot Assistance Systems (APAS) ensures additional safety by enabling automatic braking and bypassing during flight."},
+    {"h": "Fly Longer, Create More",
+     "b": "Leave battery concerns behind and stay focused on creation with Mini 4 Pro's Intelligent Flight Battery. Enjoy up to 34 minutes of flight time, or upgrade to the Intelligent Flight Battery Plus [2] to enjoy an extra-long 45-minute max flight time.",
+     "chips": ["34 mins — Intelligent Flight Battery", "45 mins — Intelligent Flight Battery Plus"]},
+    {"h": "20 km Video Transmission",
+     "b": "Mini 4 Pro features DJI's O4 video transmission. Enjoy ultra-responsive control and smooth 1080p/60fps FHD live feeds from distances of up to 20 km. [3]"},
+    {"h": "Full-Fledged Features",
+     "chips": ["Vision Assist", "Waypoint Flight", "Cruise Control", "Advanced RTH", "Immersive Flight Experience"]},
+    {"h": "Simply Masterful"},
+    {"h": "A Touch of Cinematics",
+     "b": "Whether running, biking, or skateboarding, the newly upgraded ActiveTrack 360° can achieve diverse camera movements to fit each shooting scenario. With omnidirectional obstacle sensing, Mini 4 Pro can plan flight routes and bypass obstacles, achieving smoother and more stable dynamic shots. Even if you are a solo adventurer, you can still transform into a real-time director creating cinematic videos for yourself.",
+     "items": [
+        ("Manual Mode", "You can customize the flight route from multiple directions and use the Manual wheel to achieve cinematic camera movements like circling, pulling in, and pulling away."),
+        ("Auto Mode", "Frame the subject, and Mini 4 Pro will automatically plan and execute the flight route. Even during the filming, it can intelligently switch between multiple perspectives and camera movements, helping you craft your aerial masterpiece.")]},
+    {"h": "Full-Power Mini",
+     "items": [
+        ("MasterShots", "Delivers dynamic camera movement templates tailored for portrait, close-up, and long-range shots, ensuring you nail every shot!"),
+        ("QuickShots", "Provides Dronie, Circle, Helix, Rocket, Boomerang, and Asteroid modes for more stylish results."),
+        ("Hyperlapse", "Provides Free, Waypoint, Circle, and Course Lock modes with unlimited shooting time, and supports compositing while shooting."),
+        ("Panorama", "Supports shooting 180°, Wide Angle, Vertical, and Sphere panoramic photos to capture magnificent landscapes."),
+        ("QuickTransfer", "Quickly transfer photos and videos to your smartphone without linking the remote controller. Your creations will be instantly ready to share.")]},
+    {"h": "Edit with LightCut",
+     "b": "LightCut supports wireless connection and intelligent recognition of composition and flight routes, so you can edit quickly and generate eye-catching videos with one tap. By blending imported footage from ActiveTrack, MasterShots, and QuickShots, the app automatically matches sound effects and exclusive templates for quick, high-quality video production. Plus, there is no need to download footage during the editing process, saving storage space on your smartphone."},
+    {"h": "Master Aerial Photography in a Snap: Join SkyPixel",
+     "b": "The fully upgraded SkyPixel boasts extensive fly spots and fly tips. Ignite your creative inspiration with a single click, and capture stunning shots with peace of mind!"},
+    {"h": "Get More out of Mini",
+     "note": "Accessories shown are DJI's official accessories for this drone — ask on WhatsApp which are in stock.",
+     "items": [
+        ("DJI RC 2", "This lightweight and easy-to-use remote controller comes with the built-in DJI Fly app, eliminating the need for smartphone use during flight. The high-definition screen delivers a crisp and clear view even under direct sunlight, optimizing your entire Mini 4 Pro experience."),
+        ("DJI Mini 4 Pro Intelligent Flight Battery Plus", "The same Intelligent Flight Battery Plus for the DJI Mini 3 Series provides a max flight time of 45 minutes, [2] ensuring a smooth and worry-free flight."),
+        ("DJI Mini 4 Pro Two-Way Charging Hub", "The same Two-Way Charging Hub used for the DJI Mini 3 Series. It can charge a remote controller and three batteries sequentially. It can also be used as a mobile power source to charge remote controllers, smartphones, and other devices and can even store the batteries for convenient and secure carrying."),
+        ("DJI Mini 4 Pro Wide-Angle Lens [7]", "Capture sweeping landscapes with the super-wide 100° FOV."),
+        ("DJI Mini 4 Pro ND Filters Set (ND16/64/256) [7]", "Adapt to strong lighting conditions with ND16/64/256 filters and always be ready for the perfect shot."),
+        ("DJI Mini 4 Pro 360° Propeller Guard [7]", "Fully covers the propellers and is easy to attach and detach, ensuring flight safety in a simple and efficient way.") ]},
+],
+}
+
+# Drones category comparison — "Which camera drone is suitable for you?"
+# Values are DJI's verified values from the copy file; prices are OUR real
+# PKR prices where the shop has confirmed one, else "Price on request".
+# Flight time is "—" where DJI's comparison tables do not list it for that
+# model (Mini 3 Pro, Mini 3) — never invented. Never DJI USD prices.
+DJI_COMPARE_ROWS = [
+    ("Price", 0), ("Takeoff Weight", 1), ("Camera", 2),
+    ("Max Video Resolution", 3), ("Max Flight Time", 4),
+    ("Obstacle Sensing", 5), ("Transmission", 6),
+]
+DJI_COMPARE = [
+    ("dji-mavic-3-pro", ["Price on request", "958 g",
+        "4/3 CMOS Hasselblad Camera · 1/1.3″ Medium Tele Camera · 1/2″ Tele Camera",
+        "5.1K/50fps", "43 mins", "Omnidirectional Obstacle Sensing",
+        "DJI O3+ up to 15 km — 1080p/60fps Live Feed"]),
+    ("dji-air-3s", ["Rs 455,000", "724 g",
+        "1″ CMOS Wide-Angle Camera · 1/1.3″ CMOS Medium Tele Camera",
+        "4K/60fps HDR or 4K/120fps", "45 mins",
+        "Nightscape Omnidirectional Obstacle Sensing",
+        "DJI O4 up to 20 km (FCC) · 10 km (CE/SRRC/MIC)"]),
+    ("dji-mini-4-pro", ["Rs 275,000", "Under 249 g",
+        "1/1.3″ CMOS Wide-Angle Camera · True Vertical Shooting",
+        "4K/60fps HDR · Slow Motion 4K/100fps", "34/45 mins (depending on battery)",
+        "Omnidirectional Obstacle Sensing, APAS 5.0",
+        "DJI O4 up to 20 km — 1080p/60fps Live Feed"]),
+    ("dji-mini-3-pro", ["Rs 230,000", "Under 249 g",
+        "1/1.3″ CMOS Wide-Angle Camera · True Vertical Shooting",
+        "4K/60fps · 4K/30fps HDR · Slow Motion 1080p/120fps", "—",
+        "Forward/Backward/Downward Obstacle Sensing, APAS 4.0",
+        "DJI O3 up to 12 km — 1080p/30fps Live Feed"]),
+    ("dji-mini-3", ["Rs 185,000", "Under 249 g",
+        "1/1.3″ CMOS Wide-Angle Camera · True Vertical Shooting",
+        "4K/30fps HDR", "—", "Downward Obstacle Sensing · Smart RTH",
+        "DJI O2 up to 10 km — 720p/30fps Live Feed"]),
+    ("dji-air-3", ["Price on request", "720 g",
+        "1/1.3″ CMOS Wide-Angle Camera · 1/1.3″ CMOS Medium Tele Camera",
+        "4K/60fps HDR or 4K/100fps", "46 mins", "Omnidirectional Obstacle Sensing",
+        "DJI O4 up to 20 km (FCC) · 10 km (CE/SRRC/MIC)"]),
+]
 
 # ---------- image embedding ----------
 from PIL import Image
@@ -72,6 +368,45 @@ def hero_uri(name: str) -> str:
 
 def img_uri(rel: str) -> str:
     return _b64((STAGING / rel).read_bytes())
+
+def search_uri(rel: str):
+    """Search index image: max 800px on the long side (LANCZOS, q70),
+    returned with its resized (w, h). Search tiles render at most ~652px
+    wide, so 800px stays sharp on display, but embedding the full
+    1000–1600px photo for all 108 products made search-data.js 6.2MB —
+    too big for one GitHub push (proven push limit: 4.79MB OK, 6.48MB
+    fails HTTP 413). The resized w/h keep the audit P3 #10 no-upscale
+    cap honest: the card caps at the RESIZED native size."""
+    p = STAGING / rel
+    im = Image.open(p).convert("RGB")
+    w, h = im.size
+    if max(w, h) > 800:
+        s = 800 / max(w, h)
+        im = im.resize((round(w * s), round(h * s)), Image.LANCZOS)
+        w, h = im.size
+    buf = io.BytesIO()
+    im.save(buf, "JPEG", quality=70, optimize=True)
+    return _b64(buf.getvalue()), w, h
+
+# Audit P3 #10 — never display an image wider/taller than its native
+# pixels. The <img> element is capped at the native size (CSS width/height
+# 100% + object-fit:cover then fills that capped box without ever
+# upscaling, whatever the tile/box size is).
+_IMG_SIZE = {}
+def native_size(rel: str):
+    if rel not in _IMG_SIZE:
+        with Image.open(STAGING / rel) as im:
+            _IMG_SIZE[rel] = im.size
+    return _IMG_SIZE[rel]
+
+def img_cap(rel: str) -> str:
+    w, h = native_size(rel)
+    # min(native,100%): never wider than native pixels (audit #10) AND
+    # never wider than the container — the old plain "max-width:Npx"
+    # overrode the stylesheet's max-width:100% and blew the detail photo
+    # to 1047px on a 390px phone (document 1067px wide, header and
+    # WhatsApp float pushed off-screen).
+    return f"max-width:min({w}px,100%);max-height:{h}px"
 
 def fmt_pkr(n) -> str:
     return "Rs " + f"{n:,}"
@@ -120,7 +455,7 @@ def related(p, n=4):
 # never upscaled beyond its real resolution by the generator.
 def card(p, depth="", buy=False):
     if p.get("photo_full"):
-        thumb = (f'<img src="{img_uri(p["photo_full"])}" alt="{esc(p["name"])}" loading="lazy">')
+        thumb = (f'<img src="{img_uri(p["photo_full"])}" alt="{esc(p["name"])}" loading="lazy" style="{img_cap(p["photo_full"])}">')
     else:
         thumb = ('<div class="no-photo"><span>Photo on request</span>'
                  '<small>Ask on WhatsApp and the shop will send a photo of the exact unit in stock.</small></div>')
@@ -225,14 +560,18 @@ def chrome(depth, title, desc, body, extra_head=""):
     </div>
     <div class="foot-col"><h4>Shop</h4>
       {"".join(f'<a href="{depth}categories/{c}.html">{CATS[c]["nav"]}</a>' for c in CAT_ORDER)}
-      <a href="{depth}explore.html">Explore</a>
       <a href="{depth}compare.html">Compare Products</a>
+    </div>
+    <div class="foot-col"><h4>Explore</h4>
+      <a href="{depth}explore.html">Explore</a>
+      <a href="{depth}search.html">Search</a>
+      <a href="{depth}about.html">About Us</a>
     </div>
     <div class="foot-col"><h4>Support</h4>
       <a href="{depth}support.html">Customer Support</a>
       <a href="{depth}faq.html">FAQ</a>
-      <a href="{depth}about.html">About Us</a>
-      <a href="{depth}contact.html">Contact</a>
+      <a href="{depth}privacy.html">Privacy Policy</a>
+      <a href="{depth}terms.html">Terms</a>
     </div>
     <div class="foot-col"><h4>Contact</h4>
       <p>{esc(ADDRESS)}</p>
@@ -246,6 +585,7 @@ def chrome(depth, title, desc, body, extra_head=""):
     <p class="foot-note">Orders are taken on WhatsApp only. There is no online checkout on this website.</p>
   </div>
 </footer>
+<button class="to-top" id="toTop" type="button" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <a class="wa-float" href="{wa_link()}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">{ICON_WA}<span>WhatsApp</span></a>
 <script src="{depth}assets/site.js"></script>
 </body>
@@ -269,21 +609,26 @@ def hero_section(img, kicker, title, sub, cta=""):
 
 def hero_carousel(slides):
     """DJI-style rotating-stills hero. slides: list of dicts
-    (img, kicker, title, sub, cta_href, cta_label). Still photos only."""
+    (img, kicker, title, sub, cta_href, cta_label). Still photos only.
+    Both pills are outline-white on the homepage carousel (DJI homepage
+    style); text sits in the top third, like DJI's."""
     parts = []
     for i, s in enumerate(slides):
         act = " active" if i == 0 else ""
-        parts.append(f"""<div class="hero-slide{act}" data-name="{esc(s['title'])}" style="background-image:url('{s['img']}')">
+        scrim = " strong" if s.get("scrim") else ""
+        parts.append(f"""<div class="hero-slide{act}{scrim}" data-name="{esc(s['title'])}" style="background-image:url('{s['img']}')">
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <p class="kicker">{s['kicker']}</p>
     <h1>{esc(s['title'])}</h1>
     <p class="hero-sub">{esc(s['sub'])}</p>
-    <div class="hero-cta"><a class="btn btn-outline btn-lg" href="{esc(s['cta_href'])}">Learn More &rsaquo;</a><a class="btn btn-light btn-lg" href="{esc(s['wa'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a></div>
+    <div class="hero-cta"><a class="btn btn-outline btn-lg" href="{esc(s['cta_href'])}">Learn More &rsaquo;</a><a class="btn btn-outline btn-lg" href="{esc(s['wa'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a></div>
   </div>
 </div>""")
     return f"""<section class="hero hero-carousel" id="heroCarousel">
 {''.join(parts)}
+  <button class="hero-arrow prev" type="button" data-dir="-1" aria-label="Previous slide">&lsaquo;</button>
+  <button class="hero-arrow next" type="button" data-dir="1" aria-label="Next slide">&rsaquo;</button>
   <div class="hero-list" role="tablist" aria-label="Hero slides">
     <button type="button" data-go="0"></button>
     <button type="button" class="current" data-go="0"></button>
@@ -366,11 +711,11 @@ h2{font-size:clamp(1.9rem,4vw,2.75rem)}
 .mega-prod:hover{color:var(--mut)}
 .mega-all{display:block;margin-top:10px;font-size:.85rem;font-weight:700;color:var(--ink)}
 body.no-hero main{padding-top:64px}
-/* hero — DJI ratio 2.34:1 at desktop (1919x820). aspect-ratio lives ONLY in
+/* hero — DJI ratio ~2.18:1 at desktop (1919x880). aspect-ratio lives ONLY in
    the desktop media query: at mobile widths the 520px min-height would
-   otherwise force width = 520 x 2.34 = 1217px and overflow the viewport. */
+   otherwise force width = 520 x 2.18 = 1134px and overflow the viewport. */
 .hero{position:relative;min-height:520px;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center}
-@media(min-width:1101px){.hero{aspect-ratio:2.34/1;min-height:0}}
+@media(min-width:1101px){.hero{aspect-ratio:2.18/1;min-height:0}}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.18) 45%,rgba(0,0,0,.45))}
 .hero-content{position:relative;max-width:1100px;margin:0 auto;padding:130px 20px 90px;width:100%}
 .hero-content .kicker{color:#d6d6d6}
@@ -405,8 +750,8 @@ body.no-hero main{padding-top:64px}
 .price-note{font-size:.85rem;color:var(--mut)}
 .more-link{display:inline-block;font-size:1rem;font-weight:600;color:var(--ink);padding:6px 0 2px}
 .more-link:hover{color:var(--mut)}
-.card-img{display:block;background:#ebebeb;aspect-ratio:4/3;overflow:hidden;padding:18px 22px 26px;flex:1;min-height:0}
-.card-img img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 18px 16px rgba(0,0,0,.18));transition:transform .4s}
+.card-img{background:#ebebeb;aspect-ratio:4/3;overflow:hidden;padding:0;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.card-img img{width:100%;height:100%;object-fit:cover;object-position:center;filter:drop-shadow(0 18px 16px rgba(0,0,0,.18));transition:transform .4s}
 .card:hover .card-img img{transform:scale(1.04)}
 .no-photo{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--grey);color:var(--mut);text-align:center;padding:24px}
 .no-photo span{font-size:1.05rem;font-weight:700;color:#555}
@@ -448,12 +793,21 @@ body.no-hero main{padding-top:64px}
 .why-col h3{font-size:1.75rem;margin-bottom:10px}
 .why-col p{color:#555;font-size:.98rem}
 .why-col .more-link{margin-top:12px}
-/* hero carousel (DJI): rotating stills, ~4.5s autoplay, crossfade,
-   bottom-left prev / current (bold + white bar) / next slide list. */
+/* hero carousel (DJI): rotating stills, ~5s autoplay, crossfade,
+   bottom-left prev / current (bold + white bar) / next slide list.
+   Text sits in the TOP third (DJI): huge THIN product name (~70px,
+   weight 200), bold tagline ~24-28px, two outline-white pills. */
 .hero-carousel{display:block;overflow:hidden;text-align:center}
-.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s ease;display:flex;align-items:center;justify-content:center}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s ease;display:flex;align-items:flex-start;justify-content:center}
 .hero-slide.active{opacity:1;z-index:1}
-.hero-slide .hero-content{padding:110px 20px 90px}
+.hero-slide .hero-content{padding:112px 20px 90px}
+.hero-slide h1{font-size:clamp(2.6rem,5vw,4.4rem);font-weight:200;text-transform:uppercase;letter-spacing:.01em}
+.hero-slide .hero-sub{font-size:clamp(1.4rem,2vw,1.75rem);font-weight:700}
+.hero-slide.strong .hero-overlay{background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.32) 45%,rgba(0,0,0,.6))}
+.hero-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:6;background:none;color:#fff;border:0;width:64px;height:96px;font-size:3.4rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;text-shadow:0 2px 14px rgba(0,0,0,.6);opacity:.9}
+.hero-arrow:hover{opacity:1}
+.hero-arrow.prev{left:8px}
+.hero-arrow.next{right:8px}
 .hero-list{position:absolute;left:48px;bottom:28px;z-index:5;display:flex;flex-direction:column;gap:8px;text-align:left}
 .hero-list button{background:none;border:0;cursor:pointer;color:rgba(255,255,255,.65);font-size:14px;font-family:inherit;padding:2px 0 2px 16px;position:relative;text-align:left}
 .hero-list button.current{color:#fff;font-weight:700}
@@ -519,18 +873,23 @@ body.no-hero main{padding-top:64px}
 .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:0 0 26px}
 .toolbar select,.toolbar input[type=search]{padding:11px 14px;border:1px solid var(--line);border-radius:999px;font-size:.95rem;font-family:inherit;background:#fff}
 .toolbar .count{margin-left:auto;color:var(--mut);font-size:.92rem}
-/* product subnav — second sticky black bar (DJI-style) */
+/* product subnav — second sticky black bar (DJI-style), 48px */
 .subnav{position:sticky;top:64px;z-index:90;background:#000;color:#fff}
-.subnav-inner{max-width:1280px;margin:0 auto;padding:0 20px;height:64px;display:flex;align-items:center;gap:22px}
+.subnav-inner{max-width:1280px;margin:0 auto;padding:0 20px;height:48px;display:flex;align-items:center;gap:22px}
 .subnav-name{font-weight:800;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .subnav-links{display:flex;gap:22px;margin-left:auto}
 .subnav-links a{font-size:.92rem;color:#cfcfcf}
 .subnav-links a:hover{color:#fff}
 .subnav .btn{padding:8px 16px;font-size:.88rem;margin-left:4px;flex:none}
-/* product detail — black hero, one huge studio shot */
+/* product detail — black hero, one huge studio shot on a light-grey stage
+   (audit P3 #12: ~78vh; #10: never wider than native — the img carries an
+   inline max-width cap. White-background JPEGs sit on light grey, never
+   as a white rectangle on black; the full image opens on tap via the
+   existing lightbox). */
 .detail-hero{background:#000;color:#fff;text-align:center;padding:64px 20px 0}
 .detail-hero .kicker{color:#9a9a9a}
 .detail-hero h1{margin:12px auto 0;max-width:22ch}
+.detail-hero h1.dji-name{text-transform:uppercase;font-weight:200}
 .detail-hero .tagline{font-size:clamp(1.05rem,2vw,1.25rem);font-weight:600;color:#d6d6d6;margin:14px auto 0;max-width:56ch}
 .detail-hero .price{font-size:1.5rem;margin-top:18px}
 .detail-hero .price .was{color:#9a9a9a}
@@ -538,8 +897,8 @@ body.no-hero main{padding-top:64px}
 .detail-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:24px 0 0}
 .detail-actions .btn{min-width:200px}
 .detail-hero .confirm-note{color:#9a9a9a;font-size:.92rem;margin-top:16px}
-.detail-photo-wrap{background:radial-gradient(ellipse 60% 55% at 50% 82%,rgba(255,255,255,.13),transparent 70%);padding:20px 0 0;cursor:zoom-in}
-.detail-photo-wrap img{margin:0 auto;max-height:64vh;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 24px 28px rgba(0,0,0,.55))}
+.detail-photo-wrap{background:#ebebeb;margin-top:48px;min-height:78vh;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:zoom-in}
+.detail-photo-wrap img{margin:0 auto;max-height:78vh;width:auto;max-width:100%;object-fit:contain}
 .detail-photo-wrap .zoom-hint{color:#767676;font-size:.85rem;padding:14px 0 26px}
 /* lightbox */
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;z-index:200;cursor:zoom-out}
@@ -572,10 +931,10 @@ body.no-hero main{padding-top:64px}
 .compare-picks select{flex:1 1 200px;min-width:0;max-width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:999px;font-size:.95rem}
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
 .reveal.visible{opacity:1;transform:none}
-#featured,#categories,#films,#why,#stories,#cta,#listing,#related-cats,#overview,#film,#about,#related,#innovation,#fields{scroll-margin-top:130px}
+#featured,#categories,#films,#why,#stories,#cta,#listing,#related-cats,#overview,#film,#about,#related,#innovation,#fields,#features,#compare,#endcard{scroll-margin-top:120px}
 /* footer — compact, tidy, no tall empty dark block */
 .site-footer{background:var(--black);color:#ddd;margin-top:0}
-.footer-inner{max-width:1280px;margin:0 auto;padding:44px 20px 28px;display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:32px}
+.footer-inner{max-width:1280px;margin:0 auto;padding:44px 20px 28px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1.4fr;gap:32px}
 .footer-inner h4{color:#fff;margin-bottom:12px}
 .footer-inner a{display:block;padding:3px 0;color:#bbb}
 .footer-inner a:hover{color:#fff}
@@ -613,14 +972,20 @@ body.no-hero main{padding-top:64px}
   .sec{padding:48px 0}
   .footer-inner{grid-template-columns:1fr}
   .hero{min-height:520px}
-  .hero-list{left:20px;bottom:20px}
+  /* Mobile hero is fully stacked (kicker, name, tagline, two full-width
+     pills) — the prev/current/next rail and the scroll arrow collide with
+     the pills, and mid-height chevrons flank the tagline like quotes.
+     Hide the rail + scroll hint; move the chevrons to the bottom corners
+     (clear photo band on every slide). Arrows + autoplay + swipe remain. */
+  .hero-list{display:none}
+  .hero-carousel .scroll-hint{display:none}
+  .hero-arrow{top:auto;bottom:14px;width:52px;height:64px;font-size:2.6rem}
   .grid,.grid-fullbleed,.video-grid,.why-grid,.cat-tiles,.contact-grid{grid-template-columns:1fr}
   .cat-tile.wide{grid-column:auto;min-height:340px}
   .hero-cta .btn,.detail-actions .btn{min-width:0;width:100%}
   .subnav-links{display:none}
   .feature-tile .f-body{padding:28px 24px}
   .feature-tile.wide .f-body{padding:28px 24px}
-  .card-img{padding:12px 16px 20px}
 }
 /* fix-pass additions: category-card WhatsApp pill row, footer social icons,
    drones series strip, support pill row, grey pill. */
@@ -630,14 +995,77 @@ body.no-hero main{padding-top:64px}
 .foot-social a{color:#fff;opacity:.85}
 .foot-social a:hover{opacity:1}
 .foot-social svg{width:22px;height:22px;display:block}
-.series-strip{background:#f2f3f5;padding:30px 0}
+.series-strip{background:#f2f3f5;padding:20px 0}
 .series-strip-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:center;gap:4px;flex-wrap:wrap}
 .series-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 18px;color:#222;font-size:.9rem}
+.series-item img{width:56px;height:40px;object-fit:contain}
 .series-item svg{width:48px;height:32px}
 .series-item:hover{color:#000}
 .pill-row{display:flex;gap:10px;flex-wrap:wrap}
 .pill-row .btn{padding:9px 18px}
 .btn-grey{background:#f2f3f5;color:#111}
+/* "Shot on" (DJI): small, centred, white on black above the films carousel */
+.shot-on{font-size:1.35rem;font-weight:600;text-align:center;color:#fff}
+.shot-on-sub{text-align:center;color:#bdbdbd;margin-top:8px}
+/* films carousel dot indicators (DJI "Shot on") */
+.films-dots{display:flex;gap:8px;justify-content:center;margin-top:20px}
+.films-dots button{width:8px;height:8px;border-radius:50%;border:0;background:#5a5a5a;cursor:pointer;padding:0}
+.films-dots button.active{background:#fff}
+/* back-to-top (DJI floating button, bottom-right above the WhatsApp pill) */
+.to-top{position:fixed;right:18px;bottom:84px;z-index:150;width:48px;height:48px;border-radius:50%;border:0;background:#000;color:#fff;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.35);display:none;align-items:center;justify-content:center}
+.to-top.show{display:flex}
+.to-top svg{width:22px;height:22px}
+/* support head (DJI support is text-led): title + subtitle + search, no photo */
+.support-head{padding:110px 20px 48px;text-align:center}
+.support-head h1{font-size:clamp(2rem,4vw,3rem)}
+.support-head p{font-size:1.15rem;color:var(--mut);margin-top:10px}
+.support-head .support-search{border:1px solid var(--line)}
+.support-head .support-search input{color:var(--txt)}
+/* DJI product pages: 6-item spec strip on black, 2 rows x 3 */
+.dji-top{background:#000;color:#fff;padding:0 0 56px;text-align:center}
+.dji-intro-text{max-width:820px;margin:36px auto 0;padding:0 20px}
+.dji-intro-text h2{font-size:clamp(1.5rem,3vw,2.1rem);margin-bottom:12px}
+.dji-intro-text p{color:#cfcfcf;font-size:1.08rem}
+.spec-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 24px;max-width:960px;margin:0 auto;padding:56px 20px 8px;text-align:center}
+.spec-strip .spec{font-size:1.02rem;font-weight:600;color:#e8e8e8;line-height:1.45}
+.spec-strip .spec small{color:#9a9a9a}
+.price-line{font-size:1.25rem;font-weight:800;margin-top:22px}
+.price-line span{font-size:.95rem;color:#9a9a9a;font-weight:400}
+/* DJI feature sections (black, stacked, headings in DJI's order) */
+.dji-features{background:#000;color:#fff}
+.dji-features .feat{max-width:820px;margin:0 auto;padding:34px 20px;border-top:1px solid #222;text-align:center}
+.dji-features .feat:first-child{border-top:0}
+.dji-features .feat h3{font-size:clamp(1.5rem,3vw,2.1rem);margin-bottom:12px}
+.dji-features .feat p{color:#cfcfcf;font-size:1.02rem;max-width:70ch;margin:0 auto 10px}
+.dji-features .feat p:last-child{margin-bottom:0}
+.feat-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.feat-chips span{border:1px solid #444;border-radius:999px;padding:7px 16px;font-size:.92rem;color:#e8e8e8}
+.feat-items{text-align:left;max-width:760px;margin:18px auto 0;display:grid;gap:14px}
+.feat-items h4{font-size:1.05rem;margin-bottom:4px}
+.feat-items p{color:#bdbdbd!important;font-size:.97rem}
+.feat-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1100px;margin:0 auto;padding:34px 20px}
+.feat-quotes blockquote{border:1px solid #2a2a2a;padding:24px;text-align:left}
+.feat-quotes .q-eye{color:#9a9a9a;text-transform:uppercase;letter-spacing:.16em;font-size:.75rem;font-weight:700}
+.feat-quotes h4{margin:8px 0 10px;font-size:1.15rem}
+.feat-quotes p{color:#cfcfcf;font-size:.97rem}
+.dji-features .feat-note{color:#9a9a9a!important;font-size:.9rem}
+.dji-footnote{max-width:820px;margin:0 auto;padding:30px 20px 8px;color:#9a9a9a;font-size:.9rem;text-align:center}
+/* DJI end card: tagline + spec recap + price + WhatsApp */
+.end-card{background:#000;color:#fff;text-align:center;padding:64px 20px;border-top:1px solid #222}
+.end-card h2{font-size:clamp(1.9rem,4vw,2.75rem);margin-bottom:8px}
+.end-card .end-specs{color:#bdbdbd;max-width:60ch;margin:12px auto 0;font-size:1rem}
+.end-card .price-line{margin-top:20px}
+.end-card .btn{margin-top:22px}
+/* drones featured banner (DJI Camera Drones Flip banner, framed/inset):
+   light-grey gradient, text top-centre, product photo bottom-centre */
+.featured-banner{margin:0 16px;background:linear-gradient(180deg,#f4f5f7,#e7e8ea);text-align:center;padding:44px 20px 0;overflow:hidden}
+.featured-banner .kicker{color:var(--mut)}
+.featured-banner h2{font-size:clamp(2rem,4.5vw,3.5rem);font-weight:200;text-transform:uppercase;margin:10px 0 6px}
+.featured-banner .fb-tag{font-size:clamp(1.15rem,2vw,1.4rem);font-weight:700;color:var(--ink)}
+.featured-banner .fb-cta{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:22px}
+.featured-banner img{margin:26px auto 0;width:min(600px,88vw);height:auto}
+@media(max-width:900px){.feat-quotes{grid-template-columns:1fr}.spec-strip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh}}
 """
 
 # ---------- JS ----------
@@ -683,8 +1111,10 @@ if(grid){
     var cards=Array.prototype.slice.call(grid.querySelectorAll('.card'));
     var b=brandSel?brandSel.value:'';
     var visible=cards.filter(function(c){var ok=!b||c.dataset.brand===b;c.style.display=ok?'':'none';return ok;});
-    var s=sortSel?sortSel.value:'name-asc';
-    visible.sort(function(a,c){
+    var s=sortSel?sortSel.value:'featured';
+    // 'featured' keeps the generator's order (drones are flagship-first
+    // like DJI); any other value re-sorts the visible cards.
+    if(s!=='featured')visible.sort(function(a,c){
       if(s==='name-asc')return a.dataset.name.localeCompare(c.dataset.name);
       if(s==='name-desc')return c.dataset.name.localeCompare(a.dataset.name);
       if(s==='price-asc'){var pa=parseFloat(a.dataset.price)||Infinity,pb=parseFloat(c.dataset.price)||Infinity;return pa-pb;}
@@ -698,8 +1128,9 @@ if(grid){
   if(sortSel)sortSel.addEventListener('change',applyFilter);
   applyFilter();
 }
-// hero carousel: rotating stills, ~4.5s autoplay, crossfade, bottom-left
-// prev / current / next slide list; click a list name to jump; pause on hover.
+// hero carousel: rotating stills, ~5s autoplay, crossfade, bottom-left
+// prev / current / next slide list; click a list name to jump; pause on
+// real mouse hover only — touch never pauses (see below).
 var hc=document.getElementById('heroCarousel');
 if(hc){
   var hSlides=Array.prototype.slice.call(hc.querySelectorAll('.hero-slide'));
@@ -715,31 +1146,53 @@ if(hc){
       hList[2].textContent=hSlides[next].dataset.name;hList[2].dataset.go=next;
     }
   }
-  function hStart(){hStop();hTimer=setInterval(function(){hGo(hIdx+1);},4500);}
+  function hStart(){hStop();hTimer=setInterval(function(){hGo(hIdx+1);},5000);}
   function hStop(){if(hTimer){clearInterval(hTimer);hTimer=null;}}
   hList.forEach(function(b){b.addEventListener('click',function(){hGo(parseInt(b.dataset.go,10));hStart();});});
-  hc.addEventListener('mouseenter',hStop);
-  hc.addEventListener('mouseleave',hStart);
+  hc.querySelectorAll('.hero-arrow').forEach(function(a){a.addEventListener('click',function(){hGo(hIdx+parseInt(a.dataset.dir,10));hStart();});});
+  // Pause ONLY on a real mouse hover. On touch screens a tap fires an
+  // emulated mouseenter with no matching mouseleave, which used to stop
+  // the autoplay forever after the first tap on the hero.
+  function hHover(e){if(e.pointerType==='mouse'){hStop();}}
+  function hUnhover(e){if(e.pointerType==='mouse'){hStart();}}
+  hc.addEventListener('pointerenter',hHover);
+  hc.addEventListener('pointerleave',hUnhover);
+  // Safety net: any touch end or scroll restarts autoplay, so a stray
+  // pause can never freeze the hero on a phone.
+  hc.addEventListener('touchend',hStart,{passive:true});
+  window.addEventListener('scroll',function(){if(!hTimer){hStart();}},{passive:true});
   document.addEventListener('visibilitychange',function(){if(document.hidden){hStop();}else{hStart();}});
   hGo(0);hStart();
 }
-// films carousel: centre card ~1230px, side cards peeking, ‹ › arrows.
+// films carousel: centre card ~1230px, side cards peeking, ‹ › arrows,
+// dot indicators below (DJI "Shot on").
 var fc=document.getElementById('filmsCarousel');
 if(fc){
   var fTrack=fc.querySelector('.films-track');
   var fCards=Array.prototype.slice.call(fTrack.querySelectorAll('.video-card'));
   var fIdx=0;
+  var fDotsWrap=document.createElement('div');
+  fDotsWrap.className='films-dots';
+  fCards.forEach(function(c,i){var d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Go to film '+(i+1));d.addEventListener('click',function(){fGo(i);});fDotsWrap.appendChild(d);});
+  fc.appendChild(fDotsWrap);
+  var fDots=Array.prototype.slice.call(fDotsWrap.querySelectorAll('button'));
   function fLayout(){
     var cardW=fCards[0].getBoundingClientRect().width+16;
     var wrapW=fc.getBoundingClientRect().width;
     var off=(wrapW-fCards[0].getBoundingClientRect().width)/2-fIdx*cardW;
     fTrack.style.transform='translateX('+off+'px)';
   }
-  function fGo(i){fIdx=(i+fCards.length)%fCards.length;fLayout();}
+  function fGo(i){fIdx=(i+fCards.length)%fCards.length;fLayout();fDots.forEach(function(d,j){d.classList.toggle('active',j===fIdx);});}
   fc.querySelector('.films-arrow.prev').addEventListener('click',function(){fGo(fIdx-1);});
   fc.querySelector('.films-arrow.next').addEventListener('click',function(){fGo(fIdx+1);});
   window.addEventListener('resize',fLayout);
   fLayout();
+}
+// back-to-top button
+var toTop=document.getElementById('toTop');
+if(toTop){
+  window.addEventListener('scroll',function(){toTop.classList.toggle('show',window.scrollY>600);},{passive:true});
+  toTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
 }
 // compare: add from product pages
 document.querySelectorAll('[data-compare]').forEach(function(b){
@@ -798,32 +1251,38 @@ def build_index():
     featured_ids = [0, 2, 4, 51, 54, 70, 41]
     feats = [by_id(i) for i in featured_ids]
     f1, f2, f3 = feats[0], feats[1], feats[2]
-    def feature_tile(p, light=False, wide=False):
+    def feature_tile(p, light=False, wide=False, eyebrow=None, tagline=None):
         cls = "feature-tile light" if light else "feature-tile"
         if wide: cls += " wide"
         view_cls = "btn-light" if not light else "btn-dark"
+        # DJI tile copy (eyebrow + tagline) where the product matches and
+        # the copy is verified; otherwise the shop's own line.
+        eyebrow = eyebrow if eyebrow is not None else (esc(p['brand']) + " &middot; " + esc(CATS[p['category']]['label']))
+        tagline = tagline if tagline is not None else p['tagline']
         return f"""<div class="{cls} reveal">
-  <div class="f-img"><img src="{img_uri(p['photo_full'])}" alt="{esc(p['name'])}" loading="lazy"></div>
-  <div class="f-body"><p class="kicker">{esc(p['brand'])} &middot; {esc(CATS[p['category']]['label'])}</p>
-  <h2>{esc(p['name'])}</h2><p>{esc(p['tagline'])}</p>
+  <div class="f-img"><img src="{img_uri(p['photo_full'])}" alt="{esc(p['name'])}" loading="lazy" style="{img_cap(p['photo_full'])}"></div>
+  <div class="f-body"><p class="kicker">{eyebrow}</p>
+  <h2>{esc(p['name'])}</h2><p>{esc(tagline)}</p>
   {price_html(p)}
   <div class="f-cta"><a class="btn {view_cls}" href="products/{p['slug']}.html">View Details</a>
   <a class="more-link" style="color:inherit" href="{wa_link(p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry &rsaquo;</a></div></div></div>"""
-    # (a) hero carousel — 6 strongest existing real hero photos, each with
-    # its REAL product/category name + tagline (nothing invented).
+    # (a) hero carousel — DJI's exact slide copy for the matching products.
+    # The Security Cameras slide is DROPPED (its photo is deleted — a
+    # generic stock image, 2.04x upscaled). Mini 3 Pro's product page is
+    # retired, so its slide uses DJI's listing eyebrow ("Mini Camera
+    # Drone", live-browser study) and keeps the factual Fly More Combo
+    # line — a product fact, not an invention. 4 slides remain.
     slides = [
-        {"img": hero_uri('air3s.jpg'), "kicker": "AK Khan Enterprises \u00b7 Quetta",
-         "title": "DJI Air 3S", "sub": "The latest Air-series drone for serious creators.",
+        {"img": hero_uri('air3s.jpg'), "kicker": "Dual-Camera Drone for Travel Photography",
+         "title": "DJI Air 3S", "sub": "Chase the View",
          "cta_href": "products/dji-air-3s.html", "wa": wa_link("DJI Air 3S")},
-        {"img": hero_uri('mavic3-cine.jpg'), "kicker": "AK Khan Enterprises \u00b7 Quetta",
-         "title": "DJI Mavic 3 Pro", "sub": "Triple-camera Mavic flagship for professional work.",
+        {"img": hero_uri('mavic3-cine.jpg'), "kicker": "Triple-Lens Camera Drone",
+         "title": "DJI Mavic 3 Pro", "sub": "Inspiration in Focus",
          "cta_href": "products/dji-mavic-3-pro.html", "wa": wa_link("DJI Mavic 3 Pro")},
-        {"img": hero_uri('drone.jpg'), "kicker": "AK Khan Enterprises \u00b7 Quetta",
+        {"img": hero_uri('drone.jpg'), "kicker": "Mini Camera Drone",
          "title": "DJI Mini 3 Pro", "sub": "Mini 3 Pro Fly More Combo — pro features, Mini size.",
-         "cta_href": "products/dji-mini-3-pro.html", "wa": wa_link("DJI Mini 3 Pro")},
-        {"img": hero_uri('cctv-hi.jpg'), "kicker": "AK Khan Enterprises \u00b7 Quetta",
-         "title": "Security Cameras", "sub": "CCTV cameras, NVRs and video servers.",
-         "cta_href": "categories/cctv.html", "wa": wa_link()},
+         "cta_href": "products/dji-mini-3-pro.html", "wa": wa_link("DJI Mini 3 Pro"),
+         "scrim": True},
         {"img": hero_uri('from-air.jpg'), "kicker": "AK Khan Enterprises \u00b7 Quetta",
          "title": "From the Air", "sub": "Aerial perspectives from the DJI range — the drone photography our customers create with these aircraft.",
          "cta_href": "explore.html", "wa": wa_link()},
@@ -837,7 +1296,8 @@ def build_index():
 <div class="grid-fullbleed">{''.join(card(p) for p in feats[3:])}</div>
 </section>
 <section class="sec dark films-sec" id="films"><div class="wrap">
-{section_head('Cinematic Brand Story', 'Shot from the sky', 'Official DJI films for the drones on our shelves.')}
+<h2 class="shot-on reveal">Shot on</h2>
+<p class="shot-on-sub reveal">Official DJI films for the drones on our shelves.</p>
 </div>
 <div class="films-carousel" id="filmsCarousel">
 <div class="films-track">{vids}</div>
@@ -847,19 +1307,19 @@ def build_index():
 <p style="text-align:center;margin-top:26px"><a class="btn btn-light" href="explore.html">Watch all 11 films on Explore</a></p>
 </section>
 <section class="sec" id="innovation"><div class="wrap">
-{section_head('Innovation', 'Standing at the forefront of innovation', 'The flagship aircraft on our shelves — the range, up close.')}
+{section_head('Innovation', 'Standing at the Forefront of Innovation', 'As we explore new technology, we push the capabilities of what is possible, driving progress through continuous innovation.')}
 <div class="innov-grid">
-{feature_tile(f1)}
-{feature_tile(f2, light=True)}
-{feature_tile(f3, wide=True)}
+{feature_tile(f1, eyebrow="All-In-One Mini Drone", tagline="Mini to the Max")}
+{feature_tile(f2, light=True, eyebrow="Dual-Camera Drone for Travel Photography", tagline="Chase the View")}
+{feature_tile(f3, wide=True, eyebrow="Multiple Focal Length Triple-Lens Flagship Camera Drone", tagline="Inspiration in Focus")}
 </div>
 </div></section>
 <section class="sec grey" id="fields"><div class="wrap">
-{section_head('Explore DJI Products in Different Fields', 'From the air', 'Aerial perspectives from the DJI range — the drone photography our customers create with these aircraft.')}
+<div class="sec-head reveal"><h2>Explore DJI Products in Different Fields</h2></div>
 <div class="field-grid">
-<a class="field-tile reveal" style="background-image:url('{hero_uri('shot-canyon.jpg')}')" href="explore.html"><div><h3>Canyons from above</h3><p>Aerial photography with DJI drones.</p><span class="more-link">Learn More &rsaquo;</span></div></a>
-<a class="field-tile reveal" style="background-image:url('{hero_uri('shot-desert.jpg')}')" href="explore.html"><div><h3>Desert light</h3><p>Wide open frames, golden hour.</p><span class="more-link">Learn More &rsaquo;</span></div></a>
-<a class="field-tile reveal" style="background-image:url('{hero_uri('field-agri.jpg')}')" href="explore.html"><div><h3>Working from the sky</h3><p>Enterprise and agriculture aircraft.</p><span class="more-link">Learn More &rsaquo;</span></div></a>
+<a class="field-tile reveal" style="background-image:url('{hero_uri('shot-canyon.jpg')}')" href="explore.html"><div><h3>Video Production</h3><p>Professional Aerial and Ground Filmmaking Tools</p><span class="more-link">Learn More &rsaquo;</span></div></a>
+<a class="field-tile reveal" style="background-image:url('{hero_uri('field-enterprise.jpg')}')" href="categories/drones.html"><div><h3>Enterprise</h3><p>Drone Solutions for a New Generation of Work</p><span class="more-link">Learn More &rsaquo;</span></div></a>
+<a class="field-tile reveal" style="background-image:url('{hero_uri('field-agri.jpg')}')" href="search.html?q=DJI+Agras"><div><h3>Agriculture</h3><p>Efficient and Intelligent Agricultural Solution</p><span class="more-link">Learn More &rsaquo;</span></div></a>
 </div>
 </div></section>
 <section class="sec why-strip" id="why"><div class="wrap">
@@ -876,42 +1336,87 @@ def build_index():
 # ----- category pages -----
 def build_category(c):
     items = [p for p in products if p["category"] == c]
+    if c == "drones":
+        # Flagship-first, like DJI's Camera Drones listing.
+        items = sorted(items, key=lambda p: DRONE_ORDER.index(p["id"]))
     brands = sorted(set(p["brand"] for p in items))
     opts = "".join(f'<option value="{esc(b)}">{esc(b)}</option>' for b in brands)
-    others = "".join(
-        f'<a class="cat-tile" style="background-image:url(\'{hero_uri(CATS[o]["hero"])}\');min-height:300px" href="{o}.html">'
-        f'<div><h3>{CATS[o]["nav"]}</h3><p>{esc(CATS[o]["blurb"])}</p></div></a>'
-        for o in CAT_ORDER if o != c)
-    # DJI Camera Drones grey series strip (~140px): only the drones listing
-    # has series. Each series links to a real search for that DJI series;
-    # Compare and Shop Now are real too. No quiz (no quiz content exists),
-    # no Accessories/RC/Inspire (no such products in the catalogue).
+    # Related-category tiles: real existing photos only (the old banner
+    # images are deleted). One representative photo per category.
+    def rel_tile(o):
+        kind, name = RELATED_TILE[o]
+        uri = hero_uri(name) if kind == "hero" else img_uri(f"images/full/{name}")
+        return (f'<a class="cat-tile" style="background-image:url(\'{uri}\');min-height:300px" href="{o}.html">'
+                f'<div><h3>{CATS[o]["nav"]}</h3><p>{esc(CATS[o]["blurb"])}</p></div></a>')
+    others = "".join(rel_tile(o) for o in CAT_ORDER if o != c)
+    # DJI Camera Drones series strip (~120px): small REAL product
+    # thumbnails per series (400px thumbs shown at ~56px — downscale
+    # only), each linking to a real search for that DJI series. Compare
+    # and Shop Now are real too. No quiz (no quiz content exists), no
+    # Accessories/RC/Inspire (no such products in the catalogue).
     strip = ""
     if c == "drones":
-        series = ["Mavic", "Air", "Mini", "Neo", "Avata", "Matrice", "Agras"]
+        series = [("Mavic", 4), ("Air", 2), ("Mini", 0), ("Neo", 5),
+                  ("Avata", 6), ("Matrice", 8), ("Agras", 9)]
         strip_items = "".join(
-            f'<a class="series-item" href="../search.html?q={urllib.parse.quote("DJI " + s)}">{DRONE_SVG}<span>DJI {s}</span></a>'
-            for s in series)
+            f'<a class="series-item" href="../search.html?q={urllib.parse.quote("DJI " + s)}">'
+            f'<img src="{img_uri(by_id(pid)["photo_thumb"])}" alt="DJI {s}" loading="lazy"><span>DJI {s}</span></a>'
+            for s, pid in series)
         strip_items += ('<a class="series-item" href="../compare.html">' + COLS_SVG + '<span>Compare</span></a>'
                   '<a class="series-item" href="' + wa_link() + '" target="_blank" rel="noopener">' + BAG_SVG + '<span>Shop Now</span></a>')
         strip = f'<div class="series-strip"><div class="series-strip-inner">{strip_items}</div></div>'
+    h1 = CATS[c].get("h1", CATS[c]["label"])
+    # Banner slot (audit P3 #13): only when a native-wide (>=1919x513)
+    # photo exists — drones only (hero-drone.jpg is a 2560x684 DJI frame).
+    # Every other category gets DJI's text-led head and no banner div.
+    banner = ""
+    featured = ""
+    if c == "drones":
+        banner = ('<div class="cat-banner" style="background-image:url(\''
+                  + hero_uri("hero-drone.jpg") + '\')" role="img" aria-label="Drones"></div>')
+        m4p = by_id(0)
+        featured = f"""<div class="featured-banner reveal">
+  <p class="kicker">All-In-One Mini Drone</p>
+  <h2>DJI Mini 4 Pro</h2>
+  <p class="fb-tag">Mini to the Max</p>
+  <div class="fb-cta"><a class="btn btn-dark" href="{wa_link(m4p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>
+  <a class="more-link" href="../products/{m4p['slug']}.html">Learn More &rsaquo;</a></div>
+  <img src="{img_uri(m4p['photo_full'])}" alt="DJI Mini 4 Pro" loading="lazy" style="{img_cap(m4p['photo_full'])}">
+</div>"""
+    # Drones comparison table (DJI: "Which camera drone is suitable for
+    # you?") — verified DJI values + our real PKR prices, never DJI USD.
+    compare_sec = ""
+    if c == "drones":
+        head_cells = "".join(
+            f'<th><a href="../products/{slug}.html">{esc(next(p for p in products if p["slug"] == slug)["name"])}</a></th>'
+            for slug, _ in DJI_COMPARE)
+        rows = ""
+        for label, idx in DJI_COMPARE_ROWS:
+            cells = "".join(f"<td>{esc(vals[idx])}</td>" for _, vals in DJI_COMPARE)
+            rows += f"<tr><th>{esc(label)}</th>{cells}</tr>"
+        compare_sec = f"""<section class="sec grey" id="compare"><div class="wrap">
+<div class="sec-head reveal"><h2>Which camera drone is suitable for you?</h2></div>
+<div style="overflow-x:auto"><table class="compare-table"><tr><th></th>{head_cells}</tr>{rows}</table></div>
+<p style="text-align:center;margin-top:22px"><a class="more-link" href="../compare.html">Consumer Drones Comparison — Compare Now &rsaquo;</a></p>
+</div></section>"""
     body = f"""
 {strip}<section class="cat-head"><div class="wrap">
 <p class="kicker">AK Khan Enterprises</p>
-<h1>{CATS[c]['label']}</h1>
+<h1>{esc(h1)}</h1>
 <p class="cat-sub">{esc(CATS[c]['intro'])}</p>
 </div></section>
-<div class="cat-banner" style="background-image:url('{hero_uri(CATS[c]['hero'])}')" role="img" aria-label="{esc(CATS[c]['label'])}"></div>
+{banner}{featured}
 <section class="sec" id="listing"><div class="wrap">
 {section_head(CATS[c]['label'], f"All {CATS[c]['label']} — {len(items)} products", 'Filter by brand or sort the list. Prices shown where the shop has confirmed one; everything else is confirmed on WhatsApp.')}
 <div class="toolbar">
   <label>Brand <select id="brandFilter"><option value="">All brands</option>{opts}</select></label>
-  <label>Sort <select id="sortSel"><option value="name-asc">Name A–Z</option><option value="name-desc">Name Z–A</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option></select></label>
+  <label>Sort <select id="sortSel"><option value="featured" selected>Featured</option><option value="name-asc">Name A–Z</option><option value="name-desc">Name Z–A</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option></select></label>
   <span class="count" id="resultCount">{len(items)} products</span>
 </div>
 </div>
 <div class="grid-fullbleed" id="catGrid">{''.join(card(p, depth="../", buy=True) for p in items)}</div>
 </section>
+{compare_sec}
 <section class="sec grey" id="related-cats"><div class="wrap">
 {section_head('Keep exploring', 'Related categories', '')}
 <div class="cat-tiles">{others}</div>
@@ -921,14 +1426,56 @@ def build_category(c):
     write(f"categories/{c}.html", chrome("../", f"{CATS[c]['label']} — AK Khan Enterprises, Quetta",
         f"{CATS[c]['label']} at AK Khan Enterprises, Quetta. {CATS[c]['intro']}", body))
 
+# ----- DJI product pages: spec strip, intro, feature sections, end card -----
+def dji_price_line(p):
+    if p.get("price_pkr"):
+        return (f'<p class="price-line">From {fmt_pkr(p["price_pkr"])} '
+                '<span>&mdash; confirmed on WhatsApp</span></p>')
+    return ('<p class="price-line">Price on request '
+            '<span>&mdash; confirmed on WhatsApp</span></p>')
+
+def dji_features_html(slug):
+    out = []
+    for f in DJI_FEATURES[slug]:
+        if "quotes" in f:
+            cards = "".join(
+                f'<blockquote><p class="q-eye">{esc(e)}</p><h4>{esc(n)}</h4><p>{esc(t)}</p></blockquote>'
+                for e, n, t in f["quotes"])
+            out.append(f'<div class="feat-quotes">{cards}</div>')
+            continue
+        parts = []
+        h = f.get("h")
+        if isinstance(h, list):
+            parts.append("".join(f"<h3>{esc(x)}</h3>" for x in h))
+        elif h:
+            parts.append(f"<h3>{esc(h)}</h3>")
+        if f.get("b"):
+            parts.append(f"<p>{esc(f['b'])}</p>")
+        if f.get("b2"):
+            parts.append(f"<p>{esc(f['b2'])}</p>")
+        if f.get("chips"):
+            chips = "".join(f"<span>{esc(x)}</span>" for x in f["chips"])
+            parts.append(f'<div class="feat-chips">{chips}</div>')
+        if f.get("items"):
+            items = "".join(
+                f"<div><h4>{esc(t)}</h4><p>{esc(d)}</p></div>" for t, d in f["items"])
+            parts.append(f'<div class="feat-items">{items}</div>')
+        if f.get("note"):
+            parts.append(f'<p class="feat-note">{esc(f["note"])}</p>')
+        out.append('<div class="feat reveal">' + "".join(parts) + "</div>")
+    out.append('<p class="dji-footnote">Photos and films on this page are DJI&rsquo;s official product images and films.</p>')
+    return ('<section class="dji-features" id="features">'
+            '<div class="sec-head reveal"><p class="kicker">DJI</p><h2>Features</h2></div>'
+            + "".join(out) + "</section>")
+
 # ----- product pages (DJI-style: black hero, huge shot, no invented specs) -----
 def build_product(p):
     if p.get("photo_full"):
-        gallery = f"""<div class="detail-photo-wrap" id="detailPhoto"><img src="{img_uri(p['photo_full'])}" alt="{esc(p['name'])} — product photo"><p class="zoom-hint">Tap the photo to view fullscreen. Tap again to zoom.</p></div>"""
+        gallery = f"""<div class="detail-photo-wrap" id="detailPhoto"><img src="{img_uri(p['photo_full'])}" alt="{esc(p['name'])} — product photo" style="{img_cap(p['photo_full'])}"><p class="zoom-hint">Tap the photo to view fullscreen. Tap again to zoom.</p></div>"""
     else:
-        gallery = ('<div class="detail-photo-wrap" style="cursor:default"><div class="no-photo" style="background:transparent;min-height:40vh;color:#bbb">'
-                   '<span style="color:#e0e0e0">Photo on request</span>'
-                   '<small style="color:#9a9a9a">No photo of this exact unit is available yet. Ask on WhatsApp and the shop will send a photo of the exact unit in stock.</small></div></div>')
+        gallery = ('<div class="detail-photo-wrap" style="cursor:default"><div class="no-photo" style="background:transparent;min-height:40vh;color:#555">'
+                   '<span style="color:#1a1a1a">Photo on request</span>'
+                   '<small style="color:#555">No photo of this exact unit is available yet. Ask on WhatsApp and the shop will send a photo of the exact unit in stock.</small></div></div>')
     rel = related(p)
     film_anchor = '<a href="#film">Film</a>' if p.get("video_ids") and any(v != FAILED_VIDEO and v in VID_TITLE for v in p["video_ids"]) else ""
     # DJI's product hero: solid Buy pill + outline Watch Video pill. The buy
@@ -942,26 +1489,68 @@ def build_product(p):
     else:
         second_pill = f'<button class="btn btn-outline btn-lg" type="button" data-compare="{esc(p["slug"])}">Add to Compare</button>'
         compare_link = ""
+    # DJI product pages (Mavic 3 Pro, Air 3S, Mini 4 Pro only): DJI's exact
+    # hero copy, 6-item spec strip, price OUT of the hero into a slim line
+    # under the spec strip, verbatim intro, DJI feature sections in order,
+    # and an end card (tagline + spec recap + price + WhatsApp).
+    is_dji = p["slug"] in DJI_HERO
+    if is_dji:
+        eyebrow, tagline = DJI_HERO[p["slug"]]
+        kicker_html = f'<p class="kicker">{esc(eyebrow)}</p>' if eyebrow else ""
+        hero_head = f"""{kicker_html}
+  <h1 class="dji-name">{esc(p['name'])}</h1>
+  <p class="tagline">{esc(tagline)}</p>"""
+        intro_h, intro_p = DJI_INTRO[p["slug"]]
+        if intro_h:
+            intro_html = (f'<div class="dji-intro-text"><h2>{esc(intro_h)}</h2>'
+                          f'<p>{esc(intro_p)}</p></div>')
+        else:
+            intro_html = f'<div class="dji-intro-text"><p>{esc(intro_p)}</p></div>'
+        specs = "".join(f'<div class="spec">{esc(s)}</div>' for s in DJI_SPECS[p["slug"]])
+        dji_top = f"""<section class="dji-top">
+<div class="spec-strip">{specs}</div>
+{dji_price_line(p)}
+{intro_html}
+</section>"""
+        features = dji_features_html(p["slug"])
+        endcard = f"""<section class="end-card" id="endcard">
+<h2>{esc(tagline)}</h2>
+<p class="end-specs">{esc(" · ".join(DJI_SPECS[p['slug']]))}</p>
+{dji_price_line(p)}
+<a class="btn btn-light btn-lg" href="{wa_link(p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>
+</section>"""
+        feat_anchor = '<a href="#features">Features</a>'
+        confirm_html = ""
+    else:
+        hero_head = f"""<p class="kicker">{esc(p['brand'])} &middot; {esc(CATS[p['category']]['label'])}</p>
+  <h1>{esc(p['name'])}</h1>
+  <p class="tagline">{esc(p['tagline'])}</p>
+  {price_html(p)}"""
+        dji_top = ""
+        features = ""
+        endcard = ""
+        feat_anchor = ""
+        confirm_html = '<p class="confirm-note">Full specifications and today&rsquo;s price are confirmed on WhatsApp for this exact model.</p>'
     body = f"""
 <div class="subnav"><div class="subnav-inner">
 <span class="subnav-name">{esc(p['name'])}</span>
-<nav class="subnav-links" aria-label="Product sections"><a href="#overview">Overview</a>{film_anchor}<a href="#about">About</a><a href="#related">Related</a></nav>
+<nav class="subnav-links" aria-label="Product sections"><a href="#overview">Overview</a>{feat_anchor}{film_anchor}<a href="#about">About</a><a href="#related">Related</a></nav>
 <a class="btn btn-light" href="{wa_link(p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>
 </div></div>
 <section class="detail-hero" id="overview">
-  <p class="kicker">{esc(p['brand'])} &middot; {esc(CATS[p['category']]['label'])}</p>
-  <h1>{esc(p['name'])}</h1>
-  <p class="tagline">{esc(p['tagline'])}</p>
-  {price_html(p)}
+  {hero_head}
   <div class="detail-actions">
     <a class="btn btn-light btn-lg" href="{wa_link(p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>
     {second_pill}
   </div>
   {compare_link}
-  <p class="confirm-note">Full specifications and today&rsquo;s price are confirmed on WhatsApp for this exact model.</p>
+  {confirm_html}
   {gallery}
 </section>
+{dji_top}
+{features}
 {product_video(p)}
+{endcard}
 <section class="sec" id="about"><div class="wrap">
 {section_head('About this product', esc(p['name']), '')}
 <div class="prose"><p>{esc(p['description'])}</p>
@@ -1032,15 +1621,13 @@ def simple_page(fname, title, desc, kicker, h1, inner):
 {inner}</div></div></section>{cta_band('')}"""
     write(fname, chrome("", title, desc, body))
 
-# ----- support page (DJI): shorter hero banner ~493px, centred title +
-# subtitle + search box that goes to search.html. All body copy is the
-# shop's existing real copy. Banner photo is an existing real hero photo
-# (field-enterprise.jpg — Matrice at work); no DJI support photo exists here.
+# ----- support page (DJI): photo-less head — title + subtitle + search,
+# no photo. DJI's own support page is text-led and plain, so this is
+# DJI-legit. All body copy is the shop's existing real copy.
 def build_support():
     body = f"""
-<section class="support-hero" style="background-image:url('{hero_uri('field-enterprise.jpg')}')">
-  <div class="hero-overlay"></div>
-  <div class="support-inner">
+<section class="support-head">
+  <div class="wrap">
     <h1>Support</h1>
     <p>Welcome to AK Khan Enterprises Support</p>
     <form class="support-search" action="search.html" method="get" role="search">
@@ -1133,12 +1720,21 @@ def build_info():
 def build_search():
     data = []
     for p in products:
+        if p.get("photo_full"):
+            uri, w, h = search_uri(p["photo_full"])
+        else:
+            uri, w, h = "", 0, 0
         data.append({"slug": p["slug"], "name": p["name"], "brand": p["brand"],
                      "cat": CATS[p["category"]]["label"], "catKey": p["category"],
                      "tag": p["tagline"], "price": price_text(p),
-                     # full image, not the 400px thumb: search tiles are
-                     # the same 2-per-row size as category tiles.
-                     "thumb": img_uri(p["photo_full"]) if p.get("photo_full") else ""})
+                     # resized size: the search card caps the image at
+                     # these pixels (audit P3 #10), like the category cards.
+                     "w": w, "h": h,
+                     # 800px-max image, not the full photo and not the
+                     # 400px thumb: search tiles are the same 2-per-row
+                     # size as category tiles (~652px), so 800px stays
+                     # sharp while search-data.js stays pushable.
+                     "thumb": uri})
     js = "window.AK_PRODUCTS=" + json.dumps(data, ensure_ascii=False) + ";"
     write("assets/search-data.js", js)
     head = section_head('Search', 'Search all 108 products', 'Search by product name, brand or category.')
@@ -1157,7 +1753,7 @@ function run(){
   var list=window.AK_PRODUCTS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>-1||p.brand.toLowerCase().indexOf(q)>-1||p.cat.toLowerCase().indexOf(q)>-1||p.tag.toLowerCase().indexOf(q)>-1;});
   cnt.textContent=list.length+' product'+(list.length===1?'':'s')+(q?' for \\u201c'+input.value.trim()+'\\u201d':'');
   res.innerHTML=list.map(function(p){
-    var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy">':'<div class="no-photo"><span>Photo on request</span></div>';
+    var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy" style="max-width:min('+p.w+'px,100%);max-height:'+p.h+'px">':'<div class="no-photo"><span>Photo on request</span></div>';
     return '<article class="card"><div class="card-body"><p class="card-cat">'+p.brand+' &middot; '+p.cat+'</p><h3><a href="products/'+p.slug+'.html">'+p.name+'</a></h3><p class="card-tag">'+p.tag+'</p><p class="price">'+(p.price==='Price on request'?'<span class="price por">Price on request</span>':p.price)+'</p><a class="more-link" href="products/'+p.slug+'.html">Learn more &rsaquo;</a></div><a class="card-img" href="products/'+p.slug+'.html">'+img+'</a></article>';
   }).join('')||'<p>No products match that search. Try a brand name such as Dahua, DJI or Audionic.</p>';
 }
@@ -1246,11 +1842,30 @@ to rebuild. Byte-reproducible: run twice, second run produces zero diff.
 - WhatsApp-only ordering (wa.me/923067000682). No cart, checkout or admin.
 - Images are embedded as base64 data URIs (GitHub snapshot pushes are
   text-only); the logo SVGs are real files.
+- Homepage hero: 4 rotating stills with DJI's exact slide copy, 5s
+  autoplay, text in the top third, outline-white pills, edge ‹ ›
+  arrows. No Security Cameras slide (its photo was a deleted generic
+  stock image, 2.04x upscaled).
+- DJI product pages (Mavic 3 Pro, Air 3S, Mini 4 Pro): DJI's exact hero
+  copy, 6-item spec strip, verbatim intro, DJI feature sections in order
+  (heading-only where DJI's copy is unverified — nothing invented), price
+  under the spec strip, end card. Other products keep the shop's own copy.
+- Drones listing: "Camera Drones" head (DJI's exact subhead),
+  flagship-first order, series strip with real product thumbnails,
+  framed Mini 4 Pro banner, "Which camera drone is suitable for you?"
+  comparison table (verified DJI values + our real PKR prices, never
+  DJI USD prices).
+- Category heads are text-led (no banner) except drones, which has the
+  native-wide 2560x684 DJI flight frame. Support is photo-less, text-led.
 - Tiles are DJI-style: 2 large per row, pale-grey (#f2f3f5) panels, text
   centred at the top, one quiet "Learn more" link per card, photo fills
-  the tile on grey with a soft drop shadow. Cards use the FULL product
-  image (sharper than the 400px thumb at tile size), never upscaled
-  beyond the source's real resolution.
+  the tile (cover, no side padding) on grey with a soft drop shadow.
+  Cards use the FULL product image (sharper than the 400px thumb at tile
+  size), never displayed wider than the source's real resolution
+  (inline native-size cap on every image).
+- Product detail photo sits on a light-grey stage at ~78vh, capped at
+  native size, never a white rectangle on black; tap opens the full
+  image in the lightbox.
 - Only 28 products have a real PKR price; the other 80 show
   "Price on request — confirmed on WhatsApp".
 - No specs table anywhere (the data contains no technical specs).
