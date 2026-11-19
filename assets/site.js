@@ -40,8 +40,10 @@ if(grid){
     var cards=Array.prototype.slice.call(grid.querySelectorAll('.card'));
     var b=brandSel?brandSel.value:'';
     var visible=cards.filter(function(c){var ok=!b||c.dataset.brand===b;c.style.display=ok?'':'none';return ok;});
-    var s=sortSel?sortSel.value:'name-asc';
-    visible.sort(function(a,c){
+    var s=sortSel?sortSel.value:'featured';
+    // 'featured' keeps the generator's order (drones are flagship-first
+    // like DJI); any other value re-sorts the visible cards.
+    if(s!=='featured')visible.sort(function(a,c){
       if(s==='name-asc')return a.dataset.name.localeCompare(c.dataset.name);
       if(s==='name-desc')return c.dataset.name.localeCompare(a.dataset.name);
       if(s==='price-asc'){var pa=parseFloat(a.dataset.price)||Infinity,pb=parseFloat(c.dataset.price)||Infinity;return pa-pb;}
@@ -55,8 +57,9 @@ if(grid){
   if(sortSel)sortSel.addEventListener('change',applyFilter);
   applyFilter();
 }
-// hero carousel: rotating stills, ~4.5s autoplay, crossfade, bottom-left
-// prev / current / next slide list; click a list name to jump; pause on hover.
+// hero carousel: rotating stills, ~5s autoplay, crossfade, bottom-left
+// prev / current / next slide list; click a list name to jump; pause on
+// real mouse hover only — touch never pauses (see below).
 var hc=document.getElementById('heroCarousel');
 if(hc){
   var hSlides=Array.prototype.slice.call(hc.querySelectorAll('.hero-slide'));
@@ -72,31 +75,53 @@ if(hc){
       hList[2].textContent=hSlides[next].dataset.name;hList[2].dataset.go=next;
     }
   }
-  function hStart(){hStop();hTimer=setInterval(function(){hGo(hIdx+1);},4500);}
+  function hStart(){hStop();hTimer=setInterval(function(){hGo(hIdx+1);},5000);}
   function hStop(){if(hTimer){clearInterval(hTimer);hTimer=null;}}
   hList.forEach(function(b){b.addEventListener('click',function(){hGo(parseInt(b.dataset.go,10));hStart();});});
-  hc.addEventListener('mouseenter',hStop);
-  hc.addEventListener('mouseleave',hStart);
+  hc.querySelectorAll('.hero-arrow').forEach(function(a){a.addEventListener('click',function(){hGo(hIdx+parseInt(a.dataset.dir,10));hStart();});});
+  // Pause ONLY on a real mouse hover. On touch screens a tap fires an
+  // emulated mouseenter with no matching mouseleave, which used to stop
+  // the autoplay forever after the first tap on the hero.
+  function hHover(e){if(e.pointerType==='mouse'){hStop();}}
+  function hUnhover(e){if(e.pointerType==='mouse'){hStart();}}
+  hc.addEventListener('pointerenter',hHover);
+  hc.addEventListener('pointerleave',hUnhover);
+  // Safety net: any touch end or scroll restarts autoplay, so a stray
+  // pause can never freeze the hero on a phone.
+  hc.addEventListener('touchend',hStart,{passive:true});
+  window.addEventListener('scroll',function(){if(!hTimer){hStart();}},{passive:true});
   document.addEventListener('visibilitychange',function(){if(document.hidden){hStop();}else{hStart();}});
   hGo(0);hStart();
 }
-// films carousel: centre card ~1230px, side cards peeking, ‹ › arrows.
+// films carousel: centre card ~1230px, side cards peeking, ‹ › arrows,
+// dot indicators below (DJI "Shot on").
 var fc=document.getElementById('filmsCarousel');
 if(fc){
   var fTrack=fc.querySelector('.films-track');
   var fCards=Array.prototype.slice.call(fTrack.querySelectorAll('.video-card'));
   var fIdx=0;
+  var fDotsWrap=document.createElement('div');
+  fDotsWrap.className='films-dots';
+  fCards.forEach(function(c,i){var d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Go to film '+(i+1));d.addEventListener('click',function(){fGo(i);});fDotsWrap.appendChild(d);});
+  fc.appendChild(fDotsWrap);
+  var fDots=Array.prototype.slice.call(fDotsWrap.querySelectorAll('button'));
   function fLayout(){
     var cardW=fCards[0].getBoundingClientRect().width+16;
     var wrapW=fc.getBoundingClientRect().width;
     var off=(wrapW-fCards[0].getBoundingClientRect().width)/2-fIdx*cardW;
     fTrack.style.transform='translateX('+off+'px)';
   }
-  function fGo(i){fIdx=(i+fCards.length)%fCards.length;fLayout();}
+  function fGo(i){fIdx=(i+fCards.length)%fCards.length;fLayout();fDots.forEach(function(d,j){d.classList.toggle('active',j===fIdx);});}
   fc.querySelector('.films-arrow.prev').addEventListener('click',function(){fGo(fIdx-1);});
   fc.querySelector('.films-arrow.next').addEventListener('click',function(){fGo(fIdx+1);});
   window.addEventListener('resize',fLayout);
   fLayout();
+}
+// back-to-top button
+var toTop=document.getElementById('toTop');
+if(toTop){
+  window.addEventListener('scroll',function(){toTop.classList.toggle('show',window.scrollY>600);},{passive:true});
+  toTop.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
 }
 // compare: add from product pages
 document.querySelectorAll('[data-compare]').forEach(function(b){

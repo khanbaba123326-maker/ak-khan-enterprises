@@ -56,11 +56,11 @@ h2{font-size:clamp(1.9rem,4vw,2.75rem)}
 .mega-prod:hover{color:var(--mut)}
 .mega-all{display:block;margin-top:10px;font-size:.85rem;font-weight:700;color:var(--ink)}
 body.no-hero main{padding-top:64px}
-/* hero — DJI ratio 2.34:1 at desktop (1919x820). aspect-ratio lives ONLY in
+/* hero — DJI ratio ~2.18:1 at desktop (1919x880). aspect-ratio lives ONLY in
    the desktop media query: at mobile widths the 520px min-height would
-   otherwise force width = 520 x 2.34 = 1217px and overflow the viewport. */
+   otherwise force width = 520 x 2.18 = 1134px and overflow the viewport. */
 .hero{position:relative;min-height:520px;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center}
-@media(min-width:1101px){.hero{aspect-ratio:2.34/1;min-height:0}}
+@media(min-width:1101px){.hero{aspect-ratio:2.18/1;min-height:0}}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.18) 45%,rgba(0,0,0,.45))}
 .hero-content{position:relative;max-width:1100px;margin:0 auto;padding:130px 20px 90px;width:100%}
 .hero-content .kicker{color:#d6d6d6}
@@ -95,8 +95,8 @@ body.no-hero main{padding-top:64px}
 .price-note{font-size:.85rem;color:var(--mut)}
 .more-link{display:inline-block;font-size:1rem;font-weight:600;color:var(--ink);padding:6px 0 2px}
 .more-link:hover{color:var(--mut)}
-.card-img{display:block;background:#ebebeb;aspect-ratio:4/3;overflow:hidden;padding:18px 22px 26px;flex:1;min-height:0}
-.card-img img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 18px 16px rgba(0,0,0,.18));transition:transform .4s}
+.card-img{background:#ebebeb;aspect-ratio:4/3;overflow:hidden;padding:0;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.card-img img{width:100%;height:100%;object-fit:cover;object-position:center;filter:drop-shadow(0 18px 16px rgba(0,0,0,.18));transition:transform .4s}
 .card:hover .card-img img{transform:scale(1.04)}
 .no-photo{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--grey);color:var(--mut);text-align:center;padding:24px}
 .no-photo span{font-size:1.05rem;font-weight:700;color:#555}
@@ -138,12 +138,21 @@ body.no-hero main{padding-top:64px}
 .why-col h3{font-size:1.75rem;margin-bottom:10px}
 .why-col p{color:#555;font-size:.98rem}
 .why-col .more-link{margin-top:12px}
-/* hero carousel (DJI): rotating stills, ~4.5s autoplay, crossfade,
-   bottom-left prev / current (bold + white bar) / next slide list. */
+/* hero carousel (DJI): rotating stills, ~5s autoplay, crossfade,
+   bottom-left prev / current (bold + white bar) / next slide list.
+   Text sits in the TOP third (DJI): huge THIN product name (~70px,
+   weight 200), bold tagline ~24-28px, two outline-white pills. */
 .hero-carousel{display:block;overflow:hidden;text-align:center}
-.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s ease;display:flex;align-items:center;justify-content:center}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s ease;display:flex;align-items:flex-start;justify-content:center}
 .hero-slide.active{opacity:1;z-index:1}
-.hero-slide .hero-content{padding:110px 20px 90px}
+.hero-slide .hero-content{padding:112px 20px 90px}
+.hero-slide h1{font-size:clamp(2.6rem,5vw,4.4rem);font-weight:200;text-transform:uppercase;letter-spacing:.01em}
+.hero-slide .hero-sub{font-size:clamp(1.4rem,2vw,1.75rem);font-weight:700}
+.hero-slide.strong .hero-overlay{background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.32) 45%,rgba(0,0,0,.6))}
+.hero-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:6;background:none;color:#fff;border:0;width:64px;height:96px;font-size:3.4rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;text-shadow:0 2px 14px rgba(0,0,0,.6);opacity:.9}
+.hero-arrow:hover{opacity:1}
+.hero-arrow.prev{left:8px}
+.hero-arrow.next{right:8px}
 .hero-list{position:absolute;left:48px;bottom:28px;z-index:5;display:flex;flex-direction:column;gap:8px;text-align:left}
 .hero-list button{background:none;border:0;cursor:pointer;color:rgba(255,255,255,.65);font-size:14px;font-family:inherit;padding:2px 0 2px 16px;position:relative;text-align:left}
 .hero-list button.current{color:#fff;font-weight:700}
@@ -209,18 +218,23 @@ body.no-hero main{padding-top:64px}
 .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:0 0 26px}
 .toolbar select,.toolbar input[type=search]{padding:11px 14px;border:1px solid var(--line);border-radius:999px;font-size:.95rem;font-family:inherit;background:#fff}
 .toolbar .count{margin-left:auto;color:var(--mut);font-size:.92rem}
-/* product subnav — second sticky black bar (DJI-style) */
+/* product subnav — second sticky black bar (DJI-style), 48px */
 .subnav{position:sticky;top:64px;z-index:90;background:#000;color:#fff}
-.subnav-inner{max-width:1280px;margin:0 auto;padding:0 20px;height:64px;display:flex;align-items:center;gap:22px}
+.subnav-inner{max-width:1280px;margin:0 auto;padding:0 20px;height:48px;display:flex;align-items:center;gap:22px}
 .subnav-name{font-weight:800;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .subnav-links{display:flex;gap:22px;margin-left:auto}
 .subnav-links a{font-size:.92rem;color:#cfcfcf}
 .subnav-links a:hover{color:#fff}
 .subnav .btn{padding:8px 16px;font-size:.88rem;margin-left:4px;flex:none}
-/* product detail — black hero, one huge studio shot */
+/* product detail — black hero, one huge studio shot on a light-grey stage
+   (audit P3 #12: ~78vh; #10: never wider than native — the img carries an
+   inline max-width cap. White-background JPEGs sit on light grey, never
+   as a white rectangle on black; the full image opens on tap via the
+   existing lightbox). */
 .detail-hero{background:#000;color:#fff;text-align:center;padding:64px 20px 0}
 .detail-hero .kicker{color:#9a9a9a}
 .detail-hero h1{margin:12px auto 0;max-width:22ch}
+.detail-hero h1.dji-name{text-transform:uppercase;font-weight:200}
 .detail-hero .tagline{font-size:clamp(1.05rem,2vw,1.25rem);font-weight:600;color:#d6d6d6;margin:14px auto 0;max-width:56ch}
 .detail-hero .price{font-size:1.5rem;margin-top:18px}
 .detail-hero .price .was{color:#9a9a9a}
@@ -228,8 +242,8 @@ body.no-hero main{padding-top:64px}
 .detail-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:24px 0 0}
 .detail-actions .btn{min-width:200px}
 .detail-hero .confirm-note{color:#9a9a9a;font-size:.92rem;margin-top:16px}
-.detail-photo-wrap{background:radial-gradient(ellipse 60% 55% at 50% 82%,rgba(255,255,255,.13),transparent 70%);padding:20px 0 0;cursor:zoom-in}
-.detail-photo-wrap img{margin:0 auto;max-height:64vh;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 24px 28px rgba(0,0,0,.55))}
+.detail-photo-wrap{background:#ebebeb;margin-top:48px;min-height:78vh;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:zoom-in}
+.detail-photo-wrap img{margin:0 auto;max-height:78vh;width:auto;max-width:100%;object-fit:contain}
 .detail-photo-wrap .zoom-hint{color:#767676;font-size:.85rem;padding:14px 0 26px}
 /* lightbox */
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;z-index:200;cursor:zoom-out}
@@ -262,10 +276,10 @@ body.no-hero main{padding-top:64px}
 .compare-picks select{flex:1 1 200px;min-width:0;max-width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:999px;font-size:.95rem}
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
 .reveal.visible{opacity:1;transform:none}
-#featured,#categories,#films,#why,#stories,#cta,#listing,#related-cats,#overview,#film,#about,#related,#innovation,#fields{scroll-margin-top:130px}
+#featured,#categories,#films,#why,#stories,#cta,#listing,#related-cats,#overview,#film,#about,#related,#innovation,#fields,#features,#compare,#endcard{scroll-margin-top:120px}
 /* footer — compact, tidy, no tall empty dark block */
 .site-footer{background:var(--black);color:#ddd;margin-top:0}
-.footer-inner{max-width:1280px;margin:0 auto;padding:44px 20px 28px;display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:32px}
+.footer-inner{max-width:1280px;margin:0 auto;padding:44px 20px 28px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1.4fr;gap:32px}
 .footer-inner h4{color:#fff;margin-bottom:12px}
 .footer-inner a{display:block;padding:3px 0;color:#bbb}
 .footer-inner a:hover{color:#fff}
@@ -303,14 +317,20 @@ body.no-hero main{padding-top:64px}
   .sec{padding:48px 0}
   .footer-inner{grid-template-columns:1fr}
   .hero{min-height:520px}
-  .hero-list{left:20px;bottom:20px}
+  /* Mobile hero is fully stacked (kicker, name, tagline, two full-width
+     pills) — the prev/current/next rail and the scroll arrow collide with
+     the pills, and mid-height chevrons flank the tagline like quotes.
+     Hide the rail + scroll hint; move the chevrons to the bottom corners
+     (clear photo band on every slide). Arrows + autoplay + swipe remain. */
+  .hero-list{display:none}
+  .hero-carousel .scroll-hint{display:none}
+  .hero-arrow{top:auto;bottom:14px;width:52px;height:64px;font-size:2.6rem}
   .grid,.grid-fullbleed,.video-grid,.why-grid,.cat-tiles,.contact-grid{grid-template-columns:1fr}
   .cat-tile.wide{grid-column:auto;min-height:340px}
   .hero-cta .btn,.detail-actions .btn{min-width:0;width:100%}
   .subnav-links{display:none}
   .feature-tile .f-body{padding:28px 24px}
   .feature-tile.wide .f-body{padding:28px 24px}
-  .card-img{padding:12px 16px 20px}
 }
 /* fix-pass additions: category-card WhatsApp pill row, footer social icons,
    drones series strip, support pill row, grey pill. */
@@ -320,11 +340,74 @@ body.no-hero main{padding-top:64px}
 .foot-social a{color:#fff;opacity:.85}
 .foot-social a:hover{opacity:1}
 .foot-social svg{width:22px;height:22px;display:block}
-.series-strip{background:#f2f3f5;padding:30px 0}
+.series-strip{background:#f2f3f5;padding:20px 0}
 .series-strip-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:center;gap:4px;flex-wrap:wrap}
 .series-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 18px;color:#222;font-size:.9rem}
+.series-item img{width:56px;height:40px;object-fit:contain}
 .series-item svg{width:48px;height:32px}
 .series-item:hover{color:#000}
 .pill-row{display:flex;gap:10px;flex-wrap:wrap}
 .pill-row .btn{padding:9px 18px}
 .btn-grey{background:#f2f3f5;color:#111}
+/* "Shot on" (DJI): small, centred, white on black above the films carousel */
+.shot-on{font-size:1.35rem;font-weight:600;text-align:center;color:#fff}
+.shot-on-sub{text-align:center;color:#bdbdbd;margin-top:8px}
+/* films carousel dot indicators (DJI "Shot on") */
+.films-dots{display:flex;gap:8px;justify-content:center;margin-top:20px}
+.films-dots button{width:8px;height:8px;border-radius:50%;border:0;background:#5a5a5a;cursor:pointer;padding:0}
+.films-dots button.active{background:#fff}
+/* back-to-top (DJI floating button, bottom-right above the WhatsApp pill) */
+.to-top{position:fixed;right:18px;bottom:84px;z-index:150;width:48px;height:48px;border-radius:50%;border:0;background:#000;color:#fff;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.35);display:none;align-items:center;justify-content:center}
+.to-top.show{display:flex}
+.to-top svg{width:22px;height:22px}
+/* support head (DJI support is text-led): title + subtitle + search, no photo */
+.support-head{padding:110px 20px 48px;text-align:center}
+.support-head h1{font-size:clamp(2rem,4vw,3rem)}
+.support-head p{font-size:1.15rem;color:var(--mut);margin-top:10px}
+.support-head .support-search{border:1px solid var(--line)}
+.support-head .support-search input{color:var(--txt)}
+/* DJI product pages: 6-item spec strip on black, 2 rows x 3 */
+.dji-top{background:#000;color:#fff;padding:0 0 56px;text-align:center}
+.dji-intro-text{max-width:820px;margin:36px auto 0;padding:0 20px}
+.dji-intro-text h2{font-size:clamp(1.5rem,3vw,2.1rem);margin-bottom:12px}
+.dji-intro-text p{color:#cfcfcf;font-size:1.08rem}
+.spec-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 24px;max-width:960px;margin:0 auto;padding:56px 20px 8px;text-align:center}
+.spec-strip .spec{font-size:1.02rem;font-weight:600;color:#e8e8e8;line-height:1.45}
+.spec-strip .spec small{color:#9a9a9a}
+.price-line{font-size:1.25rem;font-weight:800;margin-top:22px}
+.price-line span{font-size:.95rem;color:#9a9a9a;font-weight:400}
+/* DJI feature sections (black, stacked, headings in DJI's order) */
+.dji-features{background:#000;color:#fff}
+.dji-features .feat{max-width:820px;margin:0 auto;padding:34px 20px;border-top:1px solid #222;text-align:center}
+.dji-features .feat:first-child{border-top:0}
+.dji-features .feat h3{font-size:clamp(1.5rem,3vw,2.1rem);margin-bottom:12px}
+.dji-features .feat p{color:#cfcfcf;font-size:1.02rem;max-width:70ch;margin:0 auto 10px}
+.dji-features .feat p:last-child{margin-bottom:0}
+.feat-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.feat-chips span{border:1px solid #444;border-radius:999px;padding:7px 16px;font-size:.92rem;color:#e8e8e8}
+.feat-items{text-align:left;max-width:760px;margin:18px auto 0;display:grid;gap:14px}
+.feat-items h4{font-size:1.05rem;margin-bottom:4px}
+.feat-items p{color:#bdbdbd!important;font-size:.97rem}
+.feat-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1100px;margin:0 auto;padding:34px 20px}
+.feat-quotes blockquote{border:1px solid #2a2a2a;padding:24px;text-align:left}
+.feat-quotes .q-eye{color:#9a9a9a;text-transform:uppercase;letter-spacing:.16em;font-size:.75rem;font-weight:700}
+.feat-quotes h4{margin:8px 0 10px;font-size:1.15rem}
+.feat-quotes p{color:#cfcfcf;font-size:.97rem}
+.dji-features .feat-note{color:#9a9a9a!important;font-size:.9rem}
+.dji-footnote{max-width:820px;margin:0 auto;padding:30px 20px 8px;color:#9a9a9a;font-size:.9rem;text-align:center}
+/* DJI end card: tagline + spec recap + price + WhatsApp */
+.end-card{background:#000;color:#fff;text-align:center;padding:64px 20px;border-top:1px solid #222}
+.end-card h2{font-size:clamp(1.9rem,4vw,2.75rem);margin-bottom:8px}
+.end-card .end-specs{color:#bdbdbd;max-width:60ch;margin:12px auto 0;font-size:1rem}
+.end-card .price-line{margin-top:20px}
+.end-card .btn{margin-top:22px}
+/* drones featured banner (DJI Camera Drones Flip banner, framed/inset):
+   light-grey gradient, text top-centre, product photo bottom-centre */
+.featured-banner{margin:0 16px;background:linear-gradient(180deg,#f4f5f7,#e7e8ea);text-align:center;padding:44px 20px 0;overflow:hidden}
+.featured-banner .kicker{color:var(--mut)}
+.featured-banner h2{font-size:clamp(2rem,4.5vw,3.5rem);font-weight:200;text-transform:uppercase;margin:10px 0 6px}
+.featured-banner .fb-tag{font-size:clamp(1.15rem,2vw,1.4rem);font-weight:700;color:var(--ink)}
+.featured-banner .fb-cta{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:22px}
+.featured-banner img{margin:26px auto 0;width:min(600px,88vw);height:auto}
+@media(max-width:900px){.feat-quotes{grid-template-columns:1fr}.spec-strip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh}}

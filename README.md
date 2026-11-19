@@ -14,11 +14,30 @@ to rebuild. Byte-reproducible: run twice, second run produces zero diff.
 - WhatsApp-only ordering (wa.me/923067000682). No cart, checkout or admin.
 - Images are embedded as base64 data URIs (GitHub snapshot pushes are
   text-only); the logo SVGs are real files.
+- Homepage hero: 4 rotating stills with DJI's exact slide copy, 5s
+  autoplay, text in the top third, outline-white pills, edge ‹ ›
+  arrows. No Security Cameras slide (its photo was a deleted generic
+  stock image, 2.04x upscaled).
+- DJI product pages (Mavic 3 Pro, Air 3S, Mini 4 Pro): DJI's exact hero
+  copy, 6-item spec strip, verbatim intro, DJI feature sections in order
+  (heading-only where DJI's copy is unverified — nothing invented), price
+  under the spec strip, end card. Other products keep the shop's own copy.
+- Drones listing: "Camera Drones" head (DJI's exact subhead),
+  flagship-first order, series strip with real product thumbnails,
+  framed Mini 4 Pro banner, "Which camera drone is suitable for you?"
+  comparison table (verified DJI values + our real PKR prices, never
+  DJI USD prices).
+- Category heads are text-led (no banner) except drones, which has the
+  native-wide 2560x684 DJI flight frame. Support is photo-less, text-led.
 - Tiles are DJI-style: 2 large per row, pale-grey (#f2f3f5) panels, text
   centred at the top, one quiet "Learn more" link per card, photo fills
-  the tile on grey with a soft drop shadow. Cards use the FULL product
-  image (sharper than the 400px thumb at tile size), never upscaled
-  beyond the source's real resolution.
+  the tile (cover, no side padding) on grey with a soft drop shadow.
+  Cards use the FULL product image (sharper than the 400px thumb at tile
+  size), never displayed wider than the source's real resolution
+  (inline native-size cap on every image).
+- Product detail photo sits on a light-grey stage at ~78vh, capped at
+  native size, never a white rectangle on black; tap opens the full
+  image in the lightbox.
 - Only 28 products have a real PKR price; the other 80 show
   "Price on request — confirmed on WhatsApp".
 - No specs table anywhere (the data contains no technical specs).
