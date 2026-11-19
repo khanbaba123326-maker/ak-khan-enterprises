@@ -59,11 +59,13 @@ def _b64(data: bytes) -> str:
     return "data:image/jpeg;base64," + base64.b64encode(data).decode()
 
 def hero_uri(name: str) -> str:
-    """Hero image as data URI (max 1200px wide = source resolution, q70)."""
+    """Hero image as data URI (max 2560px wide = DJI @1x, q70). Never upscale
+    beyond the source's real resolution; the 1919px hero must never stretch
+    a smaller image."""
     p = STAGING / "images" / "hero" / name
     im = Image.open(p).convert("RGB")
-    if im.width > 1200:
-        im = im.resize((1200, round(im.height * 1200 / im.width)), Image.LANCZOS)
+    if im.width > 2560:
+        im = im.resize((2560, round(im.height * 2560 / im.width)), Image.LANCZOS)
     buf = io.BytesIO()
     im.save(buf, "JPEG", quality=70, optimize=True)
     return _b64(buf.getvalue())
@@ -369,7 +371,7 @@ body.no-hero main{padding-top:64px}
    otherwise force width = 520 x 2.34 = 1217px and overflow the viewport. */
 .hero{position:relative;min-height:520px;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center}
 @media(min-width:1101px){.hero{aspect-ratio:2.34/1;min-height:0}}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.35) 45%,rgba(0,0,0,.65))}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.18) 45%,rgba(0,0,0,.45))}
 .hero-content{position:relative;max-width:1100px;margin:0 auto;padding:130px 20px 90px;width:100%}
 .hero-content .kicker{color:#d6d6d6}
 .hero-content h1{max-width:22ch;margin:14px auto 0}
@@ -453,7 +455,7 @@ body.no-hero main{padding-top:64px}
 .hero-slide.active{opacity:1;z-index:1}
 .hero-slide .hero-content{padding:110px 20px 90px}
 .hero-list{position:absolute;left:48px;bottom:28px;z-index:5;display:flex;flex-direction:column;gap:8px;text-align:left}
-.hero-list button{background:none;border:0;cursor:pointer;color:rgba(255,255,255,.65);font-size:.95rem;font-family:inherit;padding:2px 0 2px 16px;position:relative;text-align:left}
+.hero-list button{background:none;border:0;cursor:pointer;color:rgba(255,255,255,.65);font-size:14px;font-family:inherit;padding:2px 0 2px 16px;position:relative;text-align:left}
 .hero-list button.current{color:#fff;font-weight:700}
 .hero-list button.current::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:3px;background:#fff}
 .hero-list button:hover{color:#fff}
@@ -822,7 +824,7 @@ def build_index():
         {"img": hero_uri('cctv-hi.jpg'), "kicker": "AK Khan Enterprises \u00b7 Quetta",
          "title": "Security Cameras", "sub": "CCTV cameras, NVRs and video servers.",
          "cta_href": "categories/cctv.html", "wa": wa_link()},
-        {"img": hero_uri('shot-canyon.jpg'), "kicker": "AK Khan Enterprises \u00b7 Quetta",
+        {"img": hero_uri('from-air.jpg'), "kicker": "AK Khan Enterprises \u00b7 Quetta",
          "title": "From the Air", "sub": "Aerial perspectives from the DJI range — the drone photography our customers create with these aircraft.",
          "cta_href": "explore.html", "wa": wa_link()},
     ]
@@ -1252,8 +1254,8 @@ to rebuild. Byte-reproducible: run twice, second run produces zero diff.
 - Only 28 products have a real PKR price; the other 80 show
   "Price on request — confirmed on WhatsApp".
 - No specs table anywhere (the data contains no technical specs).
-- Product 89 (Dahua 4K IR ePoE Mini Dome) has no photo — its page says so
-  honestly instead of borrowing another product's photo.
+- Product 89 (Dahua 4K IR ePoE Mini Dome) shows the verified N84CL52 photo
+  (official Dahua datasheet).
 - Only the 11 verified DJI YouTube films are embedded, via a sharp
   maxresdefault thumbnail facade (click loads the player). The DJI Mini 3
   film (48_kEK9iFKU) is private and is never embedded.

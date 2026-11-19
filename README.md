@@ -22,8 +22,8 @@ to rebuild. Byte-reproducible: run twice, second run produces zero diff.
 - Only 28 products have a real PKR price; the other 80 show
   "Price on request — confirmed on WhatsApp".
 - No specs table anywhere (the data contains no technical specs).
-- Product 89 (Dahua 4K IR ePoE Mini Dome) has no photo — its page says so
-  honestly instead of borrowing another product's photo.
+- Product 89 (Dahua 4K IR ePoE Mini Dome) shows the verified N84CL52 photo
+  (official Dahua datasheet).
 - Only the 11 verified DJI YouTube films are embedded, via a sharp
   maxresdefault thumbnail facade (click loads the player). The DJI Mini 3
   film (48_kEK9iFKU) is private and is never embedded.
