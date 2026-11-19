@@ -31,7 +31,31 @@ function openLB(src,alt){if(!lb)return;lb.querySelector('img').src=src;lb.queryS
 function closeLB(){if(!lb)return;lb.classList.remove('open');lb.classList.remove('zoomed');document.body.style.overflow='';}
 if(lb){lb.addEventListener('click',function(e){if(e.target.tagName==='IMG'){lb.classList.toggle('zoomed');}else{closeLB();}});document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLB();});}
 var dp=document.getElementById('detailPhoto');
-if(dp){dp.addEventListener('click',function(){openLB(dp.querySelector('img').src,dp.querySelector('img').alt);});}
+if(dp&&!document.getElementById('galleryMain')){dp.addEventListener('click',function(){openLB(dp.querySelector('img').src,dp.querySelector('img').alt);});}
+// product gallery: switch the main image + active thumb/dot; the
+// lightbox opens the CURRENTLY shown image. Thumbs carry data-full for
+// extras (their base64 data URIs) — the primary image's data URI is
+// never copied into an attribute (it is read once from the main img's src).
+var gm=document.getElementById('galleryMain');
+if(gm){
+  var gThumbs=Array.prototype.slice.call(document.querySelectorAll('.g-thumb'));
+  var gDots=Array.prototype.slice.call(document.querySelectorAll('.g-dot'));
+  var gSrcs=gThumbs.map(function(t,i){return i===0?gm.src:(t.getAttribute('data-full')||gm.src);});
+  var gIdx=0;
+  function gShow(i){
+    gIdx=(i+gSrcs.length)%gSrcs.length;
+    gm.src=gSrcs[gIdx];
+    var cap=gThumbs[gIdx].getAttribute('data-cap');
+    if(cap){gm.style.cssText=cap;}
+    gm.alt=gThumbs[gIdx].getAttribute('data-alt')||gm.alt;
+    gThumbs.forEach(function(t,j){t.classList.toggle('active',j===gIdx);});
+    gDots.forEach(function(d,j){d.classList.toggle('active',j===gIdx);});
+  }
+  gThumbs.forEach(function(t,i){t.addEventListener('click',function(e){e.stopPropagation();gShow(i);});});
+  gDots.forEach(function(d,i){d.addEventListener('click',function(e){e.stopPropagation();gShow(i);});});
+  document.querySelectorAll('.g-arrow').forEach(function(a){a.addEventListener('click',function(e){e.stopPropagation();gShow(gIdx+parseInt(a.getAttribute('data-dir'),10));});});
+  gm.addEventListener('click',function(){openLB(gm.src,gm.alt);});
+}
 // category filter + sort
 var grid=document.getElementById('catGrid');
 if(grid){
