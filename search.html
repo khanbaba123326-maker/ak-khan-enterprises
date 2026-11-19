@@ -6,13 +6,13 @@
 <title>Search — AK Khan Enterprises</title>
 <meta name="description" content="Search all 108 products at AK Khan Enterprises, Quetta — by name, brand or category.">
 <link rel="stylesheet" href="assets/style.css">
-<link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml">
+<link rel="icon" href="assets/logo-mark-black.svg" type="image/svg+xml">
 
 </head>
 <body>
-<header class="site-header">
+<header class="site-header" id="siteHeader">
   <div class="header-inner">
-    <a class="brand" href="index.html"><img src="assets/logo-mark.svg" alt="AK Khan Enterprises — gold AK monogram" class="logo"><span class="brand-text"><strong>AK KHAN</strong><em>ENTERPRISES</em></span></a>
+    <a class="brand" href="index.html"><img src="assets/logo-mark-white.svg" alt="AK Khan Enterprises" class="logo logo-w"><img src="assets/logo-mark-black.svg" alt="AK Khan Enterprises" class="logo logo-b"><span class="brand-text"><strong>AK KHAN</strong><em>ENTERPRISES</em></span></a>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
     <nav class="main-nav" id="mainNav" aria-label="Main navigation">
       <div class="nav-item has-mega"><button class="nav-link" aria-haspopup="true">Shop</button>
@@ -39,14 +39,13 @@
 <script src="assets/search-data.js"></script>
 <script>
 var input=document.getElementById('searchInput'),res=document.getElementById('searchResults'),cnt=document.getElementById('searchCount');
-function waMsg(n){return 'https://wa.me/923067000682?text='+encodeURIComponent('Assalam-o-Alaikum! I am interested in '+n+'. Please share its current price, availability and complete details.');}
 function run(){
   var q=input.value.trim().toLowerCase();
   var list=window.AK_PRODUCTS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>-1||p.brand.toLowerCase().indexOf(q)>-1||p.cat.toLowerCase().indexOf(q)>-1||p.tag.toLowerCase().indexOf(q)>-1;});
-  cnt.textContent=list.length+' product'+(list.length===1?'':'s')+(q?' for “'+input.value.trim()+'”':'');
+  cnt.textContent=list.length+' product'+(list.length===1?'':'s')+(q?' for \u201c'+input.value.trim()+'\u201d':'');
   res.innerHTML=list.map(function(p){
-    var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy">':'<div class="no-photo">Photo coming soon</div>';
-    return '<article class="card"><a class="card-img" href="products/'+p.slug+'.html">'+img+'</a><div class="card-body"><p class="card-cat">'+p.brand+' &middot; '+p.cat+'</p><h3><a href="products/'+p.slug+'.html">'+p.name+'</a></h3><p class="card-tag">'+p.tag+'</p><p class="price">'+(p.price==='Price on request'?'<span class="price por">Price on request</span>':p.price)+'</p><div class="card-actions"><a class="btn btn-dark" href="products/'+p.slug+'.html">View Details</a><a class="btn btn-wa" href="'+waMsg(p.name)+'" target="_blank" rel="noopener">WhatsApp Inquiry</a></div></div></article>';
+    var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy">':'<div class="no-photo"><span>Photo coming soon</span></div>';
+    return '<article class="card"><div class="card-body"><p class="card-cat">'+p.brand+' &middot; '+p.cat+'</p><h3><a href="products/'+p.slug+'.html">'+p.name+'</a></h3><p class="card-tag">'+p.tag+'</p><p class="price">'+(p.price==='Price on request'?'<span class="price por">Price on request</span>':p.price)+'</p><a class="more-link" href="products/'+p.slug+'.html">Learn more &rsaquo;</a></div><a class="card-img" href="products/'+p.slug+'.html">'+img+'</a></article>';
   }).join('')||'<p>No products match that search. Try a brand name such as Dahua, DJI or Audionic.</p>';
 }
 input.addEventListener('input',run);document.getElementById('searchBtn').addEventListener('click',run);run();
@@ -56,7 +55,7 @@ input.addEventListener('input',run);document.getElementById('searchBtn').addEven
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="foot-brand">
-      <img src="assets/logo-mark.svg" alt="AK Khan Enterprises logo" class="logo">
+      <img src="assets/logo-mark-white.svg" alt="AK Khan Enterprises" class="logo">
       <p><strong>AK KHAN ENTERPRISES</strong></p>
       <p>Your One-Stop ELECTRONICS &amp; SECURITY SOLUTION IN QUETTA</p>
       <p>Trusted since 2015.</p>
@@ -76,8 +75,8 @@ input.addEventListener('input',run);document.getElementById('searchBtn').addEven
       <p>Faiz Muhammad Street, Liaqat Bazar, Quetta</p>
       <p>WhatsApp: <a href="https://wa.me/923067000682?text=Assalam-o-Alaikum%21%20I%20would%20like%20to%20ask%20about%20a%20product%20at%20AK%20Khan%20Enterprises." target="_blank" rel="noopener">0306-7000682</a></p>
       <p>Email: <a href="mailto:akkhanenterprises682@gmail.com">akkhanenterprises682@gmail.com</a></p>
-      <p><a href="https://www.instagram.com/ak_khan682" target="_blank" rel="noopener">Instagram @ak_khan682</a><br>
-      <a href="https://www.instagram.com/akkhan.enterprises" target="_blank" rel="noopener">Instagram @akkhan.enterprises</a><br>
+      <p><a href="https://www.instagram.com/ak_khan682" target="_blank" rel="noopener">Instagram @ak_khan682</a>
+      <a href="https://www.instagram.com/akkhan.enterprises" target="_blank" rel="noopener">Instagram @akkhan.enterprises</a>
       <a href="https://www.facebook.com/61595712927205" target="_blank" rel="noopener">Facebook</a></p>
     </div>
   </div>
@@ -87,7 +86,7 @@ input.addEventListener('input',run);document.getElementById('searchBtn').addEven
     <p class="foot-note">Orders are taken on WhatsApp only. There is no online checkout on this website.</p>
   </div>
 </footer>
-<a class="wa-float" href="https://wa.me/923067000682?text=Assalam-o-Alaikum%21%20I%20would%20like%20to%20ask%20about%20a%20product%20at%20AK%20Khan%20Enterprises." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><span>WhatsApp</span></a>
+<a class="wa-float" href="https://wa.me/923067000682?text=Assalam-o-Alaikum%21%20I%20would%20like%20to%20ask%20about%20a%20product%20at%20AK%20Khan%20Enterprises." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4 0-.5.1-.7l.4-.5c.1-.2.1-.3 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.9 2.9 4.5 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3z"/></svg><span>WhatsApp</span></a>
 <script src="assets/site.js"></script>
 </body>
 </html>

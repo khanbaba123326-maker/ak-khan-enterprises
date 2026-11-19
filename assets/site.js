@@ -1,10 +1,30 @@
 
+// header: transparent over the hero, solid white on scroll; solid from the
+// start on pages without a hero.
+var header=document.getElementById('siteHeader');
+function headerState(){
+  if(!header)return;
+  if(!document.querySelector('.hero')){header.classList.add('solid');document.body.classList.add('no-hero');return;}
+  header.classList.toggle('solid',window.scrollY>10);
+}
+window.addEventListener('scroll',headerState,{passive:true});
+headerState();
 // mobile menu
 var btn=document.getElementById('menuBtn'),nav=document.getElementById('mainNav');
 if(btn&&nav){btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false');});}
 // scroll reveal
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:.12});
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+// video facade: sharp maxresdefault thumbnail; click loads the real player.
+document.querySelectorAll('.video-thumb').forEach(function(t){
+  t.addEventListener('click',function(){
+    var vid=t.dataset.vid,title=t.dataset.title||'Video';
+    var f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+vid+'?autoplay=1';
+    f.title=title;f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
 // lightbox (product photo)
 var lb=document.getElementById('lightbox');
 function openLB(src,alt){if(!lb)return;lb.querySelector('img').src=src;lb.querySelector('img').alt=alt||'';lb.classList.add('open');document.body.style.overflow='hidden';}
@@ -41,6 +61,6 @@ document.querySelectorAll('[data-compare]').forEach(function(b){
     var slug=b.dataset.compare, list=[];
     try{list=JSON.parse(localStorage.getItem('akCompare')||'[]');}catch(e){list=[];}
     if(list.indexOf(slug)===-1){if(list.length>=3){alert('Compare holds up to 3 products. Remove one on the Compare page first.');return;}list.push(slug);localStorage.setItem('akCompare',JSON.stringify(list));}
-    b.textContent='Added to compare ✓';
+    b.textContent='Added to compare';
   });
 });
