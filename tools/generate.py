@@ -459,7 +459,12 @@ def related(p, n=4):
 # never upscaled beyond its real resolution by the generator.
 def card(p, depth="", buy=False):
     if p.get("photo_full"):
-        thumb = (f'<img src="{img_uri(p["photo_full"])}" alt="{esc(p["name"])}" loading="lazy" style="{img_cap(p["photo_full"])}">')
+        # Tile fit (showpiece law): landscape shots fill the tile edge-to-edge
+        # (cover); square/tall shots show the WHOLE product (contain) so a
+        # dome/router is never cropped into a giant partial product.
+        _w, _h = native_size(p["photo_full"])
+        _fit = "cover" if _w / _h >= 1.3 else "contain"
+        thumb = (f'<img src="{img_uri(p["photo_full"])}" alt="{esc(p["name"])}" loading="lazy" style="{img_cap(p["photo_full"])};object-fit:{_fit}">')
     else:
         thumb = ('<div class="no-photo"><span>Photo on request</span>'
                  '<small>Ask on WhatsApp and the shop will send a photo of the exact unit in stock.</small></div>')
@@ -767,7 +772,7 @@ body.no-hero main{padding-top:64px}
 .price-note{font-size:.85rem;color:var(--mut)}
 .more-link{display:inline-block;font-size:1rem;font-weight:600;color:var(--ink);padding:6px 0 2px}
 .more-link:hover{color:var(--mut)}
-.card-img{background:#ebebeb;aspect-ratio:4/3;overflow:hidden;padding:0;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.card-img{background:#fff;aspect-ratio:4/3;overflow:hidden;padding:0;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
 .card-img img{width:100%;height:100%;object-fit:cover;object-position:center;filter:drop-shadow(0 18px 16px rgba(0,0,0,.18));transition:transform .4s}
 .card:hover .card-img img{transform:scale(1.04)}
 .no-photo{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--grey);color:var(--mut);text-align:center;padding:24px}
