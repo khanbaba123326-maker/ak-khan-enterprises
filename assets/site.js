@@ -55,6 +55,49 @@ if(grid){
   if(sortSel)sortSel.addEventListener('change',applyFilter);
   applyFilter();
 }
+// hero carousel: rotating stills, ~4.5s autoplay, crossfade, bottom-left
+// prev / current / next slide list; click a list name to jump; pause on hover.
+var hc=document.getElementById('heroCarousel');
+if(hc){
+  var hSlides=Array.prototype.slice.call(hc.querySelectorAll('.hero-slide'));
+  var hList=hc.querySelectorAll('.hero-list button');
+  var hIdx=0,hTimer=null;
+  function hGo(i){
+    hIdx=(i+hSlides.length)%hSlides.length;
+    hSlides.forEach(function(s,j){s.classList.toggle('active',j===hIdx);});
+    var prev=(hIdx-1+hSlides.length)%hSlides.length,next=(hIdx+1)%hSlides.length;
+    if(hList.length===3){
+      hList[0].textContent=hSlides[prev].dataset.name;hList[0].dataset.go=prev;
+      hList[1].textContent=hSlides[hIdx].dataset.name;hList[1].dataset.go=hIdx;
+      hList[2].textContent=hSlides[next].dataset.name;hList[2].dataset.go=next;
+    }
+  }
+  function hStart(){hStop();hTimer=setInterval(function(){hGo(hIdx+1);},4500);}
+  function hStop(){if(hTimer){clearInterval(hTimer);hTimer=null;}}
+  hList.forEach(function(b){b.addEventListener('click',function(){hGo(parseInt(b.dataset.go,10));hStart();});});
+  hc.addEventListener('mouseenter',hStop);
+  hc.addEventListener('mouseleave',hStart);
+  document.addEventListener('visibilitychange',function(){if(document.hidden){hStop();}else{hStart();}});
+  hGo(0);hStart();
+}
+// films carousel: centre card ~1230px, side cards peeking, ‹ › arrows.
+var fc=document.getElementById('filmsCarousel');
+if(fc){
+  var fTrack=fc.querySelector('.films-track');
+  var fCards=Array.prototype.slice.call(fTrack.querySelectorAll('.video-card'));
+  var fIdx=0;
+  function fLayout(){
+    var cardW=fCards[0].getBoundingClientRect().width+16;
+    var wrapW=fc.getBoundingClientRect().width;
+    var off=(wrapW-fCards[0].getBoundingClientRect().width)/2-fIdx*cardW;
+    fTrack.style.transform='translateX('+off+'px)';
+  }
+  function fGo(i){fIdx=(i+fCards.length)%fCards.length;fLayout();}
+  fc.querySelector('.films-arrow.prev').addEventListener('click',function(){fGo(fIdx-1);});
+  fc.querySelector('.films-arrow.next').addEventListener('click',function(){fGo(fIdx+1);});
+  window.addEventListener('resize',fLayout);
+  fLayout();
+}
 // compare: add from product pages
 document.querySelectorAll('[data-compare]').forEach(function(b){
   b.addEventListener('click',function(){
