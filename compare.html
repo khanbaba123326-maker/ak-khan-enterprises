@@ -48,7 +48,7 @@ function render(){
   if(!slugs.length){out.innerHTML='<p style="color:var(--mut)">Choose at least one product to compare.</p>';return;}
   var items=slugs.map(function(s){return window.AK_PRODUCTS.find(function(p){return p.slug===s;});}).filter(Boolean);
   var rows=[['Product',function(p){return '<a href="products/'+p.slug+'.html"><strong>'+p.name+'</strong></a>';}],
-    ['Photo',function(p){return p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'">':'Photo coming soon';}],
+    ['Photo',function(p){return p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'">':'Photo on request';}],
     ['Brand',function(p){return p.brand;}],['Category',function(p){return p.cat;}],
     ['Price',function(p){return p.price;}],['About',function(p){return p.tag;}],
     ['Enquire',function(p){return '<a class="btn btn-dark" href="https://wa.me/923067000682?text='+encodeURIComponent('Assalam-o-Alaikum! I am interested in '+p.name+'. Please share its current price, availability and complete details.')+'" target="_blank" rel="noopener">WhatsApp Inquiry</a>';}]];

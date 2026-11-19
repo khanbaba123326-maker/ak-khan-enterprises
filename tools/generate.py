@@ -120,7 +120,7 @@ def card(p, depth="", buy=False):
     if p.get("photo_full"):
         thumb = (f'<img src="{img_uri(p["photo_full"])}" alt="{esc(p["name"])}" loading="lazy">')
     else:
-        thumb = ('<div class="no-photo"><span>Photo coming soon</span>'
+        thumb = ('<div class="no-photo"><span>Photo on request</span>'
                  '<small>Ask on WhatsApp and the shop will send a photo of the exact unit in stock.</small></div>')
     if buy:
         cta = (f'<div class="card-cta"><a class="btn btn-dark" href="{wa_link(p["name"])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>'
@@ -925,7 +925,7 @@ def build_product(p):
         gallery = f"""<div class="detail-photo-wrap" id="detailPhoto"><img src="{img_uri(p['photo_full'])}" alt="{esc(p['name'])} — product photo"><p class="zoom-hint">Tap the photo to view fullscreen. Tap again to zoom.</p></div>"""
     else:
         gallery = ('<div class="detail-photo-wrap" style="cursor:default"><div class="no-photo" style="background:transparent;min-height:40vh;color:#bbb">'
-                   '<span style="color:#e0e0e0">Photo coming soon</span>'
+                   '<span style="color:#e0e0e0">Photo on request</span>'
                    '<small style="color:#9a9a9a">No photo of this exact unit is available yet. Ask on WhatsApp and the shop will send a photo of the exact unit in stock.</small></div></div>')
     rel = related(p)
     film_anchor = '<a href="#film">Film</a>' if p.get("video_ids") and any(v != FAILED_VIDEO and v in VID_TITLE for v in p["video_ids"]) else ""
@@ -1155,7 +1155,7 @@ function run(){
   var list=window.AK_PRODUCTS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>-1||p.brand.toLowerCase().indexOf(q)>-1||p.cat.toLowerCase().indexOf(q)>-1||p.tag.toLowerCase().indexOf(q)>-1;});
   cnt.textContent=list.length+' product'+(list.length===1?'':'s')+(q?' for \\u201c'+input.value.trim()+'\\u201d':'');
   res.innerHTML=list.map(function(p){
-    var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy">':'<div class="no-photo"><span>Photo coming soon</span></div>';
+    var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy">':'<div class="no-photo"><span>Photo on request</span></div>';
     return '<article class="card"><div class="card-body"><p class="card-cat">'+p.brand+' &middot; '+p.cat+'</p><h3><a href="products/'+p.slug+'.html">'+p.name+'</a></h3><p class="card-tag">'+p.tag+'</p><p class="price">'+(p.price==='Price on request'?'<span class="price por">Price on request</span>':p.price)+'</p><a class="more-link" href="products/'+p.slug+'.html">Learn more &rsaquo;</a></div><a class="card-img" href="products/'+p.slug+'.html">'+img+'</a></article>';
   }).join('')||'<p>No products match that search. Try a brand name such as Dahua, DJI or Audionic.</p>';
 }
@@ -1189,7 +1189,7 @@ function render(){
   if(!slugs.length){out.innerHTML='<p style="color:var(--mut)">Choose at least one product to compare.</p>';return;}
   var items=slugs.map(function(s){return window.AK_PRODUCTS.find(function(p){return p.slug===s;});}).filter(Boolean);
   var rows=[['Product',function(p){return '<a href="products/'+p.slug+'.html"><strong>'+p.name+'</strong></a>';}],
-    ['Photo',function(p){return p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'">':'Photo coming soon';}],
+    ['Photo',function(p){return p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'">':'Photo on request';}],
     ['Brand',function(p){return p.brand;}],['Category',function(p){return p.cat;}],
     ['Price',function(p){return p.price;}],['About',function(p){return p.tag;}],
     ['Enquire',function(p){return '<a class="btn btn-dark" href="https://wa.me/__WA_NUM__?text='+encodeURIComponent('Assalam-o-Alaikum! I am interested in '+p.name+'. Please share its current price, availability and complete details.')+'" target="_blank" rel="noopener">WhatsApp Inquiry</a>';}]];
