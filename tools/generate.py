@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""AK Khan Enterprises — static site generator.
+"""AK Khan Enterprises — static site generator (BLACK + WHITE DJI-style rebuild).
 
-Reads verified data from ~/workspace/ak-khan-github-site-staging/ and
-generates the complete static site into this folder (site root = parent of tools/).
-No invented specs, prices, warranties, reviews or availability anywhere.
-Images are embedded as base64 data URIs (GitHub snapshot pushes are text-only);
-the logo SVG stays a real file. Hero images are downscaled to max 1000px/q62
-to keep page sizes sane. Run: python3 tools/generate.py
+Reads verified data from ~/workspace/ak-khan-github-site-redesign/staging/
+and generates the complete static site into this folder (site root = parent
+of tools/). No invented specs, prices, warranties, reviews or availability
+anywhere. Images are embedded as base64 data URIs (GitHub snapshot pushes
+are text-only); the two black/white logo SVGs stay real files.
+Run: python3 tools/generate.py (byte-reproducible: run twice -> zero diff)
 """
 import base64, html, io, json, os, re, shutil, urllib.parse
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 SITE = HERE.parent
-STAGING = Path.home() / "workspace" / "ak-khan-github-site-staging"
+STAGING = Path.home() / "workspace" / "ak-khan-github-site-redesign" / "staging"
 
 WA_NUM = "923067000682"
 WA_DISPLAY = "0306-7000682"
@@ -58,13 +58,13 @@ def _b64(data: bytes) -> str:
     return "data:image/jpeg;base64," + base64.b64encode(data).decode()
 
 def hero_uri(name: str) -> str:
-    """Downscaled hero image as data URI (max 1000px wide, q62)."""
+    """Hero image as data URI (max 1200px wide = source resolution, q70)."""
     p = STAGING / "images" / "hero" / name
     im = Image.open(p).convert("RGB")
-    if im.width > 1000:
-        im = im.resize((1000, round(im.height * 1000 / im.width)), Image.LANCZOS)
+    if im.width > 1200:
+        im = im.resize((1200, round(im.height * 1200 / im.width)), Image.LANCZOS)
     buf = io.BytesIO()
-    im.save(buf, "JPEG", quality=62, optimize=True)
+    im.save(buf, "JPEG", quality=70, optimize=True)
     return _b64(buf.getvalue())
 
 def img_uri(rel: str) -> str:
@@ -88,6 +88,7 @@ def wa_link(product_name: str | None = None) -> str:
 def price_html(p) -> str:
     if p.get("price_pkr"):
         was = WAS.get(p["id"])
+        # explicit space before "was" (never "Rs 275,000was ...")
         was_html = f' <span class="was">was {fmt_pkr(was)}</span>' if was else ""
         return (f'<p class="price">{fmt_pkr(p["price_pkr"])}{was_html}</p>'
                 f'<p class="price-note">Today&rsquo;s price confirmed on WhatsApp.</p>')
@@ -110,25 +111,43 @@ def related(p, n=4):
                 and x["brand"] != p["brand"] and x["id"] != p["id"]]
     return (same_brand + same_cat)[:n]
 
+# DJI-style tile: pale-grey panel, text centred at the TOP only, photo fills
+# most of the tile below. One quiet text link per card — no repeated buttons.
+# Photo is the FULL image (sharper than the 400px thumb at tile size),
+# never upscaled beyond its real resolution by the generator.
 def card(p, depth=""):
-    thumb = (f'<img src="{img_uri(p["photo_thumb"])}" alt="{esc(p["name"])}" loading="lazy">'
-             if p.get("photo_thumb") else
-             '<div class="no-photo">Photo coming soon</div>')
+    if p.get("photo_full"):
+        thumb = (f'<img src="{img_uri(p["photo_full"])}" alt="{esc(p["name"])}" loading="lazy">')
+    else:
+        thumb = ('<div class="no-photo"><span>Photo coming soon</span>'
+                 '<small>Ask on WhatsApp and the shop will send a photo of the exact unit in stock.</small></div>')
     return f"""<article class="card" data-brand="{esc(p["brand"])}" data-name="{esc(p["name"].lower())}" data-price="{p["price_pkr"] or ''}">
-  <a class="card-img" href="{depth}{product_url(p)}" aria-label="{esc(p["name"])}">{thumb}</a>
   <div class="card-body">
     <p class="card-cat">{esc(p["brand"])} &middot; {esc(CATS[p["category"]]["label"])}</p>
     <h3><a href="{depth}{product_url(p)}">{esc(p["name"])}</a></h3>
     <p class="card-tag">{esc(p["tagline"])}</p>
     {price_html(p)}
-    <div class="card-actions">
-      <a class="btn btn-dark" href="{depth}{product_url(p)}">View Details</a>
-      <a class="btn btn-wa" href="{wa_link(p["name"])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>
-    </div>
+    <a class="more-link" href="{depth}{product_url(p)}">Learn more &rsaquo;</a>
   </div>
+  <a class="card-img" href="{depth}{product_url(p)}" aria-label="{esc(p["name"])}">{thumb}</a>
 </article>"""
 
 # ---------- chrome ----------
+# Inline-SVG line icons (replace the old ✓/✎/✆/⚑ text glyphs).
+ICON_CHECK = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/>'
+    '<path d="M8 12.5l2.6 2.6L16 9.5"/></svg>')
+ICON_GUIDE = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/>'
+    '<path d="M9.5 9.5l5 2-2 5-5-2z"/></svg>')
+ICON_CHAT = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/>'
+    '<path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg>')
+ICON_PIN = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/>'
+    '<circle cx="12" cy="10" r="2.6"/></svg>')
+ICON_WA = ('<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4 0-.5.1-.7l.4-.5c.1-.2.1-.3 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.9 2.9 4.5 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3z"/></svg>')
+
 def nav_links(depth):
     out = []
     for c in CAT_ORDER:
@@ -151,13 +170,13 @@ def chrome(depth, title, desc, body, extra_head=""):
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <link rel="stylesheet" href="{depth}assets/style.css">
-<link rel="icon" href="{depth}assets/logo-mark.svg" type="image/svg+xml">
+<link rel="icon" href="{depth}assets/logo-mark-black.svg" type="image/svg+xml">
 {extra_head}
 </head>
 <body>
-<header class="site-header">
+<header class="site-header" id="siteHeader">
   <div class="header-inner">
-    <a class="brand" href="{depth}index.html"><img src="{depth}assets/logo-mark.svg" alt="AK Khan Enterprises — gold AK monogram" class="logo"><span class="brand-text"><strong>AK KHAN</strong><em>ENTERPRISES</em></span></a>
+    <a class="brand" href="{depth}index.html"><img src="{depth}assets/logo-mark-white.svg" alt="AK Khan Enterprises" class="logo logo-w"><img src="{depth}assets/logo-mark-black.svg" alt="AK Khan Enterprises" class="logo logo-b"><span class="brand-text"><strong>AK KHAN</strong><em>ENTERPRISES</em></span></a>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
     <nav class="main-nav" id="mainNav" aria-label="Main navigation">
       <div class="nav-item has-mega"><button class="nav-link" aria-haspopup="true">Shop</button>
@@ -179,7 +198,7 @@ def chrome(depth, title, desc, body, extra_head=""):
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="foot-brand">
-      <img src="{depth}assets/logo-mark.svg" alt="AK Khan Enterprises logo" class="logo">
+      <img src="{depth}assets/logo-mark-white.svg" alt="AK Khan Enterprises" class="logo">
       <p><strong>AK KHAN ENTERPRISES</strong></p>
       <p>{esc(TAGLINE)}</p>
       <p>Trusted since 2015.</p>
@@ -199,8 +218,8 @@ def chrome(depth, title, desc, body, extra_head=""):
       <p>{esc(ADDRESS)}</p>
       <p>WhatsApp: <a href="{wa_link()}" target="_blank" rel="noopener">{WA_DISPLAY}</a></p>
       <p>Email: <a href="mailto:{EMAIL}">{EMAIL}</a></p>
-      <p><a href="{IG1}" target="_blank" rel="noopener">Instagram @ak_khan682</a><br>
-      <a href="{IG2}" target="_blank" rel="noopener">Instagram @akkhan.enterprises</a><br>
+      <p><a href="{IG1}" target="_blank" rel="noopener">Instagram @ak_khan682</a>
+      <a href="{IG2}" target="_blank" rel="noopener">Instagram @akkhan.enterprises</a>
       <a href="{FB_URL}" target="_blank" rel="noopener">Facebook</a></p>
     </div>
   </div>
@@ -210,17 +229,19 @@ def chrome(depth, title, desc, body, extra_head=""):
     <p class="foot-note">Orders are taken on WhatsApp only. There is no online checkout on this website.</p>
   </div>
 </footer>
-<a class="wa-float" href="{wa_link()}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><span>WhatsApp</span></a>
+<a class="wa-float" href="{wa_link()}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">{ICON_WA}<span>WhatsApp</span></a>
 <script src="{depth}assets/site.js"></script>
 </body>
 </html>
 """
 
 def hero_section(img, kicker, title, sub, cta=""):
+    # kicker is trusted internal copy and is inserted as-is so the real
+    # "·" character renders (never an escaped entity like &MIDDOT;).
     return f"""<section class="hero" style="background-image:url('{img}')">
   <div class="hero-overlay"></div>
   <div class="hero-content reveal">
-    <p class="kicker">{esc(kicker)}</p>
+    <p class="kicker">{kicker}</p>
     <h1>{esc(title)}</h1>
     <p class="hero-sub">{esc(sub)}</p>
     {cta}
@@ -234,147 +255,185 @@ def section_head(kicker, title, sub=""):
     return f'<div class="sec-head reveal"><p class="kicker">{esc(kicker)}</p><h2>{esc(title)}</h2>{s}</div>'
 
 def cta_band(depth):
-    return f"""<section class="cta-band reveal">
+    return f"""<section class="cta-band reveal" id="cta">
+  <div class="wrap">
   <h2>Found something you like?</h2>
   <p>Message the shop on WhatsApp — today&rsquo;s price, availability and complete details, confirmed personally.</p>
-  <a class="btn btn-gold btn-lg" href="{wa_link()}" target="_blank" rel="noopener">Chat on WhatsApp — {WA_DISPLAY}</a>
+  <a class="btn btn-light btn-lg" href="{wa_link()}" target="_blank" rel="noopener">Chat on WhatsApp &mdash; {WA_DISPLAY}</a>
   <p class="cta-addr">{esc(ADDRESS)} &middot; {EMAIL}</p>
+  </div>
 </section>"""
 
-# ---------- CSS ----------
+# ---------- CSS (black / white / grey only — DJI restraint) ----------
 CSS = """
-:root{--gold:#C9A227;--gold-l:#EED488;--gold-d:#9A7414;--black:#0b0b0c;--navy:#0A1A2F;--char:#17181a;--grey:#f4f4f2;--line:#e4e2dc;--mut:#66655f;--txt:#141414}
+:root{--black:#000;--ink:#111;--grey:#f2f3f5;--grey2:#eef0f2;--line:#e5e5e5;--mut:#767676;--txt:#111}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--txt);background:#fff;line-height:1.6;overflow-x:hidden}
 img{max-width:100%;height:auto;display:block}
 a{color:inherit;text-decoration:none}
 h1,h2,h3{line-height:1.15;font-weight:800;letter-spacing:-.02em}
-h1{font-size:clamp(2rem,6vw,4rem)}
-h2{font-size:clamp(1.6rem,4vw,2.5rem)}
-.kicker{color:var(--gold-d);text-transform:uppercase;letter-spacing:.22em;font-size:.75rem;font-weight:700}
-.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
-.sec{padding:64px 0}
+h1{font-size:clamp(2.25rem,5.5vw,3.5rem)}
+h2{font-size:clamp(1.9rem,4vw,2.75rem)}
+.kicker{color:var(--mut);text-transform:uppercase;letter-spacing:.22em;font-size:.78rem;font-weight:700}
+.wrap{max-width:1280px;margin:0 auto;padding:0 20px}
+.sec{padding:72px 0}
 .sec.dark{background:var(--black);color:#fff}
-.sec.navy{background:var(--navy);color:#fff}
 .sec.grey{background:var(--grey)}
-.sec-head{max-width:760px;margin:0 auto 40px;text-align:center}
-.sec-head h2{margin:8px 0 10px}
+.sec-head{max-width:760px;margin:0 auto 44px;text-align:center}
+.sec-head h2{margin:10px 0 12px}
 .sec-sub{color:var(--mut);font-size:1.05rem}
-.dark .sec-sub,.navy .sec-sub{color:#c9c9c9}
-/* header */
-.site-header{position:sticky;top:0;z-index:100;background:rgba(11,11,12,.97);color:#fff;backdrop-filter:blur(6px)}
-.header-inner{max-width:1280px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:24px}
+.dark .sec-sub{color:#bdbdbd}
+.dark .kicker{color:#9a9a9a}
+/* header — transparent over the hero, solid white on scroll (JS toggles .solid) */
+.site-header{position:fixed;top:0;left:0;right:0;z-index:100;background:transparent;color:#fff;transition:background .3s,color .3s,box-shadow .3s}
+.site-header.solid{background:#fff;color:var(--ink);box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.header-inner{max-width:1280px;margin:0 auto;padding:0 20px;height:64px;display:flex;align-items:center;gap:24px}
 .brand{display:flex;align-items:center;gap:10px}
-.logo{width:44px;height:32px}
+.logo{width:44px;height:36px}
+.logo-b{display:none}
+.site-header.solid .logo-b{display:block}
+.site-header.solid .logo-w{display:none}
 .brand-text{display:flex;flex-direction:column;line-height:1.05}
-.brand-text strong{font-size:1.05rem;letter-spacing:.08em}
-.brand-text em{font-style:normal;font-size:.62rem;letter-spacing:.34em;color:var(--gold-l)}
+.brand-text strong{font-size:1.05rem;letter-spacing:.08em;color:#fff}
+.brand-text em{font-style:normal;font-size:.62rem;letter-spacing:.34em;color:#cfcfcf}
+.site-header.solid .brand-text strong{color:var(--ink)}
+.site-header.solid .brand-text em{color:var(--mut)}
 .main-nav{margin-left:auto;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
-.nav-link{color:#eee;padding:10px 12px;font-size:.95rem;border:0;background:none;cursor:pointer;font-family:inherit}
-.nav-link:hover{color:var(--gold-l)}
-.nav-wa{color:#1d1d1d;background:linear-gradient(135deg,var(--gold-l),var(--gold) 55%,var(--gold-d));border-radius:999px;font-weight:700;padding:9px 16px}
-.nav-wa:hover{color:#000}
+.nav-link{color:#fff;padding:10px 12px;font-size:.95rem;border:0;background:none;cursor:pointer;font-family:inherit}
+.nav-link:hover{color:#bbb}
+.site-header.solid .nav-link{color:var(--ink)}
+.site-header.solid .nav-link:hover{color:var(--mut)}
+.nav-wa{color:#000!important;background:#fff;border-radius:999px;font-weight:700;padding:9px 16px}
+.nav-wa:hover{color:#000!important;opacity:.85}
+.site-header.solid .nav-wa{background:#000;color:#fff!important}
+.site-header.solid .nav-wa:hover{color:#fff!important;opacity:.85}
 .menu-btn{display:none;background:none;border:0;color:#fff;font-size:1.7rem;cursor:pointer;margin-left:auto}
+.site-header.solid .menu-btn{color:var(--ink)}
 .nav-item{position:relative}
-.mega-menu{position:absolute;left:50%;transform:translate(-50%,8px);top:100%;background:#fff;color:var(--txt);display:none;gap:0;width:min(860px,94vw);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.35);padding:22px;grid-template-columns:repeat(5,1fr)}
+.mega-menu{position:absolute;left:50%;transform:translate(-50%,8px);top:100%;background:#fff;color:var(--txt);display:none;gap:0;width:min(860px,94vw);border-radius:0;box-shadow:0 24px 60px rgba(0,0,0,.25);padding:22px;grid-template-columns:repeat(5,1fr)}
 .nav-item:hover .mega-menu,.nav-item:focus-within .mega-menu{display:grid}
 .mega-col{padding:0 12px;border-left:1px solid var(--line)}
 .mega-col:first-child{border-left:0}
-.mega-cat{font-weight:800;font-size:1rem;color:var(--gold-d)}
+.mega-cat{font-weight:800;font-size:1rem;color:var(--ink)}
 .mega-col p{font-size:.82rem;color:var(--mut);margin:6px 0 10px}
-.mega-prod{display:block;font-size:.86rem;padding:5px 0;border-top:1px solid #f0efe9}
-.mega-prod:hover{color:var(--gold-d)}
-.mega-all{display:block;margin-top:10px;font-size:.85rem;font-weight:700;color:var(--gold-d)}
-/* hero */
-.hero{position:relative;min-height:88vh;background-size:cover;background-position:center;display:flex;align-items:flex-end;color:#fff}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.55) 55%,rgba(0,0,0,.82))}
-.hero-content{position:relative;max-width:1200px;margin:0 auto;padding:90px 20px 110px;width:100%}
-.hero-content h1{max-width:16ch}
-.hero-content .kicker{color:var(--gold-l)}
-.hero-sub{max-width:56ch;margin:16px 0 26px;font-size:clamp(1rem,2vw,1.2rem);color:#eee}
-.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.mega-prod{display:block;font-size:.86rem;padding:5px 0;border-top:1px solid var(--grey2);color:var(--txt)}
+.mega-prod:hover{color:var(--mut)}
+.mega-all{display:block;margin-top:10px;font-size:.85rem;font-weight:700;color:var(--ink)}
+body.no-hero main{padding-top:64px}
+/* hero — full viewport, centred, still photo only (never video-only) */
+.hero{position:relative;min-height:100vh;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.35) 45%,rgba(0,0,0,.65))}
+.hero-content{position:relative;max-width:1100px;margin:0 auto;padding:130px 20px 90px;width:100%}
+.hero-content .kicker{color:#d6d6d6}
+.hero-content h1{max-width:22ch;margin:14px auto 0}
+.hero-sub{max-width:56ch;margin:18px auto 30px;font-size:clamp(1.05rem,2vw,1.25rem);font-weight:600;color:#eee}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.hero-cta .btn{min-width:200px}
 .scroll-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:#fff;font-size:1.4rem;opacity:.8}
-.hero.small{min-height:52vh}
-/* buttons */
+/* buttons — white pill on black, black pill on white; no colour anywhere */
 .btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:700;font-size:.95rem;text-align:center;border:1px solid transparent;cursor:pointer}
-.btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold) 55%,var(--gold-d));color:#161616}
 .btn-dark{background:var(--black);color:#fff}
 .btn-light{background:#fff;color:#111}
-.btn-wa{background:#25D366;color:#fff}
-.btn-outline{border-color:#fff;color:#fff}
+.btn-outline{border-color:#fff;color:#fff;background:transparent}
+.btn-outline:hover{background:rgba(255,255,255,.12)}
 .btn-lg{padding:15px 30px;font-size:1.05rem}
-/* cards */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
-.card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
-.card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.12)}
-.card-img{display:block;background:#faf9f6;aspect-ratio:4/3;overflow:hidden}
-.card-img img{width:100%;height:100%;object-fit:contain;transition:transform .4s}
-.card:hover .card-img img{transform:scale(1.06)}
-.card-body{padding:18px;display:flex;flex-direction:column;gap:8px;flex:1}
-.card-cat{font-size:.75rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold-d);font-weight:700}
-.card-body h3{font-size:1.08rem}
-.card-body h3 a:hover{color:var(--gold-d)}
-.card-tag{color:var(--mut);font-size:.92rem;flex:1}
-.price{font-size:1.25rem;font-weight:800}
-.price .was{font-size:.9rem;color:var(--mut);text-decoration:line-through;font-weight:400;margin-left:8px}
-.price.por{font-size:1.05rem;color:var(--gold-d)}
-.price-note{font-size:.82rem;color:var(--mut)}
-.card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.card-actions .btn{flex:1;padding:10px 8px;font-size:.88rem;white-space:nowrap}
+/* DJI tiles: 2 large per row, 16px gutters, no borders/shadows/radius */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{background:var(--grey);display:flex;flex-direction:column;overflow:hidden}
+.card-body{padding:30px 24px 8px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
+.card-cat{font-size:.78rem;text-transform:uppercase;letter-spacing:.16em;color:var(--mut);font-weight:700}
+.card-body h3{font-size:1.35rem}
+.card-body h3 a:hover{color:var(--mut)}
+.card-tag{color:var(--mut);font-size:.95rem;max-width:44ch}
+.price{font-size:1.3rem;font-weight:800}
+.price .was{font-size:.95rem;color:var(--mut);text-decoration:line-through;font-weight:400;margin-left:6px}
+.price.por{font-size:1.1rem}
+.price-note{font-size:.85rem;color:var(--mut)}
+.more-link{display:inline-block;font-size:1rem;font-weight:600;color:var(--ink);padding:6px 0 2px}
+.more-link:hover{color:var(--mut)}
+.card-img{display:block;background:var(--grey);aspect-ratio:4/3;overflow:hidden;padding:18px 22px 26px}
+.card-img img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 18px 16px rgba(0,0,0,.18));transition:transform .4s}
+.card:hover .card-img img{transform:scale(1.04)}
+.no-photo{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--grey);color:var(--mut);text-align:center;padding:24px}
+.no-photo span{font-size:1.05rem;font-weight:700;color:#555}
+.no-photo small{font-size:.88rem;max-width:34ch}
 /* editorial feature */
-.feature{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;border-radius:20px;overflow:hidden;margin-bottom:28px;background:#111;color:#fff}
-.feature.light{background:#fff;color:var(--txt);border:1px solid var(--line)}
-.feature .f-img{min-height:340px;background-size:cover;background-position:center}
-.feature .f-img img{width:100%;height:100%;object-fit:cover}
-.feature .f-body{padding:44px;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.feature{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;margin-bottom:16px;background:#000;color:#fff}
+.feature.light{background:var(--grey);color:var(--txt)}
+.feature .f-img{min-height:420px;background:#000;display:flex;align-items:center;justify-content:center}
+.feature.light .f-img{background:var(--grey)}
+.feature .f-img img{width:100%;height:100%;object-fit:contain}
+.feature .f-body{padding:56px 48px;display:flex;flex-direction:column;justify-content:center;gap:12px;align-items:flex-start}
 .feature.flip .f-img{order:2}
 .feature .f-body p{color:#cfcfcf}
 .feature.light .f-body p{color:var(--mut)}
-/* category tiles */
-.cat-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
-.cat-tile{position:relative;border-radius:16px;overflow:hidden;min-height:260px;display:flex;align-items:flex-end;color:#fff;background-size:cover;background-position:center}
-.cat-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.85))}
-.cat-tile div{position:relative;z-index:1;padding:20px}
-.cat-tile h3{font-size:1.25rem}
-.cat-tile p{font-size:.9rem;color:#ddd}
-/* video */
-.video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.video-card{background:#111;border-radius:14px;overflow:hidden;color:#fff}
+.feature .f-body h2{font-size:clamp(1.7rem,3.4vw,2.4rem)}
+.feature .f-body .kicker{color:#9a9a9a}
+.feature.light .f-body .kicker{color:var(--mut)}
+.feature .f-cta{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-top:8px}
+/* category tiles — 2 per row; first tile spans full width so 5 tiles fill the grid */
+.cat-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.cat-tile{position:relative;overflow:hidden;min-height:340px;display:flex;align-items:flex-end;color:#fff;background-size:cover;background-position:center}
+.cat-tile.wide{grid-column:1/-1;min-height:420px}
+.cat-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.82))}
+.cat-tile div{position:relative;z-index:1;padding:26px}
+.cat-tile h3{font-size:1.5rem}
+.cat-tile p{font-size:.95rem;color:#ddd}
+.cat-tile .kicker{color:#d6d6d6}
+/* video — sharp maxresdefault thumbnail facade; click loads the real player */
+.video-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.video-card.wide{grid-column:1/-1}
+.video-card{background:#111;overflow:hidden;color:#fff}
+.video-thumb{position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;border:0;background:#000;cursor:pointer}
+.video-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.video-thumb .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center}
+.video-thumb .play svg{width:26px;height:26px;fill:#000;margin-left:3px}
 .video-card iframe{width:100%;aspect-ratio:16/9;border:0;display:block}
-.video-card .v-body{padding:14px 16px}
+.video-card .v-body{padding:16px 18px}
 .video-card .v-body p{font-size:.9rem;color:#bbb}
-.video-card h3{font-size:1rem}
+.video-card .v-body a{color:#fff;text-decoration:underline}
+.video-card h3{font-size:1.05rem}
 /* why */
-.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
-.why{border:1px solid var(--line);border-radius:14px;padding:26px;background:#fff}
-.why h3{font-size:1.1rem;margin-bottom:8px}
+.why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.why{background:var(--grey);padding:32px}
+.why h3{font-size:1.15rem;margin-bottom:8px}
 .why p{color:var(--mut);font-size:.95rem}
-.why .ic{font-size:1.6rem}
+.why .ic{width:34px;height:34px;color:var(--ink);margin-bottom:14px}
+.why .ic svg{width:100%;height:100%}
 /* toolbar */
 .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:0 0 26px}
 .toolbar select,.toolbar input[type=search]{padding:11px 14px;border:1px solid var(--line);border-radius:999px;font-size:.95rem;font-family:inherit;background:#fff}
 .toolbar .count{margin-left:auto;color:var(--mut);font-size:.92rem}
-/* detail */
-.detail-hero{display:grid;grid-template-columns:1.05fr 1fr;gap:44px;align-items:start}
-.detail-photo{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#faf9f6;cursor:zoom-in}
-.detail-photo img{width:100%;aspect-ratio:4/3;object-fit:contain}
-.no-photo{border:2px dashed var(--gold);border-radius:18px;padding:60px 24px;text-align:center;color:var(--gold-d);background:#fdf8e7}
-.no-photo strong{display:block;font-size:1.15rem;margin-bottom:8px}
-.detail-info h1{font-size:clamp(1.7rem,4vw,2.6rem)}
-.detail-info .tagline{font-size:1.15rem;color:var(--mut);margin:10px 0 18px}
-.detail-info .price{font-size:1.7rem}
-.detail-actions{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
-.spec-box{border:1px solid var(--line);border-radius:14px;padding:22px;background:#fbfaf7;margin-top:22px}
-.spec-box h3{margin-bottom:8px}
-.spec-box p{color:var(--mut)}
+/* product subnav — second sticky black bar (DJI-style) */
+.subnav{position:sticky;top:64px;z-index:90;background:#000;color:#fff}
+.subnav-inner{max-width:1280px;margin:0 auto;padding:0 20px;height:52px;display:flex;align-items:center;gap:22px}
+.subnav-name{font-weight:800;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subnav-links{display:flex;gap:22px;margin-left:auto}
+.subnav-links a{font-size:.92rem;color:#cfcfcf}
+.subnav-links a:hover{color:#fff}
+.subnav .btn{padding:8px 16px;font-size:.88rem;margin-left:4px;flex:none}
+/* product detail — black hero, one huge studio shot */
+.detail-hero{background:#000;color:#fff;text-align:center;padding:64px 20px 0}
+.detail-hero .kicker{color:#9a9a9a}
+.detail-hero h1{margin:12px auto 0;max-width:22ch}
+.detail-hero .tagline{font-size:clamp(1.05rem,2vw,1.25rem);font-weight:600;color:#d6d6d6;margin:14px auto 0;max-width:56ch}
+.detail-hero .price{font-size:1.5rem;margin-top:18px}
+.detail-hero .price .was{color:#9a9a9a}
+.detail-hero .price-note{color:#9a9a9a}
+.detail-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:24px 0 0}
+.detail-actions .btn{min-width:200px}
+.detail-hero .confirm-note{color:#9a9a9a;font-size:.92rem;margin-top:16px}
+.detail-photo-wrap{background:radial-gradient(ellipse 60% 55% at 50% 82%,rgba(255,255,255,.13),transparent 70%);padding:20px 0 0;cursor:zoom-in}
+.detail-photo-wrap img{margin:0 auto;max-height:64vh;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 24px 28px rgba(0,0,0,.55))}
+.detail-photo-wrap .zoom-hint{color:#767676;font-size:.85rem;padding:14px 0 26px}
 /* lightbox */
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:200;cursor:zoom-out}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;z-index:200;cursor:zoom-out}
 .lightbox.open{display:flex}
 .lightbox img{max-width:94vw;max-height:90vh;object-fit:contain}
 .lightbox.zoomed img{transform:scale(1.8);cursor:zoom-out}
 /* faq */
-.faq-item{border:1px solid var(--line);border-radius:12px;margin-bottom:12px;background:#fff}
+.faq-item{border:1px solid var(--line);margin-bottom:12px;background:#fff}
 .faq-item summary{padding:18px 20px;font-weight:700;cursor:pointer;list-style:none}
 .faq-item summary::-webkit-details-marker{display:none}
 .faq-item .fa{padding:0 20px 18px;color:var(--mut)}
@@ -382,64 +441,93 @@ h2{font-size:clamp(1.6rem,4vw,2.5rem)}
 .prose{max-width:760px;margin:0 auto}
 .prose p{margin-bottom:14px;color:#333}
 .prose h3{margin:26px 0 8px}
-.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
-.contact-card{border:1px solid var(--line);border-radius:14px;padding:24px}
+.contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.contact-card{border:1px solid var(--line);padding:26px}
 .contact-card h3{margin-bottom:8px}
-.cta-band{background:var(--navy);color:#fff;text-align:center;padding:56px 20px;border-radius:20px;margin:20px 0}
+.cta-band{background:var(--black);color:#fff;text-align:center;padding:64px 0}
 .cta-band h2{margin-bottom:10px}
-.cta-band p{color:#d5dbe4;margin-bottom:20px}
-.cta-addr{font-size:.9rem;margin-top:16px;color:#aeb9c9!important}
+.cta-band p{color:#d5d5d5;margin-bottom:22px}
+.cta-addr{font-size:.9rem;margin-top:18px;color:#9a9a9a!important}
 .search-box{display:flex;gap:10px;max-width:640px;margin:0 auto 30px}
 .search-box input{flex:1;padding:14px 18px;border:1px solid var(--line);border-radius:999px;font-size:1rem}
 .compare-table{width:100%;border-collapse:collapse;overflow-x:auto}
 .compare-table th,.compare-table td{border:1px solid var(--line);padding:12px;text-align:left;vertical-align:top}
-.compare-table th{background:#f8f7f3}
+.compare-table th{background:var(--grey)}
 .compare-table img{max-width:140px}
 .compare-picks{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
-.compare-picks select{padding:11px 14px;border:1px solid var(--line);border-radius:999px;font-size:.95rem}
+.compare-picks select{flex:1 1 200px;min-width:0;max-width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:999px;font-size:.95rem}
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
 .reveal.visible{opacity:1;transform:none}
-/* footer */
+#featured,#categories,#films,#why,#stories,#cta,#listing,#related-cats,#overview,#film,#about,#related{scroll-margin-top:130px}
+/* footer — compact, tidy, no tall empty dark block */
 .site-footer{background:var(--black);color:#ddd;margin-top:0}
-.footer-inner{max-width:1200px;margin:0 auto;padding:56px 20px 30px;display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:32px}
+.footer-inner{max-width:1280px;margin:0 auto;padding:44px 20px 28px;display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:32px}
 .footer-inner h4{color:#fff;margin-bottom:12px}
 .footer-inner a{display:block;padding:3px 0;color:#bbb}
-.footer-inner a:hover{color:var(--gold-l)}
+.footer-inner a:hover{color:#fff}
 .foot-brand p{margin-top:8px;font-size:.92rem;color:#bbb}
-.footer-bottom{border-top:1px solid #262626;text-align:center;padding:22px 20px;font-size:.88rem;color:#999}
+.footer-bottom{border-top:1px solid #262626;text-align:center;padding:20px;font-size:.88rem;color:#999}
 .footer-bottom a{color:#ccc}
 .foot-note{margin-top:6px}
-.wa-float{position:fixed;right:18px;bottom:18px;z-index:150;background:#25D366;color:#fff;font-weight:800;padding:13px 20px;border-radius:999px;box-shadow:0 10px 26px rgba(0,0,0,.3)}
+.wa-float{position:fixed;right:18px;bottom:18px;z-index:150;background:#000;color:#fff;font-weight:700;padding:13px 20px;border-radius:999px;box-shadow:0 10px 26px rgba(0,0,0,.35);display:flex;align-items:center;gap:8px}
+.wa-float svg{width:20px;height:20px}
 .wa-float:hover{transform:scale(1.04)}
 /* responsive */
 @media(max-width:900px){
   .feature{grid-template-columns:1fr}
   .feature.flip .f-img{order:0}
-  .detail-hero{grid-template-columns:1fr}
+  .feature .f-img{min-height:300px}
   .footer-inner{grid-template-columns:1fr 1fr}
   .mega-menu{display:none!important}
 }
 @media(max-width:720px){
   .menu-btn{display:block}
-  .main-nav{display:none;position:absolute;top:100%;left:0;right:0;background:#0b0b0c;flex-direction:column;align-items:stretch;padding:10px 20px 20px}
+  .main-nav{display:none;position:absolute;top:100%;left:0;right:0;background:#000;flex-direction:column;align-items:stretch;padding:10px 20px 20px}
+  .site-header.solid .main-nav{background:#fff}
   .main-nav.open{display:flex}
   .nav-link{padding:13px 4px;border-top:1px solid #222;font-size:1.02rem}
+  .site-header.solid .nav-link{border-top-color:var(--line)}
   .nav-wa{text-align:center;margin-top:10px}
-  .sec{padding:44px 0}
+  .sec{padding:48px 0}
   .footer-inner{grid-template-columns:1fr}
-  .card-actions .btn{flex:1 1 100%}
-  .hero{min-height:78vh}
+  .hero{min-height:88vh}
+  .grid,.video-grid,.why-grid,.cat-tiles,.contact-grid{grid-template-columns:1fr}
+  .cat-tile.wide{grid-column:auto;min-height:340px}
+  .hero-cta .btn,.detail-actions .btn{min-width:0;width:100%}
+  .subnav-links{display:none}
+  .feature .f-body{padding:36px 24px}
+  .card-img{padding:12px 16px 20px}
 }
 """
 
 # ---------- JS ----------
 JS = """
+// header: transparent over the hero, solid white on scroll; solid from the
+// start on pages without a hero.
+var header=document.getElementById('siteHeader');
+function headerState(){
+  if(!header)return;
+  if(!document.querySelector('.hero')){header.classList.add('solid');document.body.classList.add('no-hero');return;}
+  header.classList.toggle('solid',window.scrollY>10);
+}
+window.addEventListener('scroll',headerState,{passive:true});
+headerState();
 // mobile menu
 var btn=document.getElementById('menuBtn'),nav=document.getElementById('mainNav');
 if(btn&&nav){btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false');});}
 // scroll reveal
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:.12});
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+// video facade: sharp maxresdefault thumbnail; click loads the real player.
+document.querySelectorAll('.video-thumb').forEach(function(t){
+  t.addEventListener('click',function(){
+    var vid=t.dataset.vid,title=t.dataset.title||'Video';
+    var f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+vid+'?autoplay=1';
+    f.title=title;f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';f.allowFullscreen=true;
+    t.replaceWith(f);
+  });
+});
 // lightbox (product photo)
 var lb=document.getElementById('lightbox');
 function openLB(src,alt){if(!lb)return;lb.querySelector('img').src=src;lb.querySelector('img').alt=alt||'';lb.classList.add('open');document.body.style.overflow='hidden';}
@@ -476,7 +564,7 @@ document.querySelectorAll('[data-compare]').forEach(function(b){
     var slug=b.dataset.compare, list=[];
     try{list=JSON.parse(localStorage.getItem('akCompare')||'[]');}catch(e){list=[];}
     if(list.indexOf(slug)===-1){if(list.length>=3){alert('Compare holds up to 3 products. Remove one on the Compare page first.');return;}list.push(slug);localStorage.setItem('akCompare',JSON.stringify(list));}
-    b.textContent='Added to compare ✓';
+    b.textContent='Added to compare';
   });
 });
 """
@@ -489,11 +577,22 @@ def write(rel, content):
     p.write_text(content, encoding="utf-8")
     return p
 
+PLAY_SVG = ('<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>')
+
+def video_card(vid, title, extra="", wide=False):
+    # Sharp maxresdefault thumbnail (falls back to hqdefault if absent);
+    # the iframe only loads after a click, so the poster is never blurry.
+    wide_cls = " wide" if wide else ""
+    return (f'<div class="video-card{wide_cls}"><button class="video-thumb" type="button" data-vid="{vid}" '
+            f'data-title="{esc(title)}" aria-label="Play {esc(title)}">'
+            f'<img src="https://i.ytimg.com/vi/{vid}/maxresdefault.jpg" alt="{esc(title)}" loading="lazy" '
+            f'onerror="if(!this.dataset.fb){{this.dataset.fb=1;this.src=\'https://i.ytimg.com/vi/{vid}/hqdefault.jpg\';}}else{{this.style.display=\'none\';}}">'
+            f'<span class="play">{PLAY_SVG}</span></button>'
+            f'<div class="v-body"><h3>{esc(title)}</h3>'
+            f'<p>Official DJI film on YouTube.</p>{extra}</div></div>')
+
 def video_embed(vid, title):
-    return (f'<div class="video-card"><iframe src="https://www.youtube-nocookie.com/embed/{vid}" '
-            f'title="{esc(title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" '
-            f'allowfullscreen loading="lazy"></iframe><div class="v-body"><h3>{esc(title)}</h3>'
-            f'<p>Official DJI film on YouTube.</p></div></div>')
+    return video_card(vid, title)
 
 def product_video(p):
     if not p.get("video_ids"):
@@ -501,73 +600,75 @@ def product_video(p):
     vids = [v for v in p["video_ids"] if v != FAILED_VIDEO and v in VID_TITLE]
     if not vids:
         return ""
-    cards = "".join(video_embed(v, VID_TITLE[v]) for v in vids)
-    return f'<section class="sec"><div class="wrap">{section_head("Watch", "Product film", "The official film for this product.")}<div class="video-grid">{cards}</div></div></section>'
+    cards = "".join(video_embed(v, VID_TITLE[v]) if len(vids) > 1 else video_card(v, VID_TITLE[v], wide=True) for v in vids)
+    return f'<section class="sec dark" id="film"><div class="wrap">{section_head("Watch", "Product film", "The official film for this product.")}<div class="video-grid">{cards}</div></div></section>'
 
 # ----- homepage -----
 def build_index():
-    featured_ids = [0, 2, 4, 51, 54, 70, 41, 30]  # DJI drones + spread across categories
+    # 3 editorial features + 4 tiles = 2-col grid fills exactly (no orphan).
+    featured_ids = [0, 2, 4, 51, 54, 70, 41]
     feats = [by_id(i) for i in featured_ids]
-    # editorial features: alternate large showcases
     f1, f2, f3 = feats[0], feats[1], feats[2]
-    def feature(p, hero_img, light=False, flip=False):
+    def feature(p, light=False, flip=False):
         cls = "feature light" if light else "feature"
         if flip: cls += " flip"
+        view_cls = "btn-light" if not light else "btn-dark"
         return f"""<div class="{cls} reveal">
-  <div class="f-img"><img src="{img_uri(p['photo_thumb'])}" alt="{esc(p['name'])}" loading="lazy"></div>
+  <div class="f-img"><img src="{img_uri(p['photo_full'])}" alt="{esc(p['name'])}" loading="lazy"></div>
   <div class="f-body"><p class="kicker">{esc(p['brand'])} &middot; {esc(CATS[p['category']]['label'])}</p>
   <h2>{esc(p['name'])}</h2><p>{esc(p['tagline'])}</p><p>{esc(p['description'])}</p>
   {price_html(p)}
-  <div class="hero-cta"><a class="btn btn-gold" href="products/{p['slug']}.html">View Details</a>
-  <a class="btn btn-wa" href="{wa_link(p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a></div></div></div>"""
-    tiles = "".join(
-        f'<a class="cat-tile reveal" style="background-image:url(\'{hero_uri(CATS[c]["hero"])}\')" href="categories/{c}.html">'
-        f'<div><p class="kicker">{len([x for x in products if x["category"]==c])} products</p>'
-        f'<h3>{CATS[c]["nav"]}</h3><p>{esc(CATS[c]["blurb"])}</p></div></a>'
-        for c in CAT_ORDER)
-    # brand story videos: all 11 verified films, first 4 on homepage
+  <div class="f-cta"><a class="btn {view_cls}" href="products/{p['slug']}.html">View Details</a>
+  <a class="more-link" style="color:inherit" href="{wa_link(p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry &rsaquo;</a></div></div></div>"""
+    tiles = ""
+    for i, c in enumerate(CAT_ORDER):
+        wide = " wide" if i == 0 else ""
+        tiles += (
+            f'<a class="cat-tile reveal{wide}" style="background-image:url(\'{hero_uri(CATS[c]["hero"])}\')" href="categories/{c}.html">'
+            f'<div><p class="kicker">{len([x for x in products if x["category"]==c])} products</p>'
+            f'<h3>{CATS[c]["nav"]}</h3><p>{esc(CATS[c]["blurb"])}</p></div></a>')
     vid_items = [(v, VID_TITLE[v]) for v in
                  ["nbXneZzFh8w", "4fhl9F8DZDU", "r5kukRMmZNI", "RNhmV4yCP6M"]]
     vids = "".join(video_embed(v, t) for v, t in vid_items)
     body = f"""
-{hero_section(hero_uri('hero-drone.jpg'), 'AK Khan Enterprises &middot; Quetta',
+{hero_section(hero_uri('hero-drone.jpg'), 'AK Khan Enterprises \u00b7 Quetta',
   'Your One-Stop Electronics & Security Solution in Quetta',
   'DJI drones, security cameras, networking, sound and displays — genuine products, expert guidance, and ordering on WhatsApp.',
-  '<div class="hero-cta"><a class="btn btn-gold btn-lg" href="#featured">Explore Products</a><a class="btn btn-outline btn-lg" href="explore.html">Discover More</a></div>')}
+  '<div class="hero-cta"><a class="btn btn-light btn-lg" href="#featured">Explore Products</a><a class="btn btn-outline btn-lg" href="explore.html">Discover More</a></div>')}
 <section class="sec" id="featured"><div class="wrap">
 {section_head('Featured Products', 'The range, up close', 'A selection from the shop floor — drones, cameras, networking, sound and displays.')}
-{feature(f1, None)}
-{feature(f2, None, light=True, flip=True)}
-{feature(f3, None)}
+{feature(f1)}
+{feature(f2, light=True, flip=True)}
+{feature(f3)}
 <div class="grid">{''.join(card(p) for p in feats[3:])}</div>
 </div></section>
-<section class="sec grey"><div class="wrap">
+<section class="sec grey" id="categories"><div class="wrap">
 {section_head('Shop by Category', 'Five ranges, one shop', 'Every product in the shop belongs to one of these five ranges.')}
 <div class="cat-tiles">{tiles}</div>
 </div></section>
-<section class="sec dark"><div class="wrap">
+<section class="sec dark" id="films"><div class="wrap">
 {section_head('Cinematic Brand Story', 'Shot from the sky', 'Official DJI films for the drones on our shelves.')}
 <div class="video-grid">{vids}</div>
-<p style="text-align:center;margin-top:22px"><a class="btn btn-light" href="explore.html">Watch all 11 films on Explore</a></p>
+<p style="text-align:center;margin-top:26px"><a class="btn btn-light" href="explore.html">Watch all 11 films on Explore</a></p>
 </div></section>
-<section class="sec"><div class="wrap">
+<section class="sec" id="why"><div class="wrap">
 {section_head('Why Choose Us', 'Why customers come to AK Khan', 'Only what the shop can stand behind.')}
 <div class="why-grid">
-<div class="why reveal"><p class="ic">&#10003;</p><h3>Genuine products</h3><p>Products from the brands on our shelves — DJI, Dahua, Hikvision, Tiandy, EZVIZ, IMOU, Ruijie, TP-Link, Audionic, Samsung, LG and Sony.</p></div>
-<div class="why reveal"><p class="ic">&#9998;</p><h3>Expert guidance</h3><p>Talk to the shop before you buy — which model fits your home, shop or site, and what it will do for you.</p></div>
-<div class="why reveal"><p class="ic">&#9990;</p><h3>WhatsApp support</h3><p>Price, availability and complete details confirmed personally on WhatsApp — {WA_DISPLAY}.</p></div>
-<div class="why reveal"><p class="ic">&#9873;</p><h3>A real shop in Quetta</h3><p>Visit us at {esc(ADDRESS)} — see the product before you buy, or ask on WhatsApp for a photo of the exact unit in stock.</p></div>
+<div class="why reveal"><p class="ic">{ICON_CHECK}</p><h3>Genuine products</h3><p>Products from the brands on our shelves — DJI, Dahua, Hikvision, Tiandy, EZVIZ, IMOU, Ruijie, TP-Link, Audionic, Samsung, LG and Sony.</p></div>
+<div class="why reveal"><p class="ic">{ICON_GUIDE}</p><h3>Expert guidance</h3><p>Talk to the shop before you buy — which model fits your home, shop or site, and what it will do for you.</p></div>
+<div class="why reveal"><p class="ic">{ICON_CHAT}</p><h3>WhatsApp support</h3><p>Price, availability and complete details confirmed personally on WhatsApp — {WA_DISPLAY}.</p></div>
+<div class="why reveal"><p class="ic">{ICON_PIN}</p><h3>A real shop in Quetta</h3><p>Visit us at {esc(ADDRESS)} — see the product before you buy, or ask on WhatsApp for a photo of the exact unit in stock.</p></div>
 </div></div></section>
-<section class="sec grey"><div class="wrap">
+<section class="sec grey" id="stories"><div class="wrap">
 {section_head('Explore & Discover', 'From the air', 'Aerial perspectives from the DJI range — the drone photography our customers create with these aircraft.')}
 <div class="cat-tiles">
-<a class="cat-tile reveal" style="background-image:url('{hero_uri('shot-canyon.jpg')}')" href="explore.html"><div><h3>Canyons from above</h3><p>Aerial photography with DJI drones.</p></div></a>
+<a class="cat-tile reveal wide" style="background-image:url('{hero_uri('shot-canyon.jpg')}')" href="explore.html"><div><h3>Canyons from above</h3><p>Aerial photography with DJI drones.</p></div></a>
 <a class="cat-tile reveal" style="background-image:url('{hero_uri('shot-desert.jpg')}')" href="explore.html"><div><h3>Desert light</h3><p>Wide open frames, golden hour.</p></div></a>
 <a class="cat-tile reveal" style="background-image:url('{hero_uri('field-agri.jpg')}')" href="explore.html"><div><h3>Working from the sky</h3><p>Enterprise and agriculture aircraft.</p></div></a>
 </div>
 <p style="text-align:center;margin-top:26px"><a class="btn btn-dark" href="explore.html">Explore the stories</a></p>
 </div></section>
-<div class="wrap">{cta_band('')}</div>
+{cta_band('')}
 """
     write("index.html", chrome("", "AK Khan Enterprises — Drones, Cameras, Networking, Sound & Displays in Quetta",
         "AK Khan Enterprises, Quetta — DJI drones, Dahua & Hikvision cameras, networking, Audionic sound and LED TVs. Order on WhatsApp.", body))
@@ -576,15 +677,14 @@ def build_index():
 def build_category(c):
     items = [p for p in products if p["category"] == c]
     brands = sorted(set(p["brand"] for p in items))
-    feat = items[:3]
     opts = "".join(f'<option value="{esc(b)}">{esc(b)}</option>' for b in brands)
     others = "".join(
-        f'<a class="cat-tile" style="background-image:url(\'{hero_uri(CATS[o]["hero"])}\');min-height:180px" href="{o}.html">'
+        f'<a class="cat-tile" style="background-image:url(\'{hero_uri(CATS[o]["hero"])}\');min-height:300px" href="{o}.html">'
         f'<div><h3>{CATS[o]["nav"]}</h3><p>{esc(CATS[o]["blurb"])}</p></div></a>'
         for o in CAT_ORDER if o != c)
     body = f"""
 {hero_section(hero_uri(CATS[c]['hero']), 'AK Khan Enterprises', CATS[c]['label'], CATS[c]['intro'],
-  '<div class="hero-cta"><a class="btn btn-gold" href="#listing">Browse all ' + CATS[c]['label'] + '</a></div>')}
+  '<div class="hero-cta"><a class="btn btn-light" href="#listing">Browse all ' + CATS[c]['label'] + '</a><a class="btn btn-outline" href="' + wa_link() + '" target="_blank" rel="noopener">Chat on WhatsApp</a></div>')}
 <section class="sec" id="listing"><div class="wrap">
 {section_head(CATS[c]['label'], f"All {CATS[c]['label']} — {len(items)} products", 'Filter by brand or sort the list. Prices shown where the shop has confirmed one; everything else is confirmed on WhatsApp.')}
 <div class="toolbar">
@@ -594,53 +694,54 @@ def build_category(c):
 </div>
 <div class="grid" id="catGrid">{''.join(card(p, depth="../") for p in items)}</div>
 </div></section>
-<section class="sec grey"><div class="wrap">
+<section class="sec grey" id="related-cats"><div class="wrap">
 {section_head('Keep exploring', 'Related categories', '')}
 <div class="cat-tiles">{others}</div>
 </div></section>
-<div class="wrap">{cta_band('../')}</div>
+{cta_band('../')}
 """
     write(f"categories/{c}.html", chrome("../", f"{CATS[c]['label']} — AK Khan Enterprises, Quetta",
         f"{CATS[c]['label']} at AK Khan Enterprises, Quetta. {CATS[c]['intro']}", body))
 
-# ----- product pages -----
+# ----- product pages (DJI-style: black hero, huge shot, no invented specs) -----
 def build_product(p):
     if p.get("photo_full"):
-        gallery = f"""<div class="detail-photo" id="detailPhoto"><img src="{img_uri(p['photo_full'])}" alt="{esc(p['name'])} — product photo"></div>
-<p style="font-size:.85rem;color:var(--mut);margin-top:8px">Tap the photo to view fullscreen. Tap again to zoom.</p>"""
+        gallery = f"""<div class="detail-photo-wrap" id="detailPhoto"><img src="{img_uri(p['photo_full'])}" alt="{esc(p['name'])} — product photo"><p class="zoom-hint">Tap the photo to view fullscreen. Tap again to zoom.</p></div>"""
     else:
-        gallery = ('<div class="no-photo"><strong>Photo coming soon</strong>'
-                   'No photo of this exact unit is available yet. Ask on WhatsApp and the shop will send a photo of the exact unit in stock.</div>')
+        gallery = ('<div class="detail-photo-wrap" style="cursor:default"><div class="no-photo" style="background:transparent;min-height:40vh;color:#bbb">'
+                   '<span style="color:#e0e0e0">Photo coming soon</span>'
+                   '<small style="color:#9a9a9a">No photo of this exact unit is available yet. Ask on WhatsApp and the shop will send a photo of the exact unit in stock.</small></div></div>')
     rel = related(p)
+    film_anchor = '<a href="#film">Film</a>' if p.get("video_ids") and any(v != FAILED_VIDEO and v in VID_TITLE for v in p["video_ids"]) else ""
     body = f"""
-<section class="sec"><div class="wrap">
-<p style="margin-bottom:18px"><a href="../categories/{p['category']}.html">&larr; {esc(CATS[p['category']]['label'])}</a> &nbsp;/&nbsp; {esc(p['brand'])}</p>
-<div class="detail-hero">
-  <div>{gallery}</div>
-  <div class="detail-info">
-    <p class="kicker">{esc(p['brand'])} &middot; {esc(CATS[p['category']]['label'])}</p>
-    <h1>{esc(p['name'])}</h1>
-    <p class="tagline">{esc(p['tagline'])}</p>
-    {price_html(p)}
-    <div class="detail-actions">
-      <a class="btn btn-wa btn-lg" href="{wa_link(p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>
-      <button class="btn btn-dark" type="button" data-compare="{esc(p['slug'])}">Add to Compare</button>
-    </div>
-    <div class="spec-box"><h3>Full specifications &amp; today&rsquo;s price</h3>
-    <p>Full specifications and today&rsquo;s price are confirmed on WhatsApp for this exact model — message the shop and they will confirm personally before you buy.</p></div>
+<div class="subnav"><div class="subnav-inner">
+<span class="subnav-name">{esc(p['name'])}</span>
+<nav class="subnav-links" aria-label="Product sections"><a href="#overview">Overview</a>{film_anchor}<a href="#about">About</a><a href="#related">Related</a></nav>
+<a class="btn btn-light" href="{wa_link(p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>
+</div></div>
+<section class="detail-hero" id="overview">
+  <p class="kicker">{esc(p['brand'])} &middot; {esc(CATS[p['category']]['label'])}</p>
+  <h1>{esc(p['name'])}</h1>
+  <p class="tagline">{esc(p['tagline'])}</p>
+  {price_html(p)}
+  <div class="detail-actions">
+    <a class="btn btn-light btn-lg" href="{wa_link(p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>
+    <button class="btn btn-outline btn-lg" type="button" data-compare="{esc(p['slug'])}">Add to Compare</button>
   </div>
-</div></div></section>
+  <p class="confirm-note">Full specifications and today&rsquo;s price are confirmed on WhatsApp for this exact model.</p>
+  {gallery}
+</section>
 {product_video(p)}
-<section class="sec grey"><div class="wrap">
+<section class="sec" id="about"><div class="wrap">
 {section_head('About this product', esc(p['name']), '')}
 <div class="prose"><p>{esc(p['description'])}</p>
 <p>Available at the shop in Liaqat Bazar, Quetta — walk in, or order on WhatsApp. The shop confirms price, availability and delivery personally.</p></div>
 </div></section>
-<section class="sec"><div class="wrap">
+<section class="sec grey" id="related"><div class="wrap">
 {section_head('Related Products', 'More from ' + CATS[p['category']]['label'], '')}
 <div class="grid">{''.join(card(x, depth="../") for x in rel)}</div>
 </div></section>
-<div class="wrap">{cta_band('../')}</div>
+{cta_band('../')}
 <div class="lightbox" id="lightbox"><img src="" alt=""></div>
 """
     write(f"products/{p['slug']}.html", chrome("../", f"{p['name']} — AK Khan Enterprises, Quetta",
@@ -654,16 +755,11 @@ def build_explore():
             continue
         prod = next((p for p in products if v["video_id"] in p.get("video_ids", [])), None)
         vids.append((v, prod))
-    cards = "".join(video_embed(v["video_id"], v["title_or_null"] or "DJI film") +
-                    (f'<p style="font-size:.85rem;color:#bbb;padding:0 16px 14px">Film for <a style="color:#fff;text-decoration:underline" href="products/{prod["slug"]}.html">{esc(prod["name"])}</a></p>' if prod else "")
-                    for v, prod in vids)
-    # rebuild as proper video-cards with link inside body: simpler — use video_embed then append link paragraph inside card div is invalid nesting; instead build custom:
     cards = ""
-    for v, prod in vids:
-        link = (f'<p>Film for <a href="products/{prod["slug"]}.html" style="color:#fff;text-decoration:underline">{esc(prod["name"])}</a></p>' if prod else "")
-        cards += (f'<div class="video-card"><iframe src="https://www.youtube-nocookie.com/embed/{v["video_id"]}" '
-                  f'title="{esc(v["title_or_null"] or "DJI film")}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>'
-                  f'<div class="v-body"><h3>{esc(v["title_or_null"] or "DJI film")}</h3><p>Official DJI film on YouTube.</p>{link}</div></div>')
+    for i, (v, prod) in enumerate(vids):
+        link = (f'<p>Film for <a href="products/{prod["slug"]}.html">{esc(prod["name"])}</a></p>' if prod else "")
+        # 11 films: first card spans both columns so the grid fills exactly.
+        cards += video_card(v["video_id"], v["title_or_null"] or "DJI film", link, wide=(i == 0))
     stories = [
         ("shot-canyon.jpg", "Canyons from above", "Steep walls, long shadows — the kind of frame a folding DJI Mini makes possible on a walk, not a film set."),
         ("shot-desert.jpg", "Desert light", "Open ground and low sun. The Air and Mavic range is built for wide, clean aerial frames like this."),
@@ -677,15 +773,15 @@ def build_explore():
         for img, t, d in stories)
     body = f"""
 {hero_section(hero_uri('mavic3-cine.jpg'), 'Explore', 'Stories from the sky', 'Drone photography, enterprise work and the official films behind the aircraft on our shelves.')}
-<section class="sec"><div class="wrap">
+<section class="sec" id="stories"><div class="wrap">
 {section_head('Photography Stories', 'Explore & Discover', 'Editorial themes from the DJI range — what these drones are made for.')}
 <div class="cat-tiles">{tiles}</div>
 </div></section>
-<section class="sec dark"><div class="wrap">
+<section class="sec dark" id="films"><div class="wrap">
 {section_head('The Films', '11 verified DJI films', 'Every film below is an official DJI film on YouTube, verified as publicly playable.')}
 <div class="video-grid">{cards}</div>
 </div></section>
-<div class="wrap">{cta_band('')}</div>
+{cta_band('')}
 """
     write("explore.html", chrome("", "Explore — Stories & Films — AK Khan Enterprises",
         "Explore AK Khan Enterprises: drone photography stories and 11 verified official DJI films.", body))
@@ -703,7 +799,7 @@ FAQS = [
 def simple_page(fname, title, desc, kicker, h1, inner):
     body = f"""<section class="sec"><div class="wrap"><div class="prose">
 <p class="kicker">{esc(kicker)}</p><h1 style="margin:8px 0 20px">{esc(h1)}</h1>
-{inner}</div></div></section><div class="wrap">{cta_band('')}</div>"""
+{inner}</div></div></section>{cta_band('')}"""
     write(fname, chrome("", title, desc, body))
 
 def build_info():
@@ -725,7 +821,7 @@ def build_info():
 <h3>How ordering works</h3><p>1. Find the product on this website.<br>2. Press WhatsApp Inquiry — your message opens ready to send.<br>3. The shop confirms availability, final price, delivery and payment with you directly. Nothing is charged or confirmed automatically on this website.</p>
 <h3>Visit the shop</h3><p>{esc(ADDRESS)} — walk in to see a product before you buy, or ask on WhatsApp for photos of the exact unit in stock.</p>
 <h3>Delivery</h3><p>Ask on WhatsApp with your city and the product — the shop will confirm what delivery is possible for that item.</p>
-<p><a class="btn btn-dark" href="faq.html">Read the FAQ</a> &nbsp; <a class="btn btn-wa" href="{wa_link()}" target="_blank" rel="noopener">Chat on WhatsApp</a></p>""")
+<p><a class="btn btn-dark" href="faq.html">Read the FAQ</a> &nbsp; <a class="btn btn-light" style="border:1px solid #111" href="{wa_link()}" target="_blank" rel="noopener">Chat on WhatsApp</a></p>""")
     faq_items = "".join(
         f'<details class="faq-item"><summary>{esc(q)}</summary><div class="fa">{esc(a)}</div></details>'
         for q, a in FAQS)
@@ -764,7 +860,9 @@ def build_search():
         data.append({"slug": p["slug"], "name": p["name"], "brand": p["brand"],
                      "cat": CATS[p["category"]]["label"], "catKey": p["category"],
                      "tag": p["tagline"], "price": price_text(p),
-                     "thumb": img_uri(p["photo_thumb"]) if p.get("photo_thumb") else ""})
+                     # full image, not the 400px thumb: search tiles are
+                     # the same 2-per-row size as category tiles.
+                     "thumb": img_uri(p["photo_full"]) if p.get("photo_full") else ""})
     js = "window.AK_PRODUCTS=" + json.dumps(data, ensure_ascii=False) + ";"
     write("assets/search-data.js", js)
     head = section_head('Search', 'Search all 108 products', 'Search by product name, brand or category.')
@@ -778,19 +876,18 @@ def build_search():
 <script src="assets/search-data.js"></script>
 <script>
 var input=document.getElementById('searchInput'),res=document.getElementById('searchResults'),cnt=document.getElementById('searchCount');
-function waMsg(n){return 'https://wa.me/__WA_NUM__?text='+encodeURIComponent('Assalam-o-Alaikum! I am interested in '+n+'. Please share its current price, availability and complete details.');}
 function run(){
   var q=input.value.trim().toLowerCase();
   var list=window.AK_PRODUCTS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>-1||p.brand.toLowerCase().indexOf(q)>-1||p.cat.toLowerCase().indexOf(q)>-1||p.tag.toLowerCase().indexOf(q)>-1;});
-  cnt.textContent=list.length+' product'+(list.length===1?'':'s')+(q?' for \u201c'+input.value.trim()+'\u201d':'');
+  cnt.textContent=list.length+' product'+(list.length===1?'':'s')+(q?' for \\u201c'+input.value.trim()+'\\u201d':'');
   res.innerHTML=list.map(function(p){
-    var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy">':'<div class="no-photo">Photo coming soon</div>';
-    return '<article class="card"><a class="card-img" href="products/'+p.slug+'.html">'+img+'</a><div class="card-body"><p class="card-cat">'+p.brand+' &middot; '+p.cat+'</p><h3><a href="products/'+p.slug+'.html">'+p.name+'</a></h3><p class="card-tag">'+p.tag+'</p><p class="price">'+(p.price==='Price on request'?'<span class="price por">Price on request</span>':p.price)+'</p><div class="card-actions"><a class="btn btn-dark" href="products/'+p.slug+'.html">View Details</a><a class="btn btn-wa" href="'+waMsg(p.name)+'" target="_blank" rel="noopener">WhatsApp Inquiry</a></div></div></article>';
+    var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy">':'<div class="no-photo"><span>Photo coming soon</span></div>';
+    return '<article class="card"><div class="card-body"><p class="card-cat">'+p.brand+' &middot; '+p.cat+'</p><h3><a href="products/'+p.slug+'.html">'+p.name+'</a></h3><p class="card-tag">'+p.tag+'</p><p class="price">'+(p.price==='Price on request'?'<span class="price por">Price on request</span>':p.price)+'</p><a class="more-link" href="products/'+p.slug+'.html">Learn more &rsaquo;</a></div><a class="card-img" href="products/'+p.slug+'.html">'+img+'</a></article>';
   }).join('')||'<p>No products match that search. Try a brand name such as Dahua, DJI or Audionic.</p>';
 }
 input.addEventListener('input',run);document.getElementById('searchBtn').addEventListener('click',run);run();
 </script>
-""".replace("__WA_NUM__", WA_NUM)
+"""
     write("search.html", chrome("", "Search — AK Khan Enterprises",
         "Search all 108 products at AK Khan Enterprises, Quetta — by name, brand or category.", body))
 
@@ -819,7 +916,7 @@ function render(){
     ['Photo',function(p){return p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'">':'Photo coming soon';}],
     ['Brand',function(p){return p.brand;}],['Category',function(p){return p.cat;}],
     ['Price',function(p){return p.price;}],['About',function(p){return p.tag;}],
-    ['Enquire',function(p){return '<a class="btn btn-wa" href="https://wa.me/__WA_NUM__?text='+encodeURIComponent('Assalam-o-Alaikum! I am interested in '+p.name+'. Please share its current price, availability and complete details.')+'" target="_blank" rel="noopener">WhatsApp Inquiry</a>';}]];
+    ['Enquire',function(p){return '<a class="btn btn-dark" href="https://wa.me/__WA_NUM__?text='+encodeURIComponent('Assalam-o-Alaikum! I am interested in '+p.name+'. Please share its current price, availability and complete details.')+'" target="_blank" rel="noopener">WhatsApp Inquiry</a>';}]];
   out.innerHTML='<div style="overflow-x:auto"><table class="compare-table"><tr><th></th>'+items.map(function(){return '<th></th>';}).join('')+'</tr>'+
     rows.map(function(r){return '<tr><th>'+r[0]+'</th>'+items.map(function(p){return '<td>'+r[1](p)+'</td>';}).join('')+'</tr>';}).join('')+'</table></div>';
   try{localStorage.setItem('akCompare',JSON.stringify(slugs));}catch(e){}
@@ -837,7 +934,14 @@ def main():
     (SITE / "assets").mkdir(parents=True, exist_ok=True)
     write("assets/style.css", CSS)
     write("assets/site.js", JS)
-    shutil.copy(STAGING / "logo-mark.svg", SITE / "assets" / "logo-mark.svg")
+    # Black/white logos only: white monogram for dark header/footer,
+    # black monogram for the light (scrolled) header and the favicon.
+    # The old gold logo-mark.svg is NOT copied and is not referenced anywhere.
+    shutil.copy(STAGING / "logo-mark-white.svg", SITE / "assets" / "logo-mark-white.svg")
+    shutil.copy(STAGING / "logo-mark-black.svg", SITE / "assets" / "logo-mark-black.svg")
+    old = SITE / "assets" / "logo-mark.svg"
+    if old.exists():
+        old.unlink()
     build_index()
     for c in CAT_ORDER:
         build_category(c)
@@ -848,22 +952,34 @@ def main():
     build_search()
     build_compare()
     # README
-    write("README.md", """# AK Khan Enterprises — website (static build)
+    write("README.md", """# AK Khan Enterprises — website (static build, BLACK + WHITE DJI-style)
 
 Generated by `tools/generate.py` from verified staging data
-(`~/workspace/ak-khan-github-site-staging/`). Re-run the generator to rebuild.
+(`~/workspace/ak-khan-github-site-redesign/staging/`). Re-run the generator
+to rebuild. Byte-reproducible: run twice, second run produces zero diff.
 
 - 108 product pages, 5 category pages, homepage, explore, about, support,
   FAQ, contact, privacy, terms, search, compare.
+- Black / white / grey only: no gold, navy, cream or green anywhere.
+  WhatsApp CTAs are black or white pills, never green.
+- Logos: assets/logo-mark-white.svg (dark header/footer) and
+  assets/logo-mark-black.svg (light scrolled header, favicon). The old gold
+  logo-mark.svg is gone. Wordmark "AK KHAN / ENTERPRISES" is styled HTML text.
 - WhatsApp-only ordering (wa.me/923067000682). No cart, checkout or admin.
 - Images are embedded as base64 data URIs (GitHub snapshot pushes are
-  text-only); the logo SVG is a real file at assets/logo-mark.svg.
+  text-only); the logo SVGs are real files.
+- Tiles are DJI-style: 2 large per row, pale-grey (#f2f3f5) panels, text
+  centred at the top, one quiet "Learn more" link per card, photo fills
+  the tile on grey with a soft drop shadow. Cards use the FULL product
+  image (sharper than the 400px thumb at tile size), never upscaled
+  beyond the source's real resolution.
 - Only 28 products have a real PKR price; the other 80 show
   "Price on request — confirmed on WhatsApp".
 - No specs table anywhere (the data contains no technical specs).
 - Product 89 (Dahua 4K IR ePoE Mini Dome) has no photo — its page says so
   honestly instead of borrowing another product's photo.
-- Only the 11 verified DJI YouTube films are embedded. The DJI Mini 3
+- Only the 11 verified DJI YouTube films are embedded, via a sharp
+  maxresdefault thumbnail facade (click loads the player). The DJI Mini 3
   film (48_kEK9iFKU) is private and is never embedded.
 - No Laptops / Photography / Accessories category pages: the data has no
   such products, so those pages would be empty. No "New Arrivals" or
