@@ -219,18 +219,18 @@ DETAIL_HERO = {'audionic-bluetooth-speaker': {'hero': 'images/hero-dark/audionic
  'dahua-n54b3p': {'hero': 'images/hero-dark/dahua-n54b3p.jpg', 'pos': 'center'},
  'dahua-n54b5n': {'hero': 'images/hero-dark/dahua-n54b5n.jpg', 'pos': 'center'},
  'dahua-n84cg52': {'hero': 'images/hero-dark/dahua-n84cg52.jpg', 'pos': 'center'},
- 'dji-agras-series': {'hero': 'images/gallery/dji-agras-series-g3.jpg', 'pos': 'center 40%'},
- 'dji-air-3': {'hero': 'images/full/p3.jpg', 'pos': 'center 70%'},
+ 'dji-agras-series': {'hero': 'images/gallery/dji-agras-series-g3.jpg', 'pos': 'center 40%', 'yt': 'qB0N4pwrjE8'},
+ 'dji-air-3': {'hero': 'images/full/p3.jpg', 'pos': 'center 70%', 'yt': 'xi85DAbv5oU'},
  'dji-air-3s': {'hero': 'images/hero/air3s.jpg',
                 'pos': 'center',
                 'video': 'https://www-cdn.djiits.com/reactor/assets/_next/static/videos/b7e5922b-6d8a-4534-a9a3-f22188af3795.mp4'},
- 'dji-avata-2': {'hero': 'images/full/p6.jpg', 'pos': 'center'},
- 'dji-matrice-30t': {'hero': 'images/full/p8.jpg', 'pos': 'center 30%'},
+ 'dji-avata-2': {'hero': 'images/full/p6.jpg', 'pos': 'center', 'yt': 'RNhmV4yCP6M'},
+ 'dji-matrice-30t': {'hero': 'images/full/p8.jpg', 'pos': 'center 30%', 'yt': '1ucIm6g9llg'},
  'dji-mavic-3-pro': {'hero': 'images/hero/mavic3-cine.jpg',
                      'pos': 'center',
                      'video': 'https://www-cdn.djiits.com/reactor/assets/_next/static/videos/fdaa1941-2093-48eb-836a-913613397978.mp4'},
- 'dji-mini-2': {'hero': 'images/full/p53.jpg', 'pos': 'center'},
- 'dji-mini-3': {'hero': 'images/gallery/dji-mini-3-g1.jpg', 'pos': 'center 25%'},
+ 'dji-mini-2': {'hero': 'images/full/p53.jpg', 'pos': 'center', 'yt': 'NMf4KI3kpZg'},
+ 'dji-mini-3': {'hero': 'images/gallery/dji-mini-3-g1.jpg', 'pos': 'center 25%', 'yt': '6VbOozPmbr4'},
  'dji-mini-3-pro': {'hero': 'images/gallery/dji-mini-3-pro-g1.jpg',
                     'pos': 'center 30%',
                     'video': 'https://www-cdn.djiits.com/reactor/assets/_next/static/videos/57398bd3-ab54-406c-96ed-00f848b647fa.mp4'},
@@ -238,8 +238,8 @@ DETAIL_HERO = {'audionic-bluetooth-speaker': {'hero': 'images/hero-dark/audionic
                     'pos': 'center 20%',
                     'video': 'https://www-cdn.djiits.com/reactor/assets/_next/static/videos/6dfe2cd8-e5ed-4d32-af86-9845f37450c7.mp4'},
  'dji-mini-4k': {'hero': 'images/gallery/dji-mini-4k-g7.jpg', 'pos': 'center'},
- 'dji-mini-5-pro': {'hero': 'images/full/p51.jpg', 'pos': 'center'},
- 'dji-neo': {'hero': 'images/full/p5.jpg', 'pos': 'center'},
+ 'dji-mini-5-pro': {'hero': 'images/full/p51.jpg', 'pos': 'center', 'yt': 'jRzpagPx6uY'},
+ 'dji-neo': {'hero': 'images/full/p5.jpg', 'pos': 'center', 'yt': '7xHQIDYTHiw'},
  'ezviz-indoor-camera': {'hero': 'images/gallery/ezviz-indoor-camera-g3.jpg', 'pos': 'center'},
  'ezviz-outdoor-camera': {'hero': 'images/gallery/ezviz-outdoor-camera-g2.jpg', 'pos': 'center'},
  'hikvision-2mp-dome-camera': {'hero': 'images/hero-dark/hikvision-2mp-dome-camera.jpg',
@@ -247,12 +247,12 @@ DETAIL_HERO = {'audionic-bluetooth-speaker': {'hero': 'images/hero-dark/audionic
  'hikvision-5mp-bullet-camera': {'hero': 'images/hero-dark/hikvision-5mp-bullet-camera.jpg',
                                  'pos': 'center'},
  'icsee-v1-single-lens': {'hero': 'images/hero-dark/icsee-v1-single-lens.jpg', 'pos': 'center'},
- 'imou-ranger-2-2k-3mp': {'hero': 'images/hero-dark/imou-ranger-2-2k-3mp.jpg', 'pos': 'center'},
- 'imou-ranger-2-pro-2k': {'hero': 'images/hero-dark/imou-ranger-2-pro-2k.jpg', 'pos': 'center'},
+ 'imou-ranger-2-2k-3mp': {'hero': 'images/scene/imou-ranger-2-hero.jpg', 'pos': 'center'},
+ 'imou-ranger-2-pro-2k': {'hero': 'images/scene/imou-ranger-2-pro-hero.jpg', 'pos': 'center'},
  'imou-ranger-series': {'hero': 'images/hero-dark/imou-ranger-series.jpg', 'pos': 'center'},
- 'lg-43-inch-smart-led': {'hero': 'images/hero-dark/lg-43-inch-smart-led.jpg', 'pos': 'center'},
- 'lg-55-inch-smart-led': {'hero': 'images/full/p45.jpg', 'pos': 'center'},
- 'lg-65-inch-smart-led': {'hero': 'images/hero-dark/lg-65-inch-smart-led.jpg', 'pos': 'center'},
+ 'lg-43-inch-smart-led': {'hero': 'images/scene/lg-ua80-hero.jpg', 'pos': 'center'},
+ 'lg-55-inch-smart-led': {'hero': 'images/scene/lg-ua80-hero.jpg', 'pos': 'center'},
+ 'lg-65-inch-smart-led': {'hero': 'images/scene/lg-ua80-hero.jpg', 'pos': 'center'},
  'ruijie-access-point': {'hero': 'images/hero-dark/ruijie-access-point.jpg', 'pos': 'center'},
  'ruijie-rg-ew300-pro': {'hero': 'images/hero-dark/ruijie-rg-ew300-pro.jpg', 'pos': 'center'},
  'ruijie-rg-ew300n-n300-wireless-smart-router': {'hero': 'images/gallery/ruijie-rg-ew300n-n300-wireless-smart-router-g1.jpg',
@@ -261,10 +261,10 @@ DETAIL_HERO = {'audionic-bluetooth-speaker': {'hero': 'images/hero-dark/audionic
  'samsung-43-inch-led': {'hero': 'images/hero-dark/samsung-43-inch-led.jpg', 'pos': 'center'},
  'samsung-55-inch-led': {'hero': 'images/hero-dark/samsung-55-inch-led.jpg', 'pos': 'center'},
  'samsung-65-inch-led': {'hero': 'images/hero-dark/samsung-65-inch-led.jpg', 'pos': 'center'},
- 'sony-43-inch-bravia': {'hero': 'images/hero-dark/sony-43-inch-bravia.jpg', 'pos': 'center'},
- 'sony-55-inch-bravia': {'hero': 'images/hero-dark/sony-55-inch-bravia.jpg', 'pos': 'center'},
- 'sony-65-inch-bravia': {'hero': 'images/hero-dark/sony-65-inch-bravia.jpg', 'pos': 'center'},
- 'sony-75-inch-bravia': {'hero': 'images/hero-dark/sony-75-inch-bravia.jpg', 'pos': 'center'},
+ 'sony-43-inch-bravia': {'hero': 'images/scene/sony-bravia-43-hero.jpg', 'pos': '65% center'},
+ 'sony-55-inch-bravia': {'hero': 'images/scene/sony-bravia-5-hero.jpg', 'pos': 'center'},
+ 'sony-65-inch-bravia': {'hero': 'images/scene/sony-bravia-5-hero.jpg', 'pos': 'center'},
+ 'sony-75-inch-bravia': {'hero': 'images/scene/sony-bravia-5-hero.jpg', 'pos': 'center'},
  'tenda-access-point': {'hero': 'images/hero-dark/tenda-access-point.jpg', 'pos': 'center'},
  'tenda-n300-wireless-router': {'hero': 'images/hero-dark/tenda-n300-wireless-router.jpg',
                                 'pos': 'center'},
@@ -563,7 +563,7 @@ FEATURES = {0: [{'b': 'Weighing less than 249 g, Mini 4 Pro was designed for con
  18: [{'b': 'Ranger cameras turn to follow the action around the room, so a single camera covers '
             'what fixed cameras cannot.',
        'h': 'Pan and tilt — one camera watches the whole room',
-       'img': 'images/gallery/imou-ranger-series-g2.jpg',
+       'img': 'images/scene/imou-ranger-series-pan.jpg',
        'source': 'AK Khan product record — name/description (IMOU Ranger Series)'},
       {'b': 'Best for homes and small shops that want wide coverage from one camera instead of '
             'several fixed ones.',
@@ -693,7 +693,7 @@ FEATURES = {0: [{'b': 'Weighing less than 249 g, Mini 4 Pro was designed for con
       {'b': 'PurColor expresses a wide range of colours for a vivid, lifelike picture, with HDR '
             'and a Contrast Enhancer for deeper depth.',
        'h': 'PurColor — true-to-life colour',
-       'img': 'images/gallery/samsung-43-inch-led-g2.jpg',
+       'img': 'images/scene/samsung-u8000f-purcolor.jpg',
        'source': 'Samsung Crystal UHD line (samsung.com, Crystal UHD U8000F/U8000H/UE100F pages): '
                  "Crystal Processor 4K, 4K upscaling, PurColor, HDR; 'Crystal UHD' text visible in "
                  "the listing's own gallery photos"}],
@@ -707,7 +707,7 @@ FEATURES = {0: [{'b': 'Weighing less than 249 g, Mini 4 Pro was designed for con
       {'b': 'PurColor expresses a wide range of colours for a vivid, lifelike picture, with HDR '
             'and a Contrast Enhancer for deeper depth.',
        'h': 'PurColor — true-to-life colour',
-       'img': None,
+       'img': 'images/scene/samsung-u8000f-purcolor.jpg',
        'source': 'Samsung Crystal UHD line (samsung.com, Crystal UHD U8000F/U8000H/UE100F pages): '
                  "Crystal Processor 4K, 4K upscaling, PurColor, HDR; 'Crystal UHD' text visible in "
                  "the listing's own gallery photos"}],
@@ -721,14 +721,14 @@ FEATURES = {0: [{'b': 'Weighing less than 249 g, Mini 4 Pro was designed for con
       {'b': 'PurColor expresses a wide range of colours for a vivid, lifelike picture, with HDR '
             'and a Contrast Enhancer for deeper depth.',
        'h': 'PurColor — true-to-life colour',
-       'img': None,
+       'img': 'images/scene/samsung-u8000f-purcolor.jpg',
        'source': 'Samsung Crystal UHD line (samsung.com, Crystal UHD U8000F/U8000H/UE100F pages): '
                  "Crystal Processor 4K, 4K upscaling, PurColor, HDR; 'Crystal UHD' text visible in "
                  "the listing's own gallery photos"}],
  44: [{'b': 'A 4K UHD panel with four times the resolution of Full HD for crisp detail and vibrant '
             'colour on films, sports and dramas.',
        'h': 'LG UHD — 4K picture',
-       'img': 'images/gallery/lg-43-inch-smart-led-g1.jpg',
+       'img': 'images/scene/lg-ua80-4k.jpg',
        'source': "LG UHD TV line — 4K UHD resolution, webOS smart platform; 'LG UHD' badge and "
                  'webOS home screen visible in listing photo '
                  'images/gallery/lg-43-inch-smart-led-g1.jpg'},
@@ -744,13 +744,13 @@ FEATURES = {0: [{'b': 'Weighing less than 249 g, Mini 4 Pro was designed for con
  47: [{'b': 'Google TV puts streaming apps, recommendations and voice search in one place — the '
             "Google TV badge is on the TV's own screen in the listing photo.",
        'h': 'Google TV built in',
-       'img': None,
+       'img': 'images/scene/sony-bravia-43-googletv.jpg',
        'source': 'Google TV badge visible in listing photo images/full/p47.jpg; Sony BRAVIA Google '
                  'TV smart platform'},
       {'b': "Sony's BRAVIA picture in a 43-inch screen — the right size for bedrooms and smaller "
             'rooms, with rich colour for films and dramas.',
        'h': 'BRAVIA picture in a 43-inch size',
-       'img': 'images/full/p47.jpg',
+       'img': 'images/scene/sony-bravia-43-picture.jpg',
        'source': 'BRAVIA badge visible in listing photo images/full/p47.jpg; 43-inch size from the '
                  'product name'}],
  48: [{'b': "Sony's XR Processor with AI enhances colour, contrast and clarity scene by scene, "
@@ -785,7 +785,7 @@ FEATURES = {0: [{'b': 'Weighing less than 249 g, Mini 4 Pro was designed for con
       {'b': 'Google TV gathers all streaming apps on one screen, and the native 120Hz panel with '
             'HDMI 2.1 (4K/120, VRR, ALLM) is ready for PS5 and Xbox.',
        'h': 'Google TV and 120Hz gaming',
-       'img': None,
+       'img': 'images/scene/sony-bravia-5-googletv.jpg',
        'source': 'Sony BRAVIA 5 (XR50) Mini LED line — XR Backlight Master Drive, XR Triluminos '
                  'Pro, XR Processor with AI, Google TV, 120Hz: '
                  'https://techstevehd.com/reviews/sony-bravia-5-xr50-series and '
@@ -812,7 +812,7 @@ FEATURES = {0: [{'b': 'Weighing less than 249 g, Mini 4 Pro was designed for con
       {'b': 'Google TV gathers all streaming apps on one screen, and the native 120Hz panel with '
             'HDMI 2.1 (4K/120, VRR, ALLM) is ready for PS5 and Xbox.',
        'h': 'Google TV and 120Hz gaming',
-       'img': None,
+       'img': 'images/scene/sony-bravia-5-googletv.jpg',
        'source': 'Sony BRAVIA 5 (XR50) Mini LED line — XR Backlight Master Drive, XR Triluminos '
                  'Pro, XR Processor with AI, Google TV, 120Hz: '
                  'https://techstevehd.com/reviews/sony-bravia-5-xr50-series and '
@@ -1132,7 +1132,7 @@ FEATURES = {0: [{'b': 'Weighing less than 249 g, Mini 4 Pro was designed for con
  74: [{'b': '3MP (2304×1296) live monitoring with 0–355° pan and −5–80° tilt — one camera covers '
             'every corner of the room.',
        'h': '3MP 2K that turns to follow the room',
-       'img': 'images/gallery/imou-ranger-2-2k-3mp-g2.jpg',
+       'img': 'images/scene/imou-ranger-2-pan.jpg',
        'source': 'IMOU official datasheet — Ranger 2 3MP, Rev 001.001 (imoulife.com)'},
       {'b': 'Human detection finds people in the frame and alerts your phone — not every curtain '
             'moving in the draught.',
@@ -1142,24 +1142,24 @@ FEATURES = {0: [{'b': 'Weighing less than 249 g, Mini 4 Pro was designed for con
       {'b': 'Infrared night vision up to 10 m and auto-cruise that sweeps the room or moves '
             'between favourite points.',
        'h': 'Night vision to 10 m, auto-cruise patrols',
-       'img': None,
+       'img': 'images/scene/imou-ranger-2-night.jpg',
        'source': 'IMOU official datasheet — Ranger 2 3MP, Rev 001.001 (imoulife.com)'}],
  75: [{'b': '3MP (2304×1296) pan-and-tilt coverage — 355° pan, −5–80° tilt — with human and pet '
             'detection that alerts your phone.',
        'h': '3MP 2K with human and pet detection',
-       'img': 'images/gallery/imou-ranger-2-pro-2k-g1.jpg',
+       'img': 'images/scene/imou-ranger-2-pro-detect.jpg',
        'source': 'IMOU official datasheet — Ranger 2 Pro 3MP, Rev 001.001 '
                  '(static-website.imou.com)'},
       {'b': 'Smart tracking turns the camera to follow moving people and pets, so the action stays '
             'in frame.',
        'h': 'Smart tracking follows the movement',
-       'img': None,
+       'img': 'images/scene/imou-ranger-2-pro-tracking.jpg',
        'source': 'IMOU official datasheet — Ranger 2 Pro 3MP, Rev 001.001 '
                  '(static-website.imou.com)'},
       {'b': 'A touch button lets family video-call your app, and Smart Full-Colour Night Vision '
             'keeps night footage in colour — with Wi-Fi 6 for a steady stream.',
        'h': 'One-touch call and full-colour night vision',
-       'img': None,
+       'img': 'images/scene/imou-ranger-2-pro-call.jpg',
        'source': 'IMOU official datasheet — Ranger 2 Pro 3MP, Rev 001.001 '
                  '(static-website.imou.com)'}],
  76: [{'b': 'A compact fixed mini dome that sits quietly on a ceiling — full coverage without a '
@@ -1765,20 +1765,34 @@ SHOWPIECE_THUMB = {10: 'images/hero-dark-thumb/hikvision-2mp-dome-camera.jpg',
 def features_html(p):
     """Image-led feature sections (DJI pattern: huge image + bold heading +
     1-2 lines). Wide scene shots fill the band; square/portrait product
-    shots sit centred at full size so nothing is ever cropped."""
+    shots sit centred at full size so nothing is ever cropped.
+    Round 9 -- PACING: the 108 pages were all the same shape (image band
+    + centred text, twice each). Now wide scenes (>=1.78) go full-bleed
+    with the text overlaid on a gradient scrim (DJI's own pattern), and
+    the remaining sections alternate centred / left-aligned text, so no
+    two neighbouring sections look alike."""
     secs = FEATURES.get(p["id"]) or []
     if not secs:
         return ""
     out = []
     for i, s in enumerate(secs):
         img_html = ""
+        overlay = False
         if s.get("img") and (STAGING / s["img"]).is_file():
             im = Image.open(STAGING / s["img"])
             wide = im.width / im.height >= 1.25
+            very_wide = im.width / im.height >= 1.78
             cls = "feature-img wide" if wide else "feature-img"
             img_html = (f'<div class="{cls}"><img src="{detail_hero_uri(s["img"])}" '
                         f'alt="{esc(s["h"])}" loading="lazy"></div>')
-        out.append(f'<section class="feature-sec"{" id=\"features\"" if i == 0 else ""}>{img_html}'
+            overlay = very_wide
+        if overlay:
+            sec_cls = "feature-sec overlay"
+        elif i % 2 == 1:
+            sec_cls = "feature-sec alt"
+        else:
+            sec_cls = "feature-sec"
+        out.append(f'<section class="{sec_cls}"{" id=\"features\"" if i == 0 else ""}>{img_html}'
                    f'<div class="wrap feature-text"><h2>{esc(s["h"])}</h2><p>{esc(s["b"])}</p></div></section>')
     return "\n".join(out)
 
@@ -2082,23 +2096,25 @@ def detail_hero_uri(rel: str, max_w: int = 1920) -> str:
     return _b64(buf.getvalue())
 
 def detail_hero_for(p):
-    """(hero rel path, css background-position, hero video URL or None).
-    Priority: products.json "hero" / "hero_video" fields (with optional
-    "hero_pos") > the DETAIL_HERO map by slug (entries may carry "video")
-    > the product's own photo_full.
+    """(hero rel path, css background-position, hero video URL or None,
+    YouTube hero video id or None).
+    Priority: products.json "hero" / "hero_video" / "hero_yt" fields (with
+    optional "hero_pos") > the DETAIL_HERO map by slug (entries may carry
+    "video" or "yt") > the product's own photo_full.
     Video URLs are DJI's real hero-video URLs (external https, mp4) --
-    supplied by the separate video worker; this template only has to be
-    ready for them. No video is assigned yet, so every drone currently
-    renders the Ken Burns image hero. Returns (None, "center", None) when
-    the product has no photo at all -- the caller then renders the plain
-    black hero."""
-    if p.get("hero") or p.get("hero_video"):
+    supplied by the separate video worker; "yt" is a verified DJI
+    official YouTube film id (Round 9: the 8 drones with no CDN hero
+    video). The template renders mp4 first, yt second, Ken Burns still
+    otherwise. Returns (None, "center", None, None) when the product has
+    no photo at all -- the caller then renders the plain black hero."""
+    if p.get("hero") or p.get("hero_video") or p.get("hero_yt"):
         return (p.get("hero") or p.get("photo_full"),
-                p.get("hero_pos", "center"), p.get("hero_video"))
+                p.get("hero_pos", "center"), p.get("hero_video"),
+                p.get("hero_yt"))
     m = DETAIL_HERO.get(p["slug"])
     if m:
-        return m["hero"], m.get("pos", "center"), m.get("video")
-    return p.get("photo_full"), "center", None
+        return m["hero"], m.get("pos", "center"), m.get("video"), m.get("yt")
+    return p.get("photo_full"), "center", None, None
 
 def img_uri(rel: str) -> str:
     return _b64((STAGING / rel).read_bytes())
@@ -2681,6 +2697,22 @@ body.no-hero main{padding-top:64px}
    them into products.json "hero_video" or DETAIL_HERO "video". */
 .detail-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
 .detail-hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+/* Round 9 -- YouTube hero: the iframe covers the hero band exactly like
+   object-fit:cover (16:9 video into any hero aspect). pointer-events:none
+   so the hero text/buttons stay clickable and the video can never be
+   paused by a stray tap; the cinematic still behind it covers the slow
+   start while the player buffers. */
+.detail-hero-yt{position:absolute;top:50%;left:50%;width:100%;height:56.25vw;min-width:177.78vh;min-height:100%;transform:translate(-50%,-50%);border:0;z-index:1;pointer-events:none}
+/* Round 9 -- mobile: DJI's films carry burned-in captions in the bottom
+   ~12% of the frame. On a portrait hero the 16:9 video shows its full
+   height, so the captions collide with the hero's confirm-note (seen on
+   Mini 3 mobile, 20 Nov). Overscan the video to 140% of the hero height
+   (aspect-ratio keeps it 16:9) so the visible window always ends at
+   ~86% of the frame -- the captions fall below the hero's bottom edge,
+   the same crop the desktop cover fit already gives. A fixed vw
+   overscan was tried first and failed: hero heights vary by content,
+   so the crop must scale with the hero, not the viewport. */
+@media(max-width:720px){.detail-hero-yt{width:auto;height:140%;min-width:0;min-height:140%;aspect-ratio:16/9}}
 .detail-hero.has-bg .hero-overlay{z-index:2}
 .detail-hero.has-bg .detail-hero-inner{z-index:3}
 .detail-hero.has-bg.kenburns .detail-hero-bg{animation:kb-zoom 22s ease-in-out infinite alternate}
@@ -2698,6 +2730,20 @@ body.no-hero main{padding-top:64px}
 .feature-sec .feature-text{padding-top:40px}
 .feature-sec h2{font-size:clamp(1.7rem,3.4vw,2.6rem);font-weight:700;margin:0 auto;max-width:24ch}
 .feature-sec p{color:#425466;font-size:1.05rem;line-height:1.7;max-width:56ch;margin:16px auto 0}
+/* Round 9 -- pacing variants. .alt: same shape, text left-aligned so
+   neighbouring sections don't repeat. .overlay: wide scene goes
+   full-bleed with the text overlaid bottom-left on a gradient scrim
+   (DJI's own pattern) -- the image IS the section. */
+.feature-sec.alt .feature-text{text-align:left}
+.feature-sec.alt h2{margin:0;max-width:28ch}
+.feature-sec.alt p{margin:16px 0 0}
+.feature-sec.overlay{position:relative;padding:0;min-height:78vh;display:flex;align-items:flex-end;overflow:hidden;text-align:left}
+.feature-sec.overlay .feature-img{position:absolute;inset:0}
+.feature-sec.overlay .feature-img img{width:100%;height:100%;object-fit:cover}
+.feature-sec.overlay::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.72));pointer-events:none}
+.feature-sec.overlay .feature-text{position:relative;z-index:1;padding:0 40px 56px;text-align:left}
+.feature-sec.overlay h2{color:#fff;margin:0;max-width:28ch;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.feature-sec.overlay p{color:#e8e8e8;margin:16px 0 0;text-shadow:0 1px 12px rgba(0,0,0,.8)}
 
 .detail-hero .kicker{color:#9a9a9a}
 .detail-hero.has-bg .kicker{color:#d6d6d6;text-shadow:0 1px 12px rgba(0,0,0,.8)}
@@ -3190,7 +3236,7 @@ def build_index():
 <button class="films-arrow prev" type="button" aria-label="Previous film">&lsaquo;</button>
 <button class="films-arrow next" type="button" aria-label="Next film">&rsaquo;</button>
 </div>
-<p style="text-align:center;margin-top:26px"><a class="btn btn-light" href="explore.html">Watch all 11 films on Explore</a></p>
+<p style="text-align:center;margin-top:26px"><a class="btn btn-light" href="explore.html">Watch all 12 films on Explore</a></p>
 </section>
 <section class="sec" id="innovation"><div class="wrap">
 {section_head('Innovation', 'Standing at the Forefront of Innovation', 'As we explore new technology, we push the capabilities of what is possible, driving progress through continuous innovation.')}
@@ -3515,7 +3561,15 @@ def build_product(p):
     # Round 6b -- VIDEO-READY: with a hero_video URL the hero is a looping
     # <video> (autoplay muted loop playsinline, hero frame as poster);
     # without one the bg div gets the Ken Burns class so the still moves.
-    hero_rel, hero_pos, hero_video = detail_hero_for(p)
+    # Round 9 -- YOUTUBE HERO: with a "yt" id the hero is DJI's official
+    # YouTube film in a cover-fit iframe (autoplay muted loop via the
+    # playlist trick, no controls). TESTED 20 Nov in the VM browser:
+    # plays + loops (Mini 2 film: t=60s film frame, t=80s re-buffer
+    # spinner at the loop point, t=100s early-film frame again), no
+    # player chrome. Slow start (~5-10s black through this VM's proxy)
+    # is covered by the cinematic still behind the iframe. file://
+    # previews show YouTube Error 153 -- the live https site does not.
+    hero_rel, hero_pos, hero_video, hero_yt = detail_hero_for(p)
     if hero_rel and (STAGING / hero_rel).is_file():
         hero_uri_str = detail_hero_uri(hero_rel)
         bg_div = ('  <div class="detail-hero-bg" style="background-image:url(\'' + hero_uri_str + '\');'
@@ -3524,6 +3578,13 @@ def build_product(p):
             video_tag = ('  <video class="detail-hero-video" autoplay muted loop playsinline poster="' + hero_uri_str + '">'
                          '<source src="' + esc(hero_video) + '" type="video/mp4"></video>')
             hero_cls = "detail-hero has-bg has-video"
+        elif hero_yt:
+            yt_src = ("https://www.youtube.com/embed/" + hero_yt +
+                      "?autoplay=1&mute=1&loop=1&playlist=" + hero_yt +
+                      "&controls=0&playsinline=1&rel=0&modestbranding=1")
+            video_tag = ('  <iframe class="detail-hero-yt" src="' + yt_src + '" '
+                         'allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>')
+            hero_cls = "detail-hero has-bg has-yt"
         else:
             video_tag = ""
             hero_cls = "detail-hero has-bg kenburns"
@@ -3594,8 +3655,8 @@ def build_explore():
     cards = ""
     for i, (v, prod) in enumerate(vids):
         link = (f'<p>Film for <a href="products/{prod["slug"]}.html">{esc(prod["name"])}</a></p>' if prod else "")
-        # 11 films: first card spans both columns so the grid fills exactly.
-        cards += video_card(v["video_id"], v["title_or_null"] or "DJI film", link, wide=(i == 0))
+        # 12 films: first and last cards span both columns so the grid fills exactly.
+        cards += video_card(v["video_id"], v["title_or_null"] or "DJI film", link, wide=(i == 0 or i == len(vids) - 1))
     stories = [
         ("shot-canyon.jpg", "Canyons from above", "Steep walls, long shadows — the kind of frame a folding DJI Mini makes possible on a walk, not a film set."),
         ("shot-desert.jpg", "Desert light", "Open ground and low sun. The Air and Mavic range is built for wide, clean aerial frames like this."),
@@ -3614,13 +3675,13 @@ def build_explore():
 <div class="cat-tiles">{tiles}</div>
 </div></section>
 <section class="sec dark" id="films"><div class="wrap">
-{section_head('The Films', '11 verified DJI films', 'Every film below is an official DJI film on YouTube, verified as publicly playable.')}
+{section_head('The Films', '12 verified DJI films', 'Every film below is an official DJI film on YouTube, verified as publicly playable.')}
 <div class="video-grid">{cards}</div>
 </div></section>
 {cta_band('')}
 """
     write("explore.html", chrome("", "Explore — Stories & Films — AK Khan Enterprises",
-        "Explore AK Khan Enterprises: drone photography stories and 11 verified official DJI films.", body))
+        "Explore AK Khan Enterprises: drone photography stories and 12 verified official DJI films.", body))
 
 # ----- static info pages -----
 FAQS = [
@@ -3923,9 +3984,10 @@ to rebuild. Byte-reproducible: run twice, second run produces zero diff.
 - No specs table anywhere (the data contains no technical specs).
 - Product 89 (Dahua 4K IR ePoE Mini Dome) shows the verified N84CL52 photo
   (official Dahua datasheet).
-- Only the 11 verified DJI YouTube films are embedded, via a sharp
+- Only the 12 verified DJI YouTube films are embedded, via a sharp
   maxresdefault thumbnail facade (click loads the player). The DJI Mini 3
-  film (48_kEK9iFKU) is private and is never embedded.
+  film (48_kEK9iFKU) is private and is never embedded -- Mini 3 now uses
+  the verified 'Meet DJI Mini 3' film (6VbOozPmbr4).
 - No Laptops / Photography / Accessories category pages: the data has no
   such products, so those pages would be empty. No "New Arrivals" or
   "Best Sellers" labels: the data has no dates or sales figures.
