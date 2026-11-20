@@ -44,9 +44,9 @@ function akWireShotVideos(){
   });
 }
 window.__akWireShot=akWireShotVideos;
-// Round 20 -- 4K CHUNK LOADER (top-level, so the hero loader AND the
-// detail-hero loader both use it): each 3840x2160 film is split into
-// <=2.8MB part files (assets/<kind>/<key>-p<N>.js, push limit) holding
+// Round 21 -- NATIVE-RES CHUNK LOADER (top-level, so the hero loader AND
+// the detail-hero loader both use it): each film is split into <=2.8MB
+// part files (assets/<kind>/<key>-p<N>.js, push limit) holding
 // window.__AK_FILM_PARTS['<key>-hero'|'...-detail'][i] base64 pieces.
 // Parts load sequentially and are assembled into one base64 string;
 // `done` gets it, `fail` runs if any part is missing/broken.
@@ -67,20 +67,20 @@ function akLoadFilm(key,kind,parts,base,done,fail){
     document.head.appendChild(s);
   })();
 }
-// Round 20 -- 4K DETAIL HEROES: each product page's
-// <video class="detail-hero-video" data-film="..."> gets its 4K film from
+// Round 21 -- NATIVE-RES DETAIL HEROES: each product page's
+// <video class="detail-hero-video" data-film="..."> gets its native-res film from
 // the chunk files; the poster shows until the film plays. The assets base
 // is derived from this script's own src, so it works from any page depth.
 (function(){
   var vids=document.querySelectorAll('video.detail-hero-video[data-film]');
   if(!vids.length)return;
-  var parts={air3s:2,mavic3pro:7,mini3pro:3,mini4pro:7}; // detail parts (manifest)
+  var parts={air3s:2,mavic3pro:5,mini3pro:2,mini4pro:5}; // Round 21 native-res detail parts (manifest)
   var base='assets/';
   var ss=document.getElementsByTagName('script');
   for(var i=0;i<ss.length;i++){var s=ss[i].getAttribute('src')||'';if(s.indexOf('site.js')>=0){base=s.slice(0,s.lastIndexOf('/')+1);break;}}
   vids.forEach(function(v){
     var key=v.getAttribute('data-film');
-    akLoadFilm(key,'detail',parts[key]||1,base+'detail-film-4k/',function(b64){
+    akLoadFilm(key,'detail',parts[key]||1,base+'detail-film/',function(b64){
       try{
         var bin=atob(b64),arr=new Uint8Array(bin.length);
         for(var j=0;j<bin.length;j++){arr[j]=bin.charCodeAt(j);}
@@ -155,9 +155,9 @@ if(hc){
   var hSlides=Array.prototype.slice.call(hc.querySelectorAll('.hero-slide'));
   var hList=hc.querySelectorAll('.hero-list button');
   var hIdx=0,hTimer=null,hLastGo=Date.now(),hPending=-1;
-  // Round 12 -- SELF-HOSTED HERO FILMS: the 4 DJI films are re-encoded
-  // to 720p (~2-2.5MB each, no audio) and embedded as base64 in
-  // assets/hero-film-*.js (same origin as the site). No external CDN, no
+  // Round 12 -- SELF-HOSTED HERO FILMS (Round 21: native resolution,
+  // 2560x1440 -- Mini 3 Pro 1920x1080 -- no audio) as base64 chunks in
+  // assets/hero-film/<key>-p<N>.js (same origin as the site). No external CDN, no
   // YouTube dependency. Round 10's 6-12MB CDN mp4s never started on a
   // slow connection (Slow 3G repro: readyState 0, currentTime 0 after
   // 18s, proxy up) and Round 11's YouTube films never started on the
@@ -168,8 +168,10 @@ if(hc){
   // plays (hero-film-on fires on the video 'playing' event, never on a
   // timer). Reduced-motion users get the poster still.
   var hReduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // Round 20 -- 4K serves every screen: one 3840x2160 film per product
-  // (the old 640x360 mobile variants are retired; the boss ordered 4K).
+  // Round 21 -- NATIVE RES serves every screen: one film per product at
+  // its native resolution (2560x1440; Mini 3 Pro 1920x1080). Round 20's
+  // 3840 "4K" files were upscales of these same masters, so native is the
+  // same picture ~35% lighter and starts sooner on slow connections.
   var hVideos={};   // slide index -> <video> element
   var hBlobUrls={}; // film key -> blob: URL (built once per film)
   window.__akHeroVideos=hVideos; // debug handle: harness reads state via this
@@ -296,19 +298,19 @@ if(hc){
     if(ix>=0)hFilmQueue.splice(ix,1);
     hFilmQueue.unshift(key);
   }
-  // Round 20 -- 4K: the queue advances ONLY when a film has arrived (or
+  // Round 21 -- native-res: the queue advances ONLY when a film has arrived (or
   // failed) -- never on a loader's onload, because a chunk loader's onload
   // fires before its parts land. __heroFilmArrived wires the video;
   // __heroFilmFailed marks the slide as poster-fallback so one dead film
   // can never freeze the carousel.
-  var hFilmParts={air3s:2,mavic3pro:4,mini3pro:2,mini4pro:4}; // hero parts (manifest)
+  var hFilmParts={air3s:1,mavic3pro:3,mini3pro:1,mini4pro:3}; // Round 21 native-res hero parts (manifest)
   window.__heroFilmFailed=function(key){hFilmFailed[key]=1;hMaybeAdvance();};
   function hLoadNextFilm(){
     if(hFilmLoading)return;
     var key=hFilmQueue.shift();
     if(!key)return;
     hFilmLoading=key;
-    akLoadFilm(key,'hero',hFilmParts[key]||1,'assets/hero-film-4k/',function(b64){
+    akLoadFilm(key,'hero',hFilmParts[key]||1,'assets/hero-film/',function(b64){
       window.__HERO_FILMS=window.__HERO_FILMS||{};
       window.__HERO_FILMS[key]=b64;
       hFilmLoaded[key]=1;hFilmLoading=null;

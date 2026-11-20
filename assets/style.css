@@ -676,3 +676,65 @@ body.no-hero main{padding-top:64px}
 .site-header .menu-btn{order:-1;margin-left:0}
 .site-header .brand{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
 }
+/* ROUND 21 -- boss-approved gap fixes (20 Nov). One appended block; the
+   earlier rules stay untouched and equal-specificity rules here win by
+   order. Verified against verify/round20/f-*.png + r-m-innovation.png. */
+/* Gap 1 -- WHITE TEXT ON LIGHT PHOTOS: the old top/bottom scrims (44%/42%)
+   faded to fully transparent in the middle, and long titles + taglines run
+   into that bright band (Dahua white dome: title/tagline washed out). The
+   scrims now overlap in the middle and never drop below a real gradient
+   where text sits; the product stays visible (the middle is veiled, never
+   blacked out). Same treatment for feature + field tiles. */
+.card::before{height:58%;background:linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.48) 45%,rgba(0,0,0,.20) 75%,rgba(0,0,0,0))}
+.card::after{height:56%;background:linear-gradient(0deg,rgba(0,0,0,.74),rgba(0,0,0,.48) 45%,rgba(0,0,0,.20) 75%,rgba(0,0,0,0))}
+.feature-tile::before{height:58%;background:linear-gradient(180deg,rgba(0,0,0,.78),rgba(0,0,0,.52) 45%,rgba(0,0,0,.22) 75%,rgba(0,0,0,0))}
+.feature-tile::after{height:56%;background:linear-gradient(0deg,rgba(0,0,0,.78),rgba(0,0,0,.52) 45%,rgba(0,0,0,.22) 75%,rgba(0,0,0,0))}
+#innovation .feature-tile::before{height:58%;background:linear-gradient(180deg,rgba(0,0,0,.82),rgba(0,0,0,.55) 50%,rgba(0,0,0,.24) 78%,rgba(0,0,0,0))}
+.field-tile::after{background:linear-gradient(180deg,rgba(0,0,0,.68),rgba(0,0,0,.38) 45%,rgba(0,0,0,.12) 75%,rgba(0,0,0,0))}
+/* Gap 3 -- CATALOGUE FLATNESS (presentation only, photos untouched): a soft
+   vignette stages the product, the Ken Burns drift is stronger so the frame
+   feels alive, and the product is framed slightly high so it sits
+   heroically clear of the bottom price band. */
+.card-img::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(115% 88% at 50% 42%,rgba(0,0,0,0) 58%,rgba(0,0,0,.16) 100%)}
+@keyframes kb-card{from{transform:scale(1.03) translate(0,0)}to{transform:scale(1.13) translate(-1.8%,-1.4%)}}
+.card-img{animation:kb-card 36s ease-in-out infinite alternate}
+.feature-tile .f-img{animation:kb-card 40s ease-in-out infinite alternate}
+.card-img img{object-position:center 40%}
+@media(prefers-reduced-motion:reduce){.card-img,.feature-tile .f-img{animation:none}}
+/* Gap 6 -- FLOATING BUTTONS OVER CARD TEXT: the back-to-top button is gone
+   on mobile (DJI mobile has none; the WhatsApp pill is the one that
+   matters). On desktop both buttons become small icon-only circles at the
+   far right edge, clear of the centred card text (the labelled pill used
+   to cover the right end of card taglines, f-d-featured). The header nav
+   pill + every card's WhatsApp link keep the "WhatsApp" wording. */
+.wa-float{width:44px;height:44px;padding:0;justify-content:center}
+.wa-float span{display:none}
+.wa-float svg{width:22px;height:22px}
+.to-top{right:18px;bottom:78px}
+@media(max-width:720px){
+  .to-top{display:none!important}
+  /* Gap 4 -- MOBILE HEADING CLIPPED: at 390px the to-top button sat on the
+     Innovation heading's right edge while scrolling (f-m-films: "Standing
+     at the Forefront o[f]"). The button is gone on mobile now; as
+     belt-and-braces the section head can never overflow the viewport. */
+  .sec-head{padding:0 4px}
+  .sec-head h2{overflow-wrap:break-word}
+  /* Gap 7 -- MOBILE HERO SUBJECT BEHIND TEXT: the 360px hero was too short
+     for its copy block, so the film's subject (kitesurfer) landed behind
+     the subtitle/buttons. The hero grows taller and the copy compresses
+     into the top third, so the subject plays in clear space below. */
+  .hero{min-height:520px}
+  .hero-slide .hero-content{padding:72px 16px 118px}
+  .hero-slide h1{margin-top:8px}
+  .hero-slide .hero-sub{margin:10px auto 16px}
+  /* Gap 8 -- MOBILE HERO BUTTONS CROWDED: the two pills stack vertically,
+     centred, both CTAs kept. */
+  .hero-cta{flex-direction:column;align-items:center;gap:10px}
+  .hero-cta .btn{width:min(272px,80vw);min-width:0}
+}
+/* Gap 9 -- DESKTOP HERO DOTS GLITCH: the tick above the active dash was NOT
+   the .hero-list button.current::before (Round 20 already hides that, line
+   ~651) -- it was the scroll-hint "&darr;" glyph, absolutely positioned at
+   bottom-centre exactly over the dashes (f-d-hero.png, since fixed in
+   f-d-hero-hintfix.png). The element is removed from index.html; the
+   Round 20 .hero-carousel .scroll-hint{display:none} stays as backstop. */
