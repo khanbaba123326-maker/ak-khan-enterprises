@@ -738,3 +738,58 @@ body.no-hero main{padding-top:64px}
    bottom-centre exactly over the dashes (f-d-hero.png, since fixed in
    f-d-hero-hintfix.png). The element is removed from index.html; the
    Round 20 .hero-carousel .scroll-hint{display:none} stays as backstop. */
+
+/* ROUND 22 — MAKE IT BEAUTIFUL ("MAZA", boss 19:36): the site was correct
+   but flat — no joy, no wow. DJI's beauty is huge type, epic full-bleed
+   imagery, dramatic light, products staged like movie stars. One appended
+   block; earlier rules stay untouched and equal-specificity rules here win
+   by order. Layout, prices, names, models, films unchanged. */
+/* 1 — HUGE DJI-SCALE HEADINGS: section heads go massive and bold, like
+   DJI's "Compare Camera Drones". Card titles are NOT touched (the boss's
+   old complaint was card text too big) — only section/display type. */
+h2{font-size:clamp(2.4rem,5.5vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.05}
+.sec-head{max-width:900px;margin:0 auto 56px}
+.sec-head h2{font-size:clamp(2.4rem,5.5vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.05}
+.sec-sub{font-size:1.15rem}
+.shot-on{font-size:clamp(2rem,5vw,3.25rem);font-weight:800;letter-spacing:-.02em}
+.feature-sec h2{font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:800;letter-spacing:-.02em}
+.end-card h2{font-size:clamp(2.4rem,5.5vw,4rem);font-weight:800;letter-spacing:-.03em}
+.cat-head h1{font-size:clamp(2.6rem,5.5vw,4.25rem);font-weight:800;letter-spacing:-.02em}
+.dji-intro-text h2{font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-.02em}
+/* 2 — DENSER CINEMATIC RHYTHM: less plain white between sections; the
+   huge type + dark cards fill the page instead of empty air. */
+.sec{padding:64px 0}
+.tiles-sec{padding:8px 0 0}
+/* 3 — DARK STAGE + CINEMATIC GRADE (presentation only, photos untouched):
+   one coherent warm grade across every tile photo — deeper blacks, richer
+   contrast, a kiss of warm light at the top — plus a stronger vignette so
+   white products pop on a dark stage like the Mini 5 Pro card. */
+.card-img img{filter:brightness(.92) contrast(1.14) saturate(1.16) sepia(.06)}
+.card-img::after{background:radial-gradient(115% 88% at 50% 42%,rgba(0,0,0,0) 52%,rgba(0,0,0,.30) 100%),linear-gradient(180deg,rgba(255,190,110,.10),rgba(255,190,110,0) 30%)}
+.feature-tile .f-img img{filter:brightness(.92) contrast(1.14) saturate(1.16) sepia(.06)}
+.field-tile::after{background:linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.42) 45%,rgba(0,0,0,.14) 75%,rgba(0,0,0,0)),radial-gradient(120% 90% at 50% 40%,rgba(0,0,0,0) 55%,rgba(0,0,0,.28) 100%)}
+.cat-tile::after{background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.82)),radial-gradient(120% 90% at 50% 40%,rgba(0,0,0,0) 55%,rgba(0,0,0,.25) 100%)}
+/* 4 — DEEPER MOTION: slower, wider Ken Burns drift (cinematic, not busy),
+   a touch more hover lift, smoother reveals. Transform/opacity only;
+   reduced-motion users get stills. */
+@keyframes kb-card{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.17) translate(-2.4%,-1.8%)}}
+.card-img{animation:kb-card 44s ease-in-out infinite alternate}
+.feature-tile .f-img{animation:kb-card 48s ease-in-out infinite alternate}
+.card:hover .card-img img{transform:scale(1.07)}
+.card:hover,.field-tile:hover,.cat-tile:hover{transform:translateY(-6px)}
+.card:hover{box-shadow:0 24px 48px rgba(0,0,0,.28)}
+.reveal{transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,.61,.36,1),transform .8s cubic-bezier(.22,.61,.36,1)}
+@media(prefers-reduced-motion:reduce){.reveal{transition:none;opacity:1;transform:none}}
+/* 5 — MOBILE: DJI-scale headings on phones too (huge, bold, wrapping like
+   DJI's "Compare Camera Drones"); card titles untouched. */
+@media(max-width:720px){
+  h2{font-size:clamp(2rem,9vw,2.75rem);font-weight:700;line-height:1.08;letter-spacing:-.01em}
+  .sec{padding:44px 0}
+  .sec-head{margin-bottom:40px}
+  .sec-head h2{font-size:clamp(2rem,9vw,2.75rem);font-weight:700;line-height:1.08;letter-spacing:-.01em}
+  .sec-sub{font-size:1.05rem}
+  .films-sec .shot-on{font-size:clamp(1.9rem,8vw,2.5rem);font-weight:700}
+  .feature-sec h2{font-size:clamp(1.9rem,8vw,2.6rem);font-weight:700}
+  .end-card h2{font-size:clamp(2rem,9vw,2.75rem);font-weight:700}
+  .cat-head h1{font-size:clamp(2.2rem,9vw,3rem);font-weight:700}
+}
