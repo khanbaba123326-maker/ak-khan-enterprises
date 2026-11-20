@@ -89,83 +89,76 @@ if(hc){
   var hSlides=Array.prototype.slice.call(hc.querySelectorAll('.hero-slide'));
   var hList=hc.querySelectorAll('.hero-list button');
   var hIdx=0,hTimer=null;
-  // Round 11 -- YOUTUBE HERO (IFrame API): the ACTIVE slide's player
-  // and the NEXT slide's player are loaded (a 2-player window); the
-  // rest have no src. Preloading the next film while the current slide
-  // plays means each film is already moving when its slide becomes
-  // active. YouTube adapts to the connection, so the films move even
-  // on slow 3G where the 6-12MB CDN mp4s never started. The IFrame API
-  // (not plain embed params) is what kills the player chrome:
-  // unloadModule('captions') removes the subtitle bar that
-  // cc_load_policy=0 did NOT remove, setLoop(true) loops without the
-  // playlist param (so no prev/next playlist buttons), and the iframe
-  // stays transparent until the player fires PLAYING -- so the DJI
-  // poster still, not a black loading screen, is the cover while the
-  // film buffers. Reduced-motion users get the poster still.
+  // Round 12 -- SELF-HOSTED HERO FILMS: the 4 DJI films are re-encoded
+  // to 720p (~2-2.5MB each, no audio) and embedded as base64 in
+  // assets/hero-film-*.js (same origin as the site). No external CDN, no
+  // YouTube dependency. Round 10's 6-12MB CDN mp4s never started on a
+  // slow connection (Slow 3G repro: readyState 0, currentTime 0 after
+  // 18s, proxy up) and Round 11's YouTube films never started on the
+  // boss's machine at all (YT-blocked repro: no API, no players, poster
+  // still on every slide) -- both showed a still poster. Small same-origin
+  // files + preload="auto" + autoplay + play() on canplay mean the film
+  // actually moves. The DJI poster stays the cover until a video really
+  // plays (hero-film-on fires on the video 'playing' event, never on a
+  // timer). Reduced-motion users get the poster still.
   var hReduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var hPlayers={};
-  var hApiReady=false;
-  function hYtUrl(id){
-    return 'https://www.youtube.com/embed/'+id+'?autoplay=1&mute=1&controls=0&playsinline=1&rel=0&modestbranding=1&cc_load_policy=0&enablejsapi=1';
+  var hVideos={};   // slide index -> <video> element
+  var hBlobUrls={}; // film key -> blob: URL (built once per film)
+  window.__akHeroVideos=hVideos; // debug handle: harness reads state via this
+  function hB64ToBlob(b64){
+    var bin=atob(b64),len=bin.length,arr=new Uint8Array(len);
+    for(var i=0;i<len;i++){arr[i]=bin.charCodeAt(i);}
+    return new Blob([arr],{type:'video/mp4'});
   }
-  function hMakePlayer(j){
-    var f=hSlides[j].querySelector('iframe.hero-yt');if(!f||hPlayers[j]||!hApiReady)return;
-    try{
-      hPlayers[j]=new YT.Player(f,{
-        playerVars:{autoplay:1,mute:1,controls:0,disablekb:1,fs:0,playsinline:1,rel:0,modestbranding:1,cc_load_policy:0},
-        events:{
-          onReady:function(e){var q=e.target;q.mute();try{q.setLoop(true);}catch(_){}try{q.unloadModule('captions');}catch(_){}q.playVideo();},
-          onStateChange:function(e){
-            if(e.data===YT.PlayerState.PLAYING){hSlides[j].classList.add('hero-film-on');}
-            else if(e.data===YT.PlayerState.ENDED){e.target.playVideo();}
-          }
-        }
-      });
-    }catch(_){}
+  function hFilmUrl(key){
+    if(hBlobUrls[key])return hBlobUrls[key];
+    var F=window.__HERO_FILMS||{};
+    if(!F[key])return null;
+    try{hBlobUrls[key]=URL.createObjectURL(hB64ToBlob(F[key]));}catch(_){return null;}
+    return hBlobUrls[key];
   }
-  function hKillPlayer(j){
-    if(hPlayers[j]){try{hPlayers[j].destroy();}catch(_){}delete hPlayers[j];}
-    hSlides[j].classList.remove('hero-film-on');
+  function hPlayVideo(j){
+    var v=hVideos[j];if(!v)return;
+    if(v.readyState>=2){var p=v.play();if(p&&p.catch){p.catch(function(){});}}
   }
-  // player.destroy() REMOVES the iframe from the DOM, so a slide that
-  // was unloaded must get a fresh iframe when it is loaded again.
-  // The film id lives on the slide (data-yt) for exactly this reason.
-  function hFrame(s){
-    var f=s.querySelector('iframe.hero-yt');
-    if(!f){
-      f=document.createElement('iframe');
-      f.className='hero-yt';
-      f.setAttribute('title',s.dataset.name+' film');
-      f.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
-      f.setAttribute('allowfullscreen','');
-      s.appendChild(f);
-    }
-    return f;
+  function hWireVideo(j){
+    if(hVideos[j]||hReduced)return;
+    var s=hSlides[j],key=s.dataset.film,url=hFilmUrl(key);
+    if(!url)return;
+    var v=document.createElement('video');
+    v.className='hero-video';
+    v.muted=true;v.loop=true;v.playsInline=true;v.preload='auto';v.autoplay=true;
+    v.setAttribute('aria-hidden','true');
+    v.addEventListener('playing',function(){s.classList.add('hero-film-on');});
+    v.addEventListener('canplay',function(){if(j===hIdx){hPlayVideo(j);}});
+    // Insert BEFORE the overlay/text so the video sits under them
+    // (z-index 0, same as the poster) and never covers the copy.
+    var ov=s.querySelector('.hero-overlay');
+    if(ov){s.insertBefore(v,ov);}else{s.appendChild(v);}
+    v.src=url;
+    hVideos[j]=v;
+    if(j===hIdx){hPlayVideo(j);}
   }
+  // A film script calls this the moment its base64 lands (film scripts
+  // are deferred, so they run after this file). Also wired on every
+  // slide change, so a late-arriving film is used as soon as it can be.
+  window.__heroFilmArrived=function(key){
+    hSlides.forEach(function(s,j){if(s.dataset.film===key){hWireVideo(j);}});
+  };
   function hFilm(){
     hSlides.forEach(function(s,j){
       var keep=(j===hIdx)||(j===(hIdx+1)%hSlides.length);
       if(keep&&!hReduced){
-        var f=hFrame(s);
-        if(f.getAttribute('src')!==hYtUrl(s.dataset.yt)){f.src=hYtUrl(s.dataset.yt);}
-        hMakePlayer(j);
+        hWireVideo(j);
+        var v=hVideos[j];
+        if(v){if(j===hIdx){hPlayVideo(j);}else{v.pause();}}
       }else{
-        hKillPlayer(j);
-        var g=s.querySelector('iframe.hero-yt');
-        if(g&&g.getAttribute('src')){g.removeAttribute('src');}
+        var v2=hVideos[j];
+        if(v2){v2.pause();}
+        s.classList.remove('hero-film-on');
       }
     });
   }
-  // Load the IFrame API; when ready, build players for the slides that
-  // already have a src. If it never arrives, plain embed autoplay still
-  // plays -- fade the film in after a delay so the hero never sits on
-  // the poster.
-  window.onYouTubeIframeAPIReady=function(){hApiReady=true;hSlides.forEach(function(s,j){var f=s.querySelector('iframe.hero-yt');if(f&&f.getAttribute('src')){hMakePlayer(j);}});};
-  (function(){
-    var sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';
-    document.head.appendChild(sc);
-    setTimeout(function(){if(!hApiReady&&!hReduced){hSlides.forEach(function(s,j){if(j===hIdx||j===(hIdx+1)%hSlides.length){s.classList.add('hero-film-on');}});}},8000);
-  })();
   function hGo(i){
     hIdx=(i+hSlides.length)%hSlides.length;
     hSlides.forEach(function(s,j){s.classList.toggle('active',j===hIdx);});
@@ -177,6 +170,25 @@ if(hc){
     }
     hFilm();
   }
+  // Load the film scripts SEQUENTIALLY, active slide first: on a slow
+  // connection, parallel downloads share the pipe and NO film finishes
+  // for minutes (probe: Slow 3G, 60s, zero films landed); sequential
+  // loading gets the active slide's film first so the hero starts
+  // moving as soon as possible, then the rest follow in slide order.
+  (function(){
+    var order=[],seen={};
+    [hIdx,(hIdx+1)%hSlides.length].forEach(function(j){var k=hSlides[j].dataset.film;if(k&&!seen[k]){seen[k]=1;order.push(k);}});
+    ['air3s','mavic3pro','mini3pro','mini4pro'].forEach(function(k){if(!seen[k]){seen[k]=1;order.push(k);}});
+    (function next(){
+      if(!order.length)return;
+      var key=order.shift();
+      var sc=document.createElement('script');
+      sc.src='assets/hero-film-'+key+'.js';
+      sc.onload=function(){next();};
+      sc.onerror=function(){next();};
+      document.head.appendChild(sc);
+    })();
+  })();
   function hStart(){hStop();hTimer=setInterval(function(){hGo(hIdx+1);},5000);}
   function hStop(){if(hTimer){clearInterval(hTimer);hTimer=null;}}
   hList.forEach(function(b){b.addEventListener('click',function(){hGo(parseInt(b.dataset.go,10));hStart();});});

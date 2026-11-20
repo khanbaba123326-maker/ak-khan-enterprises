@@ -169,17 +169,17 @@ body.no-hero main{padding-top:64px}
 .hero-carousel{display:block;overflow:hidden;text-align:center}
 .hero-slide{position:absolute;inset:0;background:#000;opacity:0;transition:opacity 1s ease;display:flex;align-items:flex-start;justify-content:center}
 .hero-slide.active{opacity:1;z-index:1}
-/* Round 11 -- YOUTUBE HERO: the DJI CDN mp4s (6-12MB, 8-9 Mbps) never
-   buffered on a slow connection (throttled test: Slow 3G readyState 0,
-   currentTime 0 after 18s), so the hero was a poster still. DJI's
-   official YouTube films adapt to the connection (144p on slow 3G) and
-   actually move. .hero-poster is DJI's own poster still behind the
-   player (loading cover); .hero-yt uses the same 16:9 cover math as
-   .detail-hero-yt. Both sit at z-index 0, under the overlay + text. */
+/* Round 12 -- SELF-HOSTED HERO FILMS: DJI's films re-encoded to 720p
+   (~2MB each) and embedded as base64 in assets/hero-film-*.js, same
+   origin. Round 10's big CDN mp4s never buffered on slow connections
+   and Round 11's YouTube films never started on the boss's machine --
+   both left a poster still. .hero-poster is DJI's own poster still
+   behind the video (loading cover); .hero-video fills the slide with
+   object-fit cover at z-index 0, under the overlay + text, and fades
+   in only when the video really plays (hero-film-on). */
 .hero-poster{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
-.hero-yt{position:absolute;top:50%;left:50%;width:100%;height:56.25vw;min-width:177.78vh;min-height:100%;transform:translate(-50%,-50%);border:0;z-index:0;pointer-events:none}
-.hero-yt{opacity:0;transition:opacity .8s ease}
-.hero-slide.hero-film-on .hero-yt{opacity:1}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;opacity:0;transition:opacity .8s ease}
+.hero-slide.hero-film-on .hero-video{opacity:1}
 /* Round 10 -- NO-GHOST text: the outgoing slide's text fades out fully
    (0.35s, then visibility hidden) BEFORE the incoming slide's text
    starts fading in (0.5s delay), so two slides' text is never visible
