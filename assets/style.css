@@ -821,3 +821,36 @@ h2{font-size:clamp(2.4rem,5.5vw,4rem);font-weight:800;letter-spacing:-.03em;line
    here so it wins over the Round 21 scrims by order. */
 .card::before{display:none}
 .card::after{height:52%;background:linear-gradient(0deg,rgba(0,0,0,.72),rgba(0,0,0,.42) 55%,rgba(0,0,0,0))}
+/* ROUND 25 — product gallery, DJI-clean (boss 20 Nov 23:27: gallery looks
+   like garbage — photo small in empty space, grey arrow boxes, tiny thumbs
+   in a 4x2 grid, dots + hint clutter, no motion). Appended here so it wins
+   over the older gallery rules by order. Presentation only: no photo, name,
+   model, price or section changes; thumb switching / arrows / fullscreen
+   keep working exactly as before.
+   - Stage tone (JS toggles .light): white-bg catalogue shots get a light
+     stage so the photo blends like DJI; dark shots keep the black stage.
+   - Main photo: slow Ken Burns drift + fade on switch + fade-in on load.
+   - Arrows: thin minimal chevrons, no grey boxes.
+   - Thumbs: ONE horizontal scrollable row, larger, active thumb clearly
+     marked (white border on dark, black border on light).
+   - Dots + "Tap the photo..." hint: hidden. */
+.detail-photo-wrap{transition:background-color .45s ease}
+.detail-photo-wrap.light{background:#f4f4f4}
+.g-main{overflow:hidden}
+#galleryMain,.detail-photo-wrap>img{transition:opacity .3s ease;animation:g-kb 28s ease-in-out infinite alternate}
+@keyframes g-kb{from{transform:scale(1)}to{transform:scale(1.045)}}
+#galleryMain.g-switching{opacity:0}
+.g-arrow{width:44px;height:44px;background:transparent;color:rgba(255,255,255,.85);font-size:2rem;text-shadow:0 1px 10px rgba(0,0,0,.55)}
+.g-arrow.prev{left:8px}
+.g-arrow.next{right:8px}
+.detail-photo-wrap.light .g-arrow{color:rgba(0,0,0,.55);text-shadow:none}
+.g-thumbs{flex-wrap:nowrap;overflow-x:auto;justify-content:center;justify-content:safe center;max-width:100%;padding:18px 16px 22px;scrollbar-width:none}
+.g-thumbs::-webkit-scrollbar{display:none}
+.g-thumb{flex:0 0 auto;border:2px solid rgba(255,255,255,.3);background:#fff;padding:2px}
+.g-thumb img{width:76px;height:76px}
+.g-thumb.active{border-color:#fff}
+.detail-photo-wrap.light .g-thumb{border-color:rgba(0,0,0,.18)}
+.detail-photo-wrap.light .g-thumb.active{border-color:#111}
+.g-dots,.detail-photo-wrap .zoom-hint{display:none}
+@media(max-width:720px){.g-thumb img{width:68px;height:68px}.g-arrow{width:36px;height:44px;font-size:1.7rem}}
+@media(prefers-reduced-motion:reduce){#galleryMain,.detail-photo-wrap>img{animation:none}}
