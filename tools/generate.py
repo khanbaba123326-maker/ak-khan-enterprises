@@ -132,6 +132,1656 @@ DJI_HERO = {
     "dji-mini-4-pro": (None, "Mini to the Max"),
 }
 
+# ---------- Round 8: detail-page heroes (DJI-style full-bleed moving hero) ----------
+# Per-product cinematic hero frame, paths relative to staging/images/.
+# Sources: round6/hero-dji.json (13) + hero-cctv.json (59, p65 none)
+# + hero-other.json (34, p39 none) = 106 entries; p39/p65 have no photo
+# and render the plain black hero. CCTV/other entries are UPDATED to
+# the workers' hero-dark paths by the round-8 merge step (round8/
+# merge_inputs.py). "pos" = CSS background-position.
+# "video" = DJI hotlinked hero mp4 (ids 0/2/4/52; Mini 5 Pro has none).
+DETAIL_HERO = {'audionic-bluetooth-speaker': {'hero': 'images/hero-dark/audionic-bluetooth-speaker.jpg',
+                                'pos': 'center'},
+ 'audionic-conference-speaker': {'hero': 'images/hero-dark/audionic-conference-speaker.jpg',
+                                 'pos': 'center'},
+ 'audionic-earbuds': {'hero': 'images/hero-dark/audionic-earbuds.jpg', 'pos': 'center'},
+ 'audionic-home-theater-system': {'hero': 'images/hero-dark/audionic-home-theater-system.jpg',
+                                  'pos': 'center'},
+ 'audionic-multimedia-speaker': {'hero': 'images/hero-dark/audionic-multimedia-speaker.jpg',
+                                 'pos': 'center'},
+ 'audionic-party-speaker': {'hero': 'images/hero-dark/audionic-party-speaker.jpg', 'pos': 'center'},
+ 'audionic-portable-speaker': {'hero': 'images/hero-dark/audionic-portable-speaker.jpg',
+                               'pos': 'center'},
+ 'audionic-soundbar': {'hero': 'images/hero-dark/audionic-soundbar.jpg', 'pos': 'center'},
+ 'audionic-subwoofer': {'hero': 'images/hero-dark/audionic-subwoofer.jpg', 'pos': 'center'},
+ 'audionic-wireless-microphone': {'hero': 'images/hero-dark/audionic-wireless-microphone.jpg',
+                                  'pos': 'center'},
+ 'dahua-2mp-dome-camera': {'hero': 'images/hero-dark/dahua-2mp-dome-camera.jpg', 'pos': 'center'},
+ 'dahua-4k-ir-epoe-mini-dome': {'hero': 'images/hero-dark/dahua-4k-ir-epoe-mini-dome.jpg',
+                                'pos': 'center'},
+ 'dahua-5mp-bullet-camera': {'hero': 'images/hero-dark/dahua-5mp-bullet-camera.jpg',
+                             'pos': 'center'},
+ 'dahua-dh-epc230u': {'hero': 'images/hero-dark/dahua-dh-epc230u.jpg', 'pos': 'center'},
+ 'dahua-dh-hac-hdw1209tlqp-led': {'hero': 'images/hero-dark/dahua-dh-hac-hdw1209tlqp-led.jpg',
+                                  'pos': 'center'},
+ 'dahua-dh-hac-t1a41p-4mp-ir-eyeball': {'hero': 'images/hero-dark/dahua-dh-hac-t1a41p-4mp-ir-eyeball.jpg',
+                                        'pos': 'center'},
+ 'dahua-dh-hac-t5e20p-2mp-economy-hd-indoor-eyeball': {'hero': 'images/hero-dark/dahua-dh-hac-t5e20p-2mp-economy-hd-indoor-eyeball.jpg',
+                                                       'pos': 'center'},
+ 'dahua-dh-ipc-b1e49-a-il-smart-dual-light-camera': {'hero': 'images/hero-dark/dahua-dh-ipc-b1e49-a-il-smart-dual-light-camera.jpg',
+                                                     'pos': 'center'},
+ 'dahua-dh-ipc-hdbw4231fn-e2-m': {'hero': 'images/hero-dark/dahua-dh-ipc-hdbw4231fn-e2-m.jpg',
+                                  'pos': 'center'},
+ 'dahua-dh-ipc-hdbw4239rn-ase': {'hero': 'images/hero-dark/dahua-dh-ipc-hdbw4239rn-ase.jpg',
+                                 'pos': 'center'},
+ 'dahua-dh-ipc-hdbw5231en-ze-hdmi': {'hero': 'images/hero-dark/dahua-dh-ipc-hdbw5231en-ze-hdmi.jpg',
+                                     'pos': 'center'},
+ 'dahua-dh-ipc-hdbw8232en-z-sl': {'hero': 'images/hero-dark/dahua-dh-ipc-hdbw8232en-z-sl.jpg',
+                                  'pos': 'center'},
+ 'dahua-dh-ipc-hfw4239tn-ase': {'hero': 'images/hero-dark/dahua-dh-ipc-hfw4239tn-ase.jpg',
+                                'pos': 'center'},
+ 'dahua-dh-ipc-t1e29-a-il-2mp-dome': {'hero': 'images/hero-dark/dahua-dh-ipc-t1e29-a-il-2mp-dome.jpg',
+                                      'pos': 'center'},
+ 'dahua-dhi-dss4004-s2': {'hero': 'images/hero-dark/dahua-dhi-dss4004-s2.jpg', 'pos': 'center'},
+ 'dahua-dhi-dss7016dr-s2': {'hero': 'images/hero-dark/dahua-dhi-dss7016dr-s2.jpg', 'pos': 'center'},
+ 'dahua-dhi-ivss7008-1t': {'hero': 'images/hero-dark/dahua-dhi-ivss7008-1t.jpg', 'pos': 'center'},
+ 'dahua-dhi-ivss7016dr-4t': {'hero': 'images/hero-dark/dahua-dhi-ivss7016dr-4t.jpg',
+                             'pos': 'center'},
+ 'dahua-dhi-nvr1108hs-s3-h': {'hero': 'images/hero-dark/dahua-dhi-nvr1108hs-s3-h.jpg',
+                              'pos': 'center'},
+ 'dahua-dhi-nvr2108hs-4ks3': {'hero': 'images/hero-dark/dahua-dhi-nvr2108hs-4ks3.jpg',
+                              'pos': 'center'},
+ 'dahua-dhi-nvr4116hs-4ks3': {'hero': 'images/hero-dark/dahua-dhi-nvr4116hs-4ks3.jpg',
+                              'pos': 'center'},
+ 'dahua-dhi-nvr4216-16p-i': {'hero': 'images/hero-dark/dahua-dhi-nvr4216-16p-i.jpg',
+                             'pos': 'center'},
+ 'dahua-dhi-nvr5216-16p-i': {'hero': 'images/hero-dark/dahua-dhi-nvr5216-16p-i.jpg',
+                             'pos': 'center'},
+ 'dahua-dhi-nvr6a08-128-4ks2': {'hero': 'images/hero-dark/dahua-dhi-nvr6a08-128-4ks2.jpg',
+                                'pos': 'center'},
+ 'dahua-dhi-nvr6a08-32-4ks2': {'hero': 'images/hero-dark/dahua-dhi-nvr6a08-32-4ks2.jpg',
+                               'pos': 'center'},
+ 'dahua-dhi-nvr6a08-64-4ks2': {'hero': 'images/hero-dark/dahua-dhi-nvr6a08-64-4ks2.jpg',
+                               'pos': 'center'},
+ 'dahua-n22al12': {'hero': 'images/hero-dark/dahua-n22al12.jpg', 'pos': 'center'},
+ 'dahua-n24cb33': {'hero': 'images/hero-dark/dahua-n24cb33.jpg', 'pos': 'center'},
+ 'dahua-n24cg52': {'hero': 'images/hero-dark/dahua-n24cg52.jpg', 'pos': 'center'},
+ 'dahua-n24cl52': {'hero': 'images/hero-dark/dahua-n24cl52.jpg', 'pos': 'center'},
+ 'dahua-n25cb5z': {'hero': 'images/hero-dark/dahua-n25cb5z.jpg', 'pos': 'center'},
+ 'dahua-n25cl5z': {'hero': 'images/hero-dark/dahua-n25cl5z.jpg', 'pos': 'center'},
+ 'dahua-n42b2p': {'hero': 'images/hero-dark/dahua-n42b2p.jpg', 'pos': 'center'},
+ 'dahua-n42b3p': {'hero': 'images/hero-dark/dahua-n42b3p.jpg', 'pos': 'center'},
+ 'dahua-n52a4p': {'hero': 'images/hero-dark/dahua-n52a4p.jpg', 'pos': 'center'},
+ 'dahua-n52b2p': {'hero': 'images/gallery/dahua-n52b2p-g1.jpg', 'pos': 'center'},
+ 'dahua-n52b3p': {'hero': 'images/full/p95.jpg', 'pos': 'center'},
+ 'dahua-n52b5p': {'hero': 'images/hero-dark/dahua-n52b5p.jpg', 'pos': 'center'},
+ 'dahua-n54a4p': {'hero': 'images/hero-dark/dahua-n54a4p.jpg', 'pos': 'center'},
+ 'dahua-n54b3p': {'hero': 'images/hero-dark/dahua-n54b3p.jpg', 'pos': 'center'},
+ 'dahua-n54b5n': {'hero': 'images/hero-dark/dahua-n54b5n.jpg', 'pos': 'center'},
+ 'dahua-n84cg52': {'hero': 'images/hero-dark/dahua-n84cg52.jpg', 'pos': 'center'},
+ 'dji-agras-series': {'hero': 'images/gallery/dji-agras-series-g3.jpg', 'pos': 'center 40%'},
+ 'dji-air-3': {'hero': 'images/full/p3.jpg', 'pos': 'center 70%'},
+ 'dji-air-3s': {'hero': 'images/hero/air3s.jpg',
+                'pos': 'center',
+                'video': 'https://www-cdn.djiits.com/reactor/assets/_next/static/videos/b7e5922b-6d8a-4534-a9a3-f22188af3795.mp4'},
+ 'dji-avata-2': {'hero': 'images/full/p6.jpg', 'pos': 'center'},
+ 'dji-matrice-30t': {'hero': 'images/full/p8.jpg', 'pos': 'center 30%'},
+ 'dji-mavic-3-pro': {'hero': 'images/hero/mavic3-cine.jpg',
+                     'pos': 'center',
+                     'video': 'https://www-cdn.djiits.com/reactor/assets/_next/static/videos/fdaa1941-2093-48eb-836a-913613397978.mp4'},
+ 'dji-mini-2': {'hero': 'images/full/p53.jpg', 'pos': 'center'},
+ 'dji-mini-3': {'hero': 'images/gallery/dji-mini-3-g1.jpg', 'pos': 'center 25%'},
+ 'dji-mini-3-pro': {'hero': 'images/gallery/dji-mini-3-pro-g1.jpg',
+                    'pos': 'center 30%',
+                    'video': 'https://www-cdn.djiits.com/reactor/assets/_next/static/videos/57398bd3-ab54-406c-96ed-00f848b647fa.mp4'},
+ 'dji-mini-4-pro': {'hero': 'images/gallery/dji-mini-4-pro-g1.jpg',
+                    'pos': 'center 20%',
+                    'video': 'https://www-cdn.djiits.com/reactor/assets/_next/static/videos/6dfe2cd8-e5ed-4d32-af86-9845f37450c7.mp4'},
+ 'dji-mini-4k': {'hero': 'images/gallery/dji-mini-4k-g7.jpg', 'pos': 'center'},
+ 'dji-mini-5-pro': {'hero': 'images/full/p51.jpg', 'pos': 'center'},
+ 'dji-neo': {'hero': 'images/full/p5.jpg', 'pos': 'center'},
+ 'ezviz-indoor-camera': {'hero': 'images/gallery/ezviz-indoor-camera-g3.jpg', 'pos': 'center'},
+ 'ezviz-outdoor-camera': {'hero': 'images/gallery/ezviz-outdoor-camera-g2.jpg', 'pos': 'center'},
+ 'hikvision-2mp-dome-camera': {'hero': 'images/hero-dark/hikvision-2mp-dome-camera.jpg',
+                               'pos': 'center'},
+ 'hikvision-5mp-bullet-camera': {'hero': 'images/hero-dark/hikvision-5mp-bullet-camera.jpg',
+                                 'pos': 'center'},
+ 'icsee-v1-single-lens': {'hero': 'images/hero-dark/icsee-v1-single-lens.jpg', 'pos': 'center'},
+ 'imou-ranger-2-2k-3mp': {'hero': 'images/hero-dark/imou-ranger-2-2k-3mp.jpg', 'pos': 'center'},
+ 'imou-ranger-2-pro-2k': {'hero': 'images/hero-dark/imou-ranger-2-pro-2k.jpg', 'pos': 'center'},
+ 'imou-ranger-series': {'hero': 'images/hero-dark/imou-ranger-series.jpg', 'pos': 'center'},
+ 'lg-43-inch-smart-led': {'hero': 'images/hero-dark/lg-43-inch-smart-led.jpg', 'pos': 'center'},
+ 'lg-55-inch-smart-led': {'hero': 'images/full/p45.jpg', 'pos': 'center'},
+ 'lg-65-inch-smart-led': {'hero': 'images/hero-dark/lg-65-inch-smart-led.jpg', 'pos': 'center'},
+ 'ruijie-access-point': {'hero': 'images/hero-dark/ruijie-access-point.jpg', 'pos': 'center'},
+ 'ruijie-rg-ew300-pro': {'hero': 'images/hero-dark/ruijie-rg-ew300-pro.jpg', 'pos': 'center'},
+ 'ruijie-rg-ew300n-n300-wireless-smart-router': {'hero': 'images/gallery/ruijie-rg-ew300n-n300-wireless-smart-router-g1.jpg',
+                                                 'pos': 'center'},
+ 'ruijie-wifi-router': {'hero': 'images/gallery/ruijie-wifi-router-g2.jpg', 'pos': 'center'},
+ 'samsung-43-inch-led': {'hero': 'images/hero-dark/samsung-43-inch-led.jpg', 'pos': 'center'},
+ 'samsung-55-inch-led': {'hero': 'images/hero-dark/samsung-55-inch-led.jpg', 'pos': 'center'},
+ 'samsung-65-inch-led': {'hero': 'images/hero-dark/samsung-65-inch-led.jpg', 'pos': 'center'},
+ 'sony-43-inch-bravia': {'hero': 'images/hero-dark/sony-43-inch-bravia.jpg', 'pos': 'center'},
+ 'sony-55-inch-bravia': {'hero': 'images/hero-dark/sony-55-inch-bravia.jpg', 'pos': 'center'},
+ 'sony-65-inch-bravia': {'hero': 'images/hero-dark/sony-65-inch-bravia.jpg', 'pos': 'center'},
+ 'sony-75-inch-bravia': {'hero': 'images/hero-dark/sony-75-inch-bravia.jpg', 'pos': 'center'},
+ 'tenda-access-point': {'hero': 'images/hero-dark/tenda-access-point.jpg', 'pos': 'center'},
+ 'tenda-n300-wireless-router': {'hero': 'images/hero-dark/tenda-n300-wireless-router.jpg',
+                                'pos': 'center'},
+ 'tenda-network-switch': {'hero': 'images/gallery/tenda-network-switch-g2.jpg', 'pos': 'center'},
+ 'tenda-wifi-router': {'hero': 'images/hero-dark/tenda-wifi-router.jpg', 'pos': 'center'},
+ 'tiandy-5mp-camera': {'hero': 'images/hero-dark/tiandy-5mp-camera.jpg', 'pos': 'center'},
+ 'tiandy-ip-camera': {'hero': 'images/hero-dark/tiandy-ip-camera.jpg', 'pos': 'center'},
+ 'tiandy-nvr-tc-r3120': {'hero': 'images/hero-dark/tiandy-nvr-tc-r3120.jpg', 'pos': 'center'},
+ 'tiandy-tc-321-2mp': {'hero': 'images/hero-dark/tiandy-tc-321-2mp.jpg', 'pos': 'center'},
+ 'tiandy-tc-c331': {'hero': 'images/hero-dark/tiandy-tc-c331.jpg', 'pos': 'center'},
+ 'tiandy-tc-r3104': {'hero': 'images/hero-dark/tiandy-tc-r3104.jpg', 'pos': 'center'},
+ 'tiandy-tc-r3108': {'hero': 'images/hero-dark/tiandy-tc-r3108.jpg', 'pos': 'center'},
+ 'tp-link-archer-router': {'hero': 'images/hero-dark/tp-link-archer-router.jpg', 'pos': 'center'},
+ 'tp-link-network-switch': {'hero': 'images/hero-dark/tp-link-network-switch.jpg', 'pos': 'center'},
+ 'tp-link-tl-wr840n': {'hero': 'images/hero-dark/tp-link-tl-wr840n.jpg', 'pos': 'center'},
+ 'tp-link-wifi-access-point': {'hero': 'images/hero-dark/tp-link-wifi-access-point.jpg',
+                               'pos': 'center'},
+ 'ubiquiti-unifi-access-point': {'hero': 'images/gallery/ubiquiti-unifi-access-point-g2.jpg',
+                                 'pos': 'center'},
+ 'ubiquiti-unifi-switch': {'hero': 'images/gallery/ubiquiti-unifi-switch-g4.jpg', 'pos': 'center'},
+ 'v380-e27': {'hero': 'images/hero-dark/v380-e27.jpg', 'pos': 'center'},
+ 'v380-pro-wifi-camera': {'hero': 'images/hero-dark/v380-pro-wifi-camera.jpg', 'pos': 'center'}}
+
+# ---------- Round 8: image-led feature sections (DJI pattern) ----------
+# FEATURES: product id (int -- products.json ids are ints; string keys would never match) -> [{h, b, img, source}] — verified facts only,
+# filled from round8/*/features-*.json by the merge step (round8/
+# merge_inputs.py). Products with no verified feature material get no
+# sections (hero + gallery + about only). SHOWPIECE: product id -> gallery-
+# main image (dark-stage / scene) replacing the light-stage primary as the
+# gallery main photo. SHOWPIECE_THUMB: id -> 400x300 thumb for it.
+FEATURES = {0: [{'b': 'Weighing less than 249 g, Mini 4 Pro was designed for convenience on the go, with no '
+           'need for training or examinations in most countries and regions.',
+      'h': 'Under 249 g — take it anywhere',
+      'img': 'images/gallery/dji-mini-4-pro-g1.jpg',
+      'source': "DJI Mini 4 Pro page, condensed from generator DJI_FEATURES block 'Take it Easy'; "
+                'spec strip in dji-deep-study-2026-11-19.md §4'},
+     {'b': 'A 1/1.3-inch CMOS sensor with Dual Native ISO Fusion, an f/1.7 aperture and 2.4μm '
+           '4-in-1 pixels captures 4K/60fps HDR and 4K/100fps video, with 10-bit D-Log M and HLG '
+           'for colour.',
+      'h': 'Out-sized imaging: 1/1.3-inch CMOS, 4K/60fps HDR',
+      'img': 'images/full/p0.jpg',
+      'source': "DJI Mini 4 Pro page, condensed from generator DJI_FEATURES blocks 'Out-sized "
+                "Imaging Performance' + 'Maximum Visual Impact'; deep-study §4"},
+     {'b': 'Up to 34 minutes on the Intelligent Flight Battery, or 45 minutes with the Battery '
+           'Plus, with DJI O4 video transmission up to 20 km and ActiveTrack 360° keeping your '
+           'subject in frame.',
+      'h': 'Fly longer, track smarter',
+      'img': None,
+      'source': "DJI Mini 4 Pro page, condensed from generator DJI_FEATURES blocks 'Fly Longer, "
+                "Create More', '20 km Video Transmission', 'A Touch of Cinematics'; deep-study "
+                '§4'}],
+ 1: [{'b': 'A compact, ultra-lightweight camera drone built for adventure, with detail-rich 4K HDR '
+           'video and True Vertical Shooting for social-media-ready shots.',
+      'h': 'So fly — light, simple, 4K HDR',
+      'img': 'images/gallery/dji-mini-3-g1.jpg',
+      'source': 'dji.com/mini-3 intro copy, fetched 20 Nov 2026'},
+     {'b': 'Under 249 g with Smart RTH and DJI O2 video transmission up to 10 km, so everyday '
+           'flights stay simple and connected.',
+      'h': 'Easy flights, further reach',
+      'img': None,
+      'source': 'dji-deep-study-2026-11-19.md §4 comparison table, Mini 3 row'}],
+ 2: [{'b': 'A 1-inch-CMOS primary camera with a 24mm lens for expansive landscapes, plus a 70mm '
+           'medium tele camera that compresses depth of field for portraits with a bolder, '
+           'cinematic look.',
+      'h': 'Dual cameras, unmatched imagery',
+      'img': 'images/hero/air3s.jpg',
+      'source': "DJI Air 3S page, condensed from generator DJI_FEATURES block 'Dual Cameras, "
+                "Unmatched Imagery'; deep-study §3"},
+     {'b': 'Nightscape Omnidirectional Obstacle Sensing and next-gen Smart RTH — including Non-GPS '
+           'RTH and Nighttime RTH — for safer flights and a precise return home after dark.',
+      'h': 'Safer night flying',
+      'img': 'images/gallery/dji-air-3s-g1.jpg',
+      'source': "DJI Air 3S page: deep-study §3 section headings + spec strip ('Nightscape "
+                "Omnidirectional Obstacle Sensing', 'Next-Gen Smart RTH'); DJI_FEATURES 'Next-Gen "
+                "Smart RTH' chips"},
+     {'b': 'Up to 45 minutes of flight time and 10-bit O4 video transmission up to 20 km, with '
+           '42GB of built-in storage so you can start recording right away.',
+      'h': 'Serious air time: 45 minutes, 20 km',
+      'img': None,
+      'source': "DJI Air 3S page, condensed from generator DJI_FEATURES blocks 'Serious Air Time: "
+                "45-Min Max', '10-bit O4 Video Transmission', 'Always Ready: 42GB of Built-in "
+                "Storage'; deep-study §3"}],
+ 3: [{'b': 'A wide-angle and a medium tele camera, both 1/1.3-inch 48MP, cover sweeping scenery '
+           'and closer zoom views from the same flight.',
+      'h': 'Double up — two 48MP cameras',
+      'img': 'images/full/p3.jpg',
+      'source': 'dji-deep-study-2026-11-19.md §3/§4 comparison tables, Air 3 row (720 g, 1/1.3″ '
+                '48MP + 48MP)'},
+     {'b': '4K/60fps HDR video and 4K/100fps slow motion, with Night Shots and 10-bit D-Log M and '
+           'HLG for flexible colour in post.',
+      'h': '4K/60fps HDR, day and night',
+      'img': 'images/gallery/dji-air-3-g1.jpg',
+      'source': 'dji-deep-study-2026-11-19.md §4 comparison table, Air 3 row'},
+     {'b': 'Up to 46 minutes of flight time, DJI O4 transmission up to 20 km, and omnidirectional '
+           'obstacle sensing with APAS 5.0.',
+      'h': '46 minutes, 20 km, sensing all around',
+      'img': None,
+      'source': 'dji-deep-study-2026-11-19.md §3/§4 comparison tables, Air 3 row (46 mins, 20 km, '
+                'Omnidirectional APAS 5.0)'}],
+ 4: [{'b': 'A triple-camera system with three focal lengths — tap the display to switch between '
+           'them and shape each shot, from wide landscapes to compressed telephoto scenes.',
+      'h': 'One drone, three lenses',
+      'img': 'images/hero/mavic3-cine.jpg',
+      'source': "DJI Mavic 3 Pro page, condensed from generator DJI_FEATURES block 'Unrivaled "
+                "Tri-Camera Flagship Imaging'; deep-study §2"},
+     {'b': 'The Hasselblad camera shoots 12-bit RAW photos with a native dynamic range of up to '
+           '12.8 stops, and its Natural Colour Solution restores colours as the eye sees them. '
+           'Video runs to 5.1K/50fps and 4K/120fps.',
+      'h': '4/3 CMOS Hasselblad camera, immense detail',
+      'img': 'images/full/p4.jpg',
+      'source': "DJI Mavic 3 Pro page, condensed from generator DJI_FEATURES block 'Hasselblad "
+                "Camera, Immense Detail'; deep-study §2 body copy (verified verbatim there)"},
+     {'b': 'Up to 43 minutes of flight time, DJI O3+ transmission up to 15 km with a 1080p/60fps '
+           'live feed, and eight wide-angle vision sensors watching for obstacles in all '
+           'directions.',
+      'h': '43 minutes, 15 km, sensing in all directions',
+      'img': None,
+      'source': "DJI Mavic 3 Pro page, condensed from generator DJI_FEATURES blocks 'Extended "
+                "Flight Time', 'Omnidirectional Obstacle Sensing and APAS 5.0', 'Flagship Video "
+                "Transmission'; deep-study §2 spec strip"}],
+ 5: [{'b': "At 135 g, DJI Neo is DJI's lightest and most compact aerial videographer — take off "
+           'and land on your palm, with no remote needed.',
+      'h': "135 g — DJI's lightest drone",
+      'img': 'images/full/p5.jpg',
+      'source': 'dji.com/neo intro copy, fetched 20 Nov 2026'},
+     {'b': 'Smart tracking turns Neo into your personal flying camera, capturing cinematic footage '
+           'with you in focus, indoors and out — with full-cover prop guards keeping flights safe.',
+      'h': 'You in focus',
+      'img': 'images/gallery/dji-neo-g1.jpg',
+      'source': 'dji.com/neo description, fetched 20 Nov 2026'},
+     {'b': 'Stabilized 4K video, multiple control options and one-tap editing — effortless for all '
+           'skill levels, with zero learning curve.',
+      'h': 'Stabilized 4K, one-tap edits',
+      'img': None,
+      'source': 'dji.com/neo description, fetched 20 Nov 2026'}],
+ 6: [{'b': 'Step into immersive FPV flight with DJI Avata 2 — shoot dramatic, ultra-wide 4K '
+           'footage close to the ground.',
+      'h': 'Immersive flight, unbound',
+      'img': 'images/full/p6.jpg',
+      'source': 'dji.com/avata-2 description, fetched 20 Nov 2026'},
+     {'b': 'Easy ACRO and gesture-based control via Goggles 3 and RC Motion 3 make FPV flying '
+           'simple, while integrated propeller protection keeps agile flights safe.',
+      'h': 'Easy ACRO, gesture control',
+      'img': 'images/gallery/dji-avata-2-g2.jpg',
+      'source': 'dji.com/avata-2 description, fetched 20 Nov 2026'},
+     {'b': 'A 1/1.3-inch camera shooting 4K/60fps HDR, up to 23 minutes of flight time and 13 km '
+           'of video transmission.',
+      'h': '4K/60fps HDR, 23 minutes',
+      'img': None,
+      'source': 'dji-deep-study-2026-11-19.md §5 comparison table, Immersive Flight / Avata 2 '
+                'row'}],
+ 7: [{'b': 'The palm-sized Mini 4K fits in any bag and needs no registration in most countries and '
+           'regions — with a 1/2.3-inch CMOS camera delivering crisp 4K video.',
+      'h': 'Under 249 g, real 4K',
+      'img': 'images/gallery/dji-mini-4k-g7.jpg',
+      'source': "DJI Store Mini 4K page (store.dji.com), 'Under 249 g' + 'Stunning Intelligent "
+                "Features' blocks"},
+     {'b': 'Up to 31 minutes of flight time and DJI O2 video transmission up to 10 km, with '
+           'excellent anti-interference for a clear, easy flight.',
+      'h': '31 minutes, 10 km link',
+      'img': None,
+      'source': "DJI Store Mini 4K page (store.dji.com), '10km Video Transmission' + '31-Min Max "
+                "Flight Time' blocks"},
+     {'b': 'Level 5 wind resistance up to 38 kph and a 4,000 m max takeoff altitude keep footage '
+           'stable — with QuickShots and Panoramas for impressive shots at a tap.',
+      'h': 'Steady in wind, smart in the air',
+      'img': None,
+      'source': "DJI Store Mini 4K page (store.dji.com), '38kph (Level 5) Wind Resistance' + "
+                "'Stunning Intelligent Features' blocks"}],
+ 8: [{'b': 'A 12MP wide camera, a 48MP zoom camera, a 640×512 thermal imager and a laser '
+           'rangefinder — wide, zoom, thermal and ranging in a single payload.',
+      'h': 'Four sensors, one gimbal',
+      'img': 'images/full/p8.jpg',
+      'source': 'DJI Matrice 30 series published specs, via Skyebrowse / IGIDRONE / Uplink Imaging '
+                "reproductions of DJI's official figures"},
+     {'b': 'The thermal camera reads heat at 640×512, with a 1280×1024 super-resolution mode, and '
+           'the laser rangefinder measures targets from 3 m out to 1,200 m.',
+      'h': 'See heat, measure distance',
+      'img': 'images/gallery/dji-matrice-30t-g4.jpg',
+      'source': 'DJI Matrice 30 series published specs, via Skyebrowse / IGIDRONE / Ferntech '
+                "reproductions of DJI's official figures"},
+     {'b': 'IP55 weather sealing and a −20 °C to 50 °C operating range, with up to 41 minutes of '
+           'flight time, for inspection, survey and public-safety missions.',
+      'h': 'Built for bad-weather work',
+      'img': None,
+      'source': 'DJI Matrice 30 series published specs, via IGIDRONE / Uplink Imaging '
+                "reproductions of DJI's official figures"}],
+ 9: [{'b': "DJI's smart agricultural equipment — spraying and spreading drones built to cover "
+           'large fields quickly and evenly.',
+      'h': 'Big drone, big jobs',
+      'img': 'images/gallery/dji-agras-series-g3.jpg',
+      'source': "dji-deep-study-2026-11-19.md §1 homepage slide 9 ('Smart Agricultural Equipment / "
+                "Big Drone, Big Jobs'); staging product description"},
+     {'b': 'Across the range, spray tanks run from 20 L on the T25 to 40 L on the T50, 70 L on the '
+           'T70P and 100 L on the T100 — bigger tanks, fewer refills.',
+      'h': 'Tanks from 20 L to 100 L',
+      'img': 'images/full/p9.jpg',
+      'source': "DJI Agras published specs, via AGX / Aegis / Uplink Imaging comparisons of DJI's "
+                'official figures'},
+     {'b': 'Phased-array radar and vision sensing with terrain following on slopes up to 50°, '
+           'spraying up to 40 L/min across swaths up to 13 m wide.',
+      'h': 'Radar, terrain follow, wide swaths',
+      'img': None,
+      'source': "DJI Agras published specs, via AGX / Aegis comparisons of DJI's official figures "
+                '(T70P/T100 flow and T100 width as range maxima)'}],
+ 10: [{'b': 'A 2-megapixel dome camera in a compact ceiling-mount form — clear Full HD coverage '
+            'without bulky hardware on show.',
+       'h': '2MP dome, made to disappear on the ceiling',
+       'img': None,
+       'source': 'AK Khan product record — name/description (Hikvision 2MP Dome Camera)'},
+      {'b': 'The dome shape sits tidy on a ceiling, watching the room while blending in — for '
+            'security without bulky hardware.',
+       'h': 'Discreet coverage for shops, offices and homes',
+       'img': None,
+       'source': 'AK Khan product record — name/description (Hikvision 2MP Dome Camera)'}],
+ 11: [{'b': '5-megapixel imaging (2560×1920) with EXIR 2.0 infrared up to 30 m, so gates and yards '
+            'stay visible after dark.',
+       'h': '5MP clarity, day and night',
+       'img': 'images/gallery/hikvision-5mp-bullet-camera-g1.jpg',
+       'source': 'Hikvision official datasheet — DS-2CD1053G0-I 5MP Fixed Bullet Network Camera'},
+      {'b': 'IP67 weatherproof housing and 120 dB true WDR handle rain, dust and harsh backlight '
+            'on building exteriors.',
+       'h': 'Built for the outdoors',
+       'img': 'images/gallery/hikvision-5mp-bullet-camera-g2.jpg',
+       'source': 'Hikvision official datasheet — DS-2CD1053G0-I 5MP Fixed Bullet Network Camera'},
+      {'b': 'H.265+ compression keeps the 5MP stream light on bandwidth and storage, powered by '
+            'PoE or 12 V DC.',
+       'h': 'Efficient H.265+ streaming',
+       'img': None,
+       'source': 'Hikvision official datasheet — DS-2CD1053G0-I 5MP Fixed Bullet Network Camera'}],
+ 12: [{'b': 'A dome sits close under a ceiling or eave and watches the room without standing out — '
+            'the right shape for shops, offices and homes.',
+       'h': 'Dome shape, discreet on the ceiling',
+       'img': None,
+       'source': "AK Khan listing (products.json) — 'Dahua 2MP Dome Camera'; exact Dahua model "
+                 'unverified, see round-2 gap note in photo-replace-2026-11-19.md'},
+      {'b': "Listed as a 2MP dome camera from Dahua's surveillance range, for reliable everyday "
+            'coverage. The exact model is confirmed with the shop on WhatsApp before you buy.',
+       'h': 'Listed as a 2MP Dahua dome',
+       'img': None,
+       'source': "AK Khan listing (products.json) — 'Dahua 2MP Dome Camera'; exact Dahua model "
+                 'unverified, see round-2 gap note in photo-replace-2026-11-19.md'}],
+ 13: [{'b': 'A bullet on a wall bracket points exactly where it is aimed — the right shape for '
+            'gates, streets and larger properties.',
+       'h': 'Bullet shape, built for outdoors',
+       'img': None,
+       'source': "AK Khan listing (products.json) — 'Dahua 5MP Bullet Camera'; exact Dahua model "
+                 'unverified, see round-2 gap note in photo-replace-2026-11-19.md'},
+      {'b': "Listed as a 5MP bullet camera from Dahua's surveillance range, for clear, detailed "
+            'outdoor pictures. The exact model is confirmed with the shop on WhatsApp before you '
+            'buy.',
+       'h': 'Listed as a 5MP Dahua bullet',
+       'img': None,
+       'source': "AK Khan listing (products.json) — 'Dahua 5MP Bullet Camera'; exact Dahua model "
+                 'unverified, see round-2 gap note in photo-replace-2026-11-19.md'}],
+ 14: [{'b': "Five-megapixel imaging from Tiandy's professional range — finer detail than standard "
+            'Full HD across wide areas.',
+       'h': '5MP sharpness across wide areas',
+       'img': 'images/gallery/tiandy-5mp-camera-g2.jpg',
+       'source': 'AK Khan product record — name/description (Tiandy 5MP Camera)'},
+      {'b': "From Tiandy's professional surveillance range, for businesses that want sharp images "
+            'across wide areas.',
+       'h': 'A professional-range Tiandy camera',
+       'img': 'images/gallery/tiandy-5mp-camera-g3.jpg',
+       'source': 'AK Khan product record — name/description (Tiandy 5MP Camera)'}],
+ 15: [{'b': 'An IP camera built for larger, managed security systems — one network, many cameras, '
+            'one place to watch them.',
+       'h': 'A network camera for managed systems',
+       'img': 'images/gallery/tiandy-ip-camera-g1.jpg',
+       'source': 'AK Khan product record — name/description (Tiandy IP Camera)'},
+      {'b': 'Suited to offices, schools and warehouses running several cameras together on one '
+            'system.',
+       'h': 'Made for multi-camera sites',
+       'img': 'images/gallery/tiandy-ip-camera-g2.jpg',
+       'source': 'AK Khan product record — name/description (Tiandy IP Camera)'}],
+ 16: [{'b': "A smart indoor WiFi camera you can check from your phone, from anywhere — EZVIZ's own "
+            'promise for this camera.',
+       'h': 'Check home from your phone, from anywhere',
+       'img': 'images/gallery/ezviz-indoor-camera-g1.jpg',
+       'source': 'AK Khan product record — name/description (EZVIZ Indoor Camera)'},
+      {'b': 'Best for keeping an eye on children, elders and pets at home — it connects over WiFi, '
+            'so there is no network cable to run and no recorder box to install.',
+       'h': 'Made for watching over family',
+       'img': 'images/gallery/ezviz-indoor-camera-g3.jpg',
+       'source': 'AK Khan product record — name/description (EZVIZ Indoor Camera)'}],
+ 17: [{'b': 'A weather-ready outdoor WiFi camera for gates and yards — phone-viewable security '
+            'outside the house.',
+       'h': 'Weather-ready watch over gates and yards',
+       'img': 'images/gallery/ezviz-outdoor-camera-g1.jpg',
+       'source': 'AK Khan product record — name/description (EZVIZ Outdoor Camera)'},
+      {'b': 'Built for homes and shops that want outdoor coverage they can open on their phone at '
+            'any time.',
+       'h': 'Outdoor security you check from your phone',
+       'img': 'images/gallery/ezviz-outdoor-camera-g2.jpg',
+       'source': 'AK Khan product record — name/description (EZVIZ Outdoor Camera)'}],
+ 18: [{'b': 'Ranger cameras turn to follow the action around the room, so a single camera covers '
+            'what fixed cameras cannot.',
+       'h': 'Pan and tilt — one camera watches the whole room',
+       'img': 'images/gallery/imou-ranger-series-g2.jpg',
+       'source': 'AK Khan product record — name/description (IMOU Ranger Series)'},
+      {'b': 'Best for homes and small shops that want wide coverage from one camera instead of '
+            'several fixed ones.',
+       'h': 'Wide coverage from a single camera',
+       'img': 'images/gallery/imou-ranger-series-g3.jpg',
+       'source': 'AK Khan product record — name/description (IMOU Ranger Series)'}],
+ 19: [{'b': 'A budget-friendly WiFi camera with app viewing for simple home monitoring — V380 Pro '
+            'app on your phone.',
+       'h': 'Simple WiFi monitoring, checked on your phone',
+       'img': None,
+       'source': 'AK Khan product record — name/description (V380 Pro WiFi Camera)'},
+      {'b': 'Made for small rooms, shop counters and first-time camera buyers who want monitoring '
+            'without a big setup.',
+       'h': 'First camera, no fuss',
+       'img': None,
+       'source': 'AK Khan product record — name/description (V380 Pro WiFi Camera)'}],
+ 20: [],
+ 21: [],
+ 22: [],
+ 23: [],
+ 24: [{'b': 'Twenty-four 10/100/1000 Mbps RJ45 ports with auto-negotiation — wire up PCs, cameras, '
+            'printers and access points at full gigabit speed.',
+       'h': '24 Gigabit ports',
+       'img': 'images/gallery/tp-link-network-switch-g1.jpg',
+       'source': 'TP-Link TL-SG1024D official product page (tp-link.com): '
+                 'https://www.tp-link.com/sa/business-networking/unmanaged-switch/tl-sg1024d/'},
+      {'b': 'An unmanaged switch: no configuration needed. Auto MDI/MDIX means any Ethernet cable '
+            'works, and the fanless design runs silent.',
+       'h': 'Plug and play, no setup',
+       'img': None,
+       'source': 'TP-Link TL-SG1024D official product page (tp-link.com): '
+                 'https://www.tp-link.com/sa/business-networking/unmanaged-switch/tl-sg1024d/'},
+      {'b': 'A 48 Gbps switching capacity and 35.7 Mpps forwarding rate keep all 24 ports moving '
+            'at line rate, in a desktop or rackmount metal case.',
+       'h': '48 Gbps switching capacity',
+       'img': None,
+       'source': 'TP-Link TL-SG1024D official product page (tp-link.com): '
+                 'https://www.tp-link.com/sa/business-networking/unmanaged-switch/tl-sg1024d/'}],
+ 25: [],
+ 26: [],
+ 27: [],
+ 28: [],
+ 29: [],
+ 30: [],
+ 31: [],
+ 32: [],
+ 33: [{'b': 'Five 3-inch satellite speakers and an 8-inch subwoofer place sound all around the '
+            'room — cinema-style surround for movie nights.',
+       'h': 'True 5.1 surround sound',
+       'img': 'images/gallery/audionic-home-theater-system-g1.jpg',
+       'source': 'Audionic Pace 8 official product page (audionic.co): '
+                 'https://audionic.co/products/pace-8-home-theater-system'},
+      {'b': '120W total RMS output — a 60W subwoofer plus 15W in each of the five satellites — for '
+            'loud, full sound in medium to large rooms.',
+       'h': '120W RMS of power',
+       'img': 'images/gallery/audionic-home-theater-system-g2.jpg',
+       'source': 'Audionic Pace 8 official product page (audionic.co): '
+                 'https://audionic.co/products/pace-8-home-theater-system'},
+      {'b': 'Stream over Bluetooth 5.0 or play from USB and SD card, with AUX input, built-in FM '
+            'radio, an LED display and a wireless remote.',
+       'h': 'Bluetooth 5.0, USB, AUX and FM',
+       'img': None,
+       'source': 'Audionic Pace 8 official product page (audionic.co): '
+                 'https://audionic.co/products/pace-8-home-theater-system'}],
+ 34: [],
+ 35: [],
+ 36: [],
+ 37: [{'b': 'A 5.25-inch subwoofer and two satellite speakers deliver enhanced bass and clear '
+            "sound — the 2.1 setup Audionic sells as 'The Sound Master'.",
+       'h': '2.1 channel with a 5.25-inch subwoofer',
+       'img': 'images/gallery/audionic-subwoofer-g1.jpg',
+       'source': "Audionic Vision 35 retail listings and retail box ('Enhanced Audio & Bass with "
+                 "Elegant 2.1 Channel Speaker', 5.25-inch subwoofer): "
+                 'https://store30944.store.link/product/audionic-vision-35'},
+      {'b': 'Play wirelessly over Bluetooth or from USB and SD card, tune in FM radio, and control '
+            'it all from the wireless remote with its LED display.',
+       'h': 'Bluetooth, USB, FM and remote',
+       'img': 'images/gallery/audionic-subwoofer-g2.jpg',
+       'source': 'Audionic Vision 35 retail listings: '
+                 'https://store30944.store.link/product/audionic-vision-35'}],
+ 38: [{'b': 'An 8-inch woofer in a take-anywhere cabinet with a handle — big sound for picnics, '
+            'gatherings and outdoor use.',
+       'h': '8-inch portable party speaker',
+       'img': 'images/gallery/audionic-portable-speaker-g1.jpg',
+       'source': 'Audionic MH-808 Plus specifications (NexGen Shop): '
+                 'https://nexgenshop.pk/audionic-mehfil-mh-808-2/ — 8-inch woofer, Bluetooth, '
+                 'USB/TF/AUX'},
+      {'b': 'A wireless handheld microphone is included, with delay, repeat and echo voice effects '
+            'and TWS pairing for a second speaker.',
+       'h': 'Wireless mic and karaoke effects',
+       'img': 'images/gallery/audionic-portable-speaker-g3.jpg',
+       'source': 'Audionic MH-808 Plus specifications (NexGen Shop): '
+                 'https://nexgenshop.pk/audionic-mehfil-mh-808-2/ — wireless mic, TWS, '
+                 'delay/repeat/echo'},
+      {'b': 'Stream over Bluetooth or play from USB and TF card, with AUX input, colourful RGB LED '
+            'party lights, a remote and a rechargeable battery.',
+       'h': 'Bluetooth, USB, TF card and RGB lights',
+       'img': None,
+       'source': 'Audionic MH-808 Plus retail box and listings: '
+                 'https://nexgenshop.pk/audionic-mehfil-mh-808-2/'}],
+ 39: [],
+ 40: [{'b': 'A 12-inch woofer plus a 12-inch speaker deliver 150W RMS of party sound — built for '
+            'halls, gatherings and outdoor functions.',
+       'h': 'Twin 12-inch drivers, 150W RMS',
+       'img': 'images/gallery/audionic-conference-speaker-g3.jpg',
+       'source': 'Audionic MEHFIL MH-1212 ADVANCE official product page (audionic.co): '
+                 'https://audionic.co/collections/1-0-tower/products/mehfil-mh-1212-advance'},
+      {'b': 'Two wireless microphones and three karaoke ports, with delay, repeat and echo '
+            'effects, turn it into a full karaoke and announcements system.',
+       'h': 'Two wireless mics and karaoke ports',
+       'img': 'images/gallery/audionic-conference-speaker-g1.jpg',
+       'source': 'Audionic MEHFIL MH-1212 ADVANCE official product page (audionic.co): '
+                 'https://audionic.co/collections/1-0-tower/products/mehfil-mh-1212-advance'},
+      {'b': 'A rechargeable battery runs for 5–6 hours, so the party keeps going without a plug '
+            'socket — with Bluetooth (7–10 m range), USB and a remote.',
+       'h': '5–6 hours on battery',
+       'img': None,
+       'source': 'Audionic MEHFIL MH-1212 ADVANCE official product page (audionic.co): '
+                 'https://audionic.co/collections/1-0-tower/products/mehfil-mh-1212-advance'}],
+ 41: [{'b': "Samsung's Crystal Processor 4K enhances picture and sound, with powerful 4K upscaling "
+            'that sharpens lower-resolution content up to 4K.',
+       'h': 'Crystal Processor 4K',
+       'img': 'images/gallery/samsung-43-inch-led-g6.jpg',
+       'source': 'Samsung Crystal UHD line (samsung.com, Crystal UHD U8000F/U8000H/UE100F pages): '
+                 "Crystal Processor 4K, 4K upscaling, PurColor, HDR; 'Crystal UHD' text visible in "
+                 "the listing's own gallery photos"},
+      {'b': 'PurColor expresses a wide range of colours for a vivid, lifelike picture, with HDR '
+            'and a Contrast Enhancer for deeper depth.',
+       'h': 'PurColor — true-to-life colour',
+       'img': 'images/gallery/samsung-43-inch-led-g2.jpg',
+       'source': 'Samsung Crystal UHD line (samsung.com, Crystal UHD U8000F/U8000H/UE100F pages): '
+                 "Crystal Processor 4K, 4K upscaling, PurColor, HDR; 'Crystal UHD' text visible in "
+                 "the listing's own gallery photos"}],
+ 42: [{'b': "Samsung's Crystal Processor 4K enhances picture and sound, with powerful 4K upscaling "
+            'that sharpens lower-resolution content up to 4K.',
+       'h': 'Crystal Processor 4K',
+       'img': 'images/full/p42.jpg',
+       'source': 'Samsung Crystal UHD line (samsung.com, Crystal UHD U8000F/U8000H/UE100F pages): '
+                 "Crystal Processor 4K, 4K upscaling, PurColor, HDR; 'Crystal UHD' text visible in "
+                 "the listing's own gallery photos"},
+      {'b': 'PurColor expresses a wide range of colours for a vivid, lifelike picture, with HDR '
+            'and a Contrast Enhancer for deeper depth.',
+       'h': 'PurColor — true-to-life colour',
+       'img': None,
+       'source': 'Samsung Crystal UHD line (samsung.com, Crystal UHD U8000F/U8000H/UE100F pages): '
+                 "Crystal Processor 4K, 4K upscaling, PurColor, HDR; 'Crystal UHD' text visible in "
+                 "the listing's own gallery photos"}],
+ 43: [{'b': "Samsung's Crystal Processor 4K enhances picture and sound, with powerful 4K upscaling "
+            'that sharpens lower-resolution content up to 4K.',
+       'h': 'Crystal Processor 4K',
+       'img': 'images/gallery/samsung-65-inch-led-g3.jpg',
+       'source': 'Samsung Crystal UHD line (samsung.com, Crystal UHD U8000F/U8000H/UE100F pages): '
+                 "Crystal Processor 4K, 4K upscaling, PurColor, HDR; 'Crystal UHD' text visible in "
+                 "the listing's own gallery photos"},
+      {'b': 'PurColor expresses a wide range of colours for a vivid, lifelike picture, with HDR '
+            'and a Contrast Enhancer for deeper depth.',
+       'h': 'PurColor — true-to-life colour',
+       'img': None,
+       'source': 'Samsung Crystal UHD line (samsung.com, Crystal UHD U8000F/U8000H/UE100F pages): '
+                 "Crystal Processor 4K, 4K upscaling, PurColor, HDR; 'Crystal UHD' text visible in "
+                 "the listing's own gallery photos"}],
+ 44: [{'b': 'A 4K UHD panel with four times the resolution of Full HD for crisp detail and vibrant '
+            'colour on films, sports and dramas.',
+       'h': 'LG UHD — 4K picture',
+       'img': 'images/gallery/lg-43-inch-smart-led-g1.jpg',
+       'source': "LG UHD TV line — 4K UHD resolution, webOS smart platform; 'LG UHD' badge and "
+                 'webOS home screen visible in listing photo '
+                 'images/gallery/lg-43-inch-smart-led-g1.jpg'},
+      {'b': "LG's webOS smart platform puts streaming apps on the home screen — the webOS home "
+            "screen is shown in the listing's own photo.",
+       'h': 'webOS — all your apps in one place',
+       'img': None,
+       'source': "LG UHD TV line — 4K UHD resolution, webOS smart platform; 'LG UHD' badge and "
+                 'webOS home screen visible in listing photo '
+                 'images/gallery/lg-43-inch-smart-led-g1.jpg'}],
+ 45: [],
+ 46: [],
+ 47: [{'b': 'Google TV puts streaming apps, recommendations and voice search in one place — the '
+            "Google TV badge is on the TV's own screen in the listing photo.",
+       'h': 'Google TV built in',
+       'img': None,
+       'source': 'Google TV badge visible in listing photo images/full/p47.jpg; Sony BRAVIA Google '
+                 'TV smart platform'},
+      {'b': "Sony's BRAVIA picture in a 43-inch screen — the right size for bedrooms and smaller "
+            'rooms, with rich colour for films and dramas.',
+       'h': 'BRAVIA picture in a 43-inch size',
+       'img': 'images/full/p47.jpg',
+       'source': 'BRAVIA badge visible in listing photo images/full/p47.jpg; 43-inch size from the '
+                 'product name'}],
+ 48: [{'b': "Sony's XR Processor with AI enhances colour, contrast and clarity scene by scene, "
+            'with XR Triluminos Pro for billions of accurate colours.',
+       'h': 'BRAVIA XR picture processing',
+       'img': 'images/full/p48.jpg',
+       'source': "'BRAVIA XR' badge visible in listing photo images/full/p48.jpg; Sony BRAVIA XR "
+                 'line (XR Processor, XR Triluminos Pro)'},
+      {'b': "A 4K HDR panel for sharp, high-contrast images — the 4K HDR badge is on the TV's own "
+            'screen in the listing photo.',
+       'h': '4K HDR picture',
+       'img': None,
+       'source': "'4K HDR' badge visible in listing photo images/full/p48.jpg"}],
+ 49: [{'b': 'Thousands of Mini LEDs, precisely controlled by XR Backlight Master Drive, deliver '
+            'bright highlights and authentic contrast.',
+       'h': 'Mini LED brightness and contrast',
+       'img': 'images/full/p49.jpg',
+       'source': 'Sony BRAVIA 5 (XR50) Mini LED line — XR Backlight Master Drive, XR Triluminos '
+                 'Pro, XR Processor with AI, Google TV, 120Hz: '
+                 'https://techstevehd.com/reviews/sony-bravia-5-xr50-series and '
+                 'https://www.abt.com/Sony-BRAVIA-5-Mini-LED-TV-65-Inch-4K-Smart-with-Google-TV-K65XR50/p/221624.html; '
+                 "'BRAVIA 5 Mini LED' and 'Google TV' badges visible in the listing's own photo"},
+      {'b': 'The XR Processor with AI enhances every scene in real time, with XR Triluminos Pro '
+            'colour and AI Super Resolution upscaling.',
+       'h': 'XR Processor with AI',
+       'img': None,
+       'source': 'Sony BRAVIA 5 (XR50) Mini LED line — XR Backlight Master Drive, XR Triluminos '
+                 'Pro, XR Processor with AI, Google TV, 120Hz: '
+                 'https://techstevehd.com/reviews/sony-bravia-5-xr50-series and '
+                 'https://www.abt.com/Sony-BRAVIA-5-Mini-LED-TV-65-Inch-4K-Smart-with-Google-TV-K65XR50/p/221624.html; '
+                 "'BRAVIA 5 Mini LED' and 'Google TV' badges visible in the listing's own photo"},
+      {'b': 'Google TV gathers all streaming apps on one screen, and the native 120Hz panel with '
+            'HDMI 2.1 (4K/120, VRR, ALLM) is ready for PS5 and Xbox.',
+       'h': 'Google TV and 120Hz gaming',
+       'img': None,
+       'source': 'Sony BRAVIA 5 (XR50) Mini LED line — XR Backlight Master Drive, XR Triluminos '
+                 'Pro, XR Processor with AI, Google TV, 120Hz: '
+                 'https://techstevehd.com/reviews/sony-bravia-5-xr50-series and '
+                 'https://www.abt.com/Sony-BRAVIA-5-Mini-LED-TV-65-Inch-4K-Smart-with-Google-TV-K65XR50/p/221624.html; '
+                 "'BRAVIA 5 Mini LED' and 'Google TV' badges visible in the listing's own photo"}],
+ 50: [{'b': 'Thousands of Mini LEDs, precisely controlled by XR Backlight Master Drive, deliver '
+            'bright highlights and authentic contrast.',
+       'h': 'Mini LED brightness and contrast',
+       'img': 'images/full/p50.jpg',
+       'source': 'Sony BRAVIA 5 (XR50) Mini LED line — XR Backlight Master Drive, XR Triluminos '
+                 'Pro, XR Processor with AI, Google TV, 120Hz: '
+                 'https://techstevehd.com/reviews/sony-bravia-5-xr50-series and '
+                 'https://www.abt.com/Sony-BRAVIA-5-Mini-LED-TV-65-Inch-4K-Smart-with-Google-TV-K65XR50/p/221624.html; '
+                 "'BRAVIA 5 Mini LED' and 'Google TV' badges visible in the listing's own photo"},
+      {'b': 'The XR Processor with AI enhances every scene in real time, with XR Triluminos Pro '
+            'colour and AI Super Resolution upscaling.',
+       'h': 'XR Processor with AI',
+       'img': None,
+       'source': 'Sony BRAVIA 5 (XR50) Mini LED line — XR Backlight Master Drive, XR Triluminos '
+                 'Pro, XR Processor with AI, Google TV, 120Hz: '
+                 'https://techstevehd.com/reviews/sony-bravia-5-xr50-series and '
+                 'https://www.abt.com/Sony-BRAVIA-5-Mini-LED-TV-65-Inch-4K-Smart-with-Google-TV-K65XR50/p/221624.html; '
+                 "'BRAVIA 5 Mini LED' and 'Google TV' badges visible in the listing's own photo"},
+      {'b': 'Google TV gathers all streaming apps on one screen, and the native 120Hz panel with '
+            'HDMI 2.1 (4K/120, VRR, ALLM) is ready for PS5 and Xbox.',
+       'h': 'Google TV and 120Hz gaming',
+       'img': None,
+       'source': 'Sony BRAVIA 5 (XR50) Mini LED line — XR Backlight Master Drive, XR Triluminos '
+                 'Pro, XR Processor with AI, Google TV, 120Hz: '
+                 'https://techstevehd.com/reviews/sony-bravia-5-xr50-series and '
+                 'https://www.abt.com/Sony-BRAVIA-5-Mini-LED-TV-65-Inch-4K-Smart-with-Google-TV-K65XR50/p/221624.html; '
+                 "'BRAVIA 5 Mini LED' and 'Google TV' badges visible in the listing's own photo"}],
+ 51: [{'b': 'The first Mini with a 1-inch 50MP CMOS sensor — a 24mm f/1.8 lens in a 249.9 g body, '
+            'shooting 4K/60fps HDR and 4K/120fps slow motion in 10-bit D-Log M.',
+       'h': 'A 1-inch sensor under 250 g',
+       'img': 'images/full/p51.jpg',
+       'source': 'DJI Mini 5 Pro spec sheet + user manual v1.0 (Sep 2025), via DroneTrader / '
+                 "DroneRanker / Amateur Photographer reproductions of DJI's published data. NOTE: "
+                 "DJI's own US product page 404s (verified by direct fetch 20 Nov 2026), so no "
+                 'dji.com page copy was available.'},
+      {'b': 'A forward-facing LiDAR unit backed by omnidirectional vision sensing detects '
+            'obstacles in near-darkness, where purely optical sensing stops working.',
+       'h': 'LiDAR nightscape sensing',
+       'img': None,
+       'source': "DJI Mini 5 Pro spec sheet, via DroneTrader / DroneRanker reproductions of DJI's "
+                 'published data (forward LiDAR + omnidirectional vision, Nightscape)'},
+      {'b': 'Up to 36 minutes on the standard battery — 52 minutes with the Plus battery — plus '
+            '42GB of built-in storage and a 225° rolling gimbal for true vertical shots.',
+       'h': '36 minutes, 42GB on board',
+       'img': None,
+       'source': 'DJI Mini 5 Pro spec sheet, via DroneTrader / Amateur Photographer reproductions '
+                 "of DJI's published data"}],
+ 52: [{'b': 'The mini-sized, mega-capable Mini 3 Pro is just as powerful as it is portable — under '
+            '249 g, regulation-friendly, and the safest in its series.',
+       'h': 'Fly Mini, create big',
+       'img': 'images/gallery/dji-mini-3-pro-g1.jpg',
+       'source': 'dji.com/mini-3-pro meta description (exact quote, recorded in '
+                 "dji-copy-2026-11-19.md §'Mini 3 Pro — page retired'); live product page retired, "
+                 'redirects to support'},
+      {'b': 'A 1/1.3-inch sensor shooting 4K/60fps video and 4K/30fps HDR, with 1080p/120fps slow '
+            'motion and D-Cinelike colour.',
+       'h': '1/1.3-inch sensor, 4K/60fps',
+       'img': None,
+       'source': 'dji-deep-study-2026-11-19.md §4 comparison table, Mini 3 Pro row'},
+      {'b': 'Forward, backward and downward obstacle sensing with APAS 4.0 and Smart RTH, on DJI '
+            'O3 transmission up to 12 km with a 1080p/30fps live feed.',
+       'h': 'Tri-directional sensing, 12 km link',
+       'img': None,
+       'source': 'dji-deep-study-2026-11-19.md §4 comparison table, Mini 3 Pro row'}],
+ 53: [{'b': 'At less than 249 g, Mini 2 weighs about as much as an apple and fits in the palm of '
+            "your hand — a foldable classic that's effortless to carry.",
+       'h': 'Less than 249 g — fits in your palm',
+       'img': 'images/full/p53.jpg',
+       'source': "DJI Mini 2 published specs, via IGIDRONE (DJI-published figures); DJI's own Mini "
+                 '2 page copy as quoted by retailers'},
+      {'b': 'A 12MP camera with a 1/2.3-inch CMOS sensor and 24mm f/2.8 lens captures smooth '
+            '4K/30fps video and 12MP stills, steadied by a 3-axis motorized gimbal.',
+       'h': '4K camera on a 3-axis gimbal',
+       'img': 'images/gallery/dji-mini-2-g4.jpg',
+       'source': 'DJI Mini 2 published specs, via IGIDRONE (DJI-published figures)'},
+      {'b': 'Up to 31 minutes of flight time and DJI OcuSync 2.0 HD video transmission up to 10 '
+            'km, with Level 5 wind resistance and 4x digital zoom.',
+       'h': '31 minutes, 10 km OcuSync 2.0',
+       'img': None,
+       'source': "DJI Mini 2 published specs, via IGIDRONE / retailer listings of DJI's official "
+                 'figures'}],
+ 54: [{'b': 'The -LED model carries its own white-light LED, so the picture can stay in colour '
+            'after dark instead of switching to black-and-white infrared.',
+       'h': 'LED light for colour at night',
+       'img': None,
+       'source': 'Dahua official product page dahuasecurity.com — HAC-HDW1209TLQP(-A)-LED '
+                 '(photo-replace-2026-11-19.md, round 1)'},
+      {'b': 'HDCVI carries high-definition video over the same coaxial cable as older analogue '
+            'systems, and the eyeball mount is aimed by hand to cover the exact corner.',
+       'h': 'HDCVI — HD video over coax',
+       'img': None,
+       'source': 'Dahua official product page dahuasecurity.com — HAC-HDW1209TLQP(-A)-LED '
+                 '(photo-replace-2026-11-19.md, round 1)'}],
+ 55: [{'b': 'A 4MP eyeball camera with infrared night vision, so the same point stays covered '
+            'around the clock.',
+       'h': '4MP IR eyeball — day and night',
+       'img': None,
+       'source': 'Dahua official product page dahuasecurity.com — HAC-T1A41P 4MP IR Eyeball, '
+                 'discontinued HDCVI cameras (photo-replace-2026-11-19.md, round 1)'},
+      {'b': 'The ball-and-socket eyeball turns by hand, so one camera can be pointed at a door, a '
+            'counter or a corridor without moving the mount.',
+       'h': 'Eyeball mount aims anywhere',
+       'img': None,
+       'source': 'Dahua official product page dahuasecurity.com — HAC-T1A41P 4MP IR Eyeball '
+                 '(photo-replace-2026-11-19.md, round 1)'}],
+ 56: [{'b': 'The official Dahua datasheet lists a 2MP CMOS sensor at 1920 x 1080 with an F2.0 lens '
+            '— full high-definition pictures on a sensible budget.',
+       'h': '2MP Full HD — 1920 x 1080',
+       'img': None,
+       'source': "Official Dahua datasheet 'Eco Series | DH-HAC-T5E20', Rev 002.000 © 2023 — 2MP "
+                 'CMOS, 1920x1080, F2.0, 20 m IR (round3/manifest.md)'},
+      {'b': 'Infrared night vision rated at 20 m in the datasheet, so rooms, counters and '
+            'corridors stay covered after the lights go out.',
+       'h': '20 m IR for dark rooms',
+       'img': None,
+       'source': "Official Dahua datasheet 'Eco Series | DH-HAC-T5E20', Rev 002.000 © 2023 — 20 m "
+                 'IR (round3/manifest.md)'}],
+ 57: [{'b': 'An IP dome camera that joins the network recorder over the LAN — the right pick for '
+            'offices and shops already running IP camera systems.',
+       'h': 'IP dome for network systems',
+       'img': None,
+       'source': 'Dahua official previous site previous.dahuasecurity.com — IPC-T1E29-A-IL '
+                 '(photo-replace-2026-11-19.md, round 1)'},
+      {'b': "The -IL in the model name is Dahua's Smart Illumination: the camera lights the scene "
+            'only as much as the moment needs, instead of glowing all night.',
+       'h': 'Smart illumination (-IL)',
+       'img': None,
+       'source': 'Dahua official previous site previous.dahuasecurity.com — IPC-T1E29-A-IL '
+                 '(photo-replace-2026-11-19.md, round 1)'}],
+ 58: [{'b': 'Two lights work together — infrared and white light — so night footage can stay in '
+            'colour, with the camera choosing the light that fits the scene.',
+       'h': 'Smart Dual Light — colour after dark',
+       'img': None,
+       'source': 'Official Dahua datasheet DH-IPC-B1E49-A-IL on materialfile.dahuasecurity.com '
+                 "(Dahua's own CDN) (photo-replace-2026-11-19.md, round 1)"},
+      {'b': 'A bullet body on a bracket, made for entrances, gates and yards that need watching '
+            'after dark.',
+       'h': 'Bullet for gates and yards',
+       'img': None,
+       'source': 'Official Dahua datasheet DH-IPC-B1E49-A-IL on materialfile.dahuasecurity.com '
+                 '(photo-replace-2026-11-19.md, round 1)'}],
+ 59: [{'b': '2MP Full HD (1920×1080 at 30 fps) with Smart IR up to 30 m — clear in daylight and in '
+            'complete darkness.',
+       'h': 'Full HD with 30 m night vision',
+       'img': 'images/gallery/tiandy-tc-321-2mp-g1.jpg',
+       'source': 'Tiandy official spec sheet — TC-C321N AK series 2MP bullet (Spec '
+                 'AK/I3W/E/Y/2.8mm/V2.0)'},
+      {'b': 'Weatherproof IP67 housing, PoE power and a built-in microphone — video with sound, '
+            'indoors or out.',
+       'h': 'IP67 and a built-in mic',
+       'img': 'images/gallery/tiandy-tc-321-2mp-g2.jpg',
+       'source': 'Tiandy official spec sheet — TC-C321N AK series 2MP bullet (Spec '
+                 'AK/I3W/E/Y/2.8mm/V2.0)'},
+      {'b': 'S+265 / H.265 compression keeps the Full HD stream small on disk, with 120 dB WDR '
+            'against harsh light.',
+       'h': 'Light on storage, heavy on detail',
+       'img': 'images/gallery/tiandy-tc-321-2mp-g3.jpg',
+       'source': 'Tiandy official spec sheet — TC-C321N AK series 2MP bullet (Spec '
+                 'AK/I3W/E/Y/2.8mm/V2.0)'}],
+ 60: [],
+ 61: [{'b': 'The E27 base fits a standard bulb holder, so the camera mounts where a bulb would — '
+            'no drilling, no cables to run.',
+       'h': 'Screws into a light socket — no wiring at all',
+       'img': None,
+       'source': 'AK Khan product record — name/description (V380 E27 bulb-socket WiFi camera)'},
+      {'b': 'A bulb-socket WiFi camera you check from your phone — simple room monitoring without '
+            'any wiring.',
+       'h': 'Room monitoring from your phone',
+       'img': None,
+       'source': 'AK Khan product record — name/description (V380 E27 bulb-socket WiFi camera)'}],
+ 62: [{'b': 'A single-lens WiFi camera that works with the iCSee app — open your phone and the '
+            'room is there.',
+       'h': 'One lens, one app, straightforward monitoring',
+       'img': None,
+       'source': 'AK Khan product record — name/description (iCSee V1 Single Lens)'},
+      {'b': 'Made for straightforward home and shop monitoring from your phone, with no recorder '
+            'or extra hardware.',
+       'h': 'For homes and shops that keep it simple',
+       'img': None,
+       'source': 'AK Khan product record — name/description (iCSee V1 Single Lens)'}],
+ 63: [{'b': 'A 16-channel compact 1U NVR that takes IP cameras up to 12MP, with HDMI output up to '
+            '3840×2160.',
+       'h': '16 channels of 4K-ready recording',
+       'img': 'images/gallery/dahua-dhi-nvr4116hs-4ks3-g1.jpg',
+       'source': 'Dahua official datasheet — DHI-NVR4116HS-4KS3, Rev 002.000'},
+      {'b': 'Smart H.265+ / H.264+ keeps 16 channels light on disk, with one SATA bay holding up '
+            'to 20 TB.',
+       'h': 'Smart compression, smarter storage',
+       'img': 'images/gallery/dahua-dhi-nvr4116hs-4ks3-g2.jpg',
+       'source': 'Dahua official datasheet — DHI-NVR4116HS-4KS3, Rev 002.000'},
+      {'b': 'AI by Recorder with 4-channel SMD Plus — the recorder itself tells people and '
+            'vehicles apart, so you search less.',
+       'h': 'AI that watches with you',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-NVR4116HS-4KS3, Rev 002.000'}],
+ 64: [{'b': 'An 8-channel compact 1U NVR for IP cameras up to 12MP — every camera recorded in one '
+            'place.',
+       'h': '8 channels, one compact box',
+       'img': 'images/gallery/dahua-dhi-nvr2108hs-4ks3-g1.jpg',
+       'source': 'Dahua official datasheet — DHI-NVR2108HS-4KS3, Rev 002.000'},
+      {'b': 'HDMI output up to 3840×2160 with Smart H.265+ compression, and a SATA bay for local '
+            'recording storage.',
+       'h': '4K display, efficient storage',
+       'img': 'images/gallery/dahua-dhi-nvr2108hs-4ks3-g2.jpg',
+       'source': 'Dahua official datasheet — DHI-NVR2108HS-4KS3, Rev 002.000'},
+      {'b': '4-channel SMD Plus on the recorder cuts false alarms by telling people and vehicles '
+            'apart from the rest.',
+       'h': 'AI motion detection on board',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-NVR2108HS-4KS3, Rev 002.000'}],
+ 65: [],
+ 66: [{'b': 'An 8-channel compact 1U NVR for IP cameras up to 8MP, with Smart H.265+ keeping '
+            'recordings light on disk.',
+       'h': '8 channels of H.265 recording',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-NVR1108HS-S3/H, Rev 001.001 / Rev 002.000'},
+      {'b': 'One SATA bay holds up to 8 TB, with HDMI and VGA outputs — a straightforward recorder '
+            'for homes and small shops.',
+       'h': 'Simple, reliable, one hard drive',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-NVR1108HS-S3/H, Rev 001.001 / Rev 002.000'},
+      {'b': 'Decodes 1 channel of 8MP at 30 fps, or 4 channels of 1080p — smooth playback of the '
+            'cameras it records.',
+       'h': 'Decodes what it records',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-NVR1108HS-S3/H, Rev 001.001 / Rev 002.000'}],
+ 67: [{'b': 'Eight built-in PoE ports power and connect eight cameras over a single cable each — '
+            'no separate power supplies.',
+       'h': '8 cameras, 8 PoE ports — one cable each',
+       'img': 'images/gallery/tiandy-tc-r3108-g1.jpg',
+       'source': 'Tiandy TC-R3108 spec sheet via authorised reseller listings (tess.co.in / '
+                 'runaitechnologies)'},
+      {'b': 'Takes cameras up to 6MP and shows them on HDMI up to 4K, with S+265 compression '
+            'keeping storage light.',
+       'h': 'Up to 6MP cameras, 4K on screen',
+       'img': None,
+       'source': 'Tiandy TC-R3108 spec sheet via authorised reseller listings (tess.co.in / '
+                 'runaitechnologies)'},
+      {'b': 'One SATA bay holds up to 6 TB, and four channels play back in sync for quick review.',
+       'h': 'One hard drive, four cameras at once',
+       'img': None,
+       'source': 'Tiandy TC-R3108 spec sheet via authorised reseller listings (tess.co.in / '
+                 'runaitechnologies)'}],
+ 68: [{'b': 'Four built-in PoE ports: each camera takes power and picture over one cable, straight '
+            'into the recorder.',
+       'h': '4 cameras, 4 PoE ports — plug and play',
+       'img': 'images/gallery/tiandy-tc-r3104-g1.jpg',
+       'source': 'Tiandy TC-R3104 spec sheet via authorised reseller listings (tess.co.in / '
+                 'runaitechnologies)'},
+      {'b': 'One SATA bay holds up to 6 TB, with S+265 / H.265 compression and 4-channel sync '
+            'playback.',
+       'h': 'Compact recording for small sites',
+       'img': None,
+       'source': 'Tiandy TC-R3104 spec sheet via authorised reseller listings (tess.co.in / '
+                 'runaitechnologies)'}],
+ 69: [{'b': 'A 20-channel NVR for larger installations — warehouses, schools and sites with many '
+            'cameras on one system.',
+       'h': '20 channels for the bigger site',
+       'img': 'images/gallery/tiandy-nvr-tc-r3120-g1.jpg',
+       'source': 'Tiandy TC-R3120 spec sheet via authorised reseller listings (runaitechnologies / '
+                 'mmsrilanka)'},
+      {'b': 'Takes cameras up to 8MP and outputs HDMI up to 4K, with S+265 compression and '
+            '16-channel sync playback.',
+       'h': 'Up to 8MP cameras, 4K display',
+       'img': 'images/gallery/tiandy-nvr-tc-r3120-g2.jpg',
+       'source': 'Tiandy TC-R3120 spec sheet via authorised reseller listings (runaitechnologies / '
+                 'mmsrilanka)'},
+      {'b': 'One SATA bay holds up to 10 TB of recordings from the whole camera system.',
+       'h': 'Room for 10 TB of recordings',
+       'img': 'images/gallery/tiandy-nvr-tc-r3120-g3.jpg',
+       'source': 'Tiandy TC-R3120 spec sheet via authorised reseller listings (runaitechnologies / '
+                 'mmsrilanka)'}],
+ 70: [{'b': 'Wi-Fi 4 (802.11n) at up to 300 Mbps on 2.4 GHz, with two 5 dBi external antennas for '
+            'steady coverage around the house.',
+       'h': 'N300 Wi-Fi for the whole home',
+       'img': 'images/gallery/ruijie-rg-ew300n-n300-wireless-smart-router-g2.jpg',
+       'source': 'Ruijie RG-EW300N official datasheet (ruijie.com): '
+                 'https://eo-sgp-cos.ruijie.com/Document/pdf/2026/9/8/RG-EW300N_Datasheet_Official_2026-09-08.pdf'},
+      {'b': 'Works as a router, repeater, access point or WISP, so the same box can extend an '
+            'existing network or share a wireless ISP connection.',
+       'h': 'Four modes in one box',
+       'img': 'images/gallery/ruijie-rg-ew300n-n300-wireless-smart-router-g1.jpg',
+       'source': 'Ruijie RG-EW300N official datasheet (ruijie.com): '
+                 'https://eo-sgp-cos.ruijie.com/Document/pdf/2026/9/8/RG-EW300N_Datasheet_Official_2026-09-08.pdf'},
+      {'b': 'Set up and manage it from the Reyee Router app or Ruijie Cloud, with lifetime free '
+            'cloud management, parental control and guest Wi-Fi.',
+       'h': 'Managed from your phone, free for life',
+       'img': None,
+       'source': 'Ruijie RG-EW300N official datasheet (ruijie.com): '
+                 'https://eo-sgp-cos.ruijie.com/Document/pdf/2026/9/8/RG-EW300N_Datasheet_Official_2026-09-08.pdf'}],
+ 71: [{'b': 'Four 5 dBi external antennas with built-in signal amplifiers push N300 Wi-Fi (up to '
+            '300 Mbps, 2.4 GHz) further through walls and across rooms.',
+       'h': 'Stronger signal, four antennas',
+       'img': 'images/gallery/ruijie-rg-ew300-pro-g2.jpg',
+       'source': 'Ruijie RG-EW300 PRO official datasheet (ruijie.com): '
+                 'https://eo-sgp-cos.ruijie.com/Document/pdf/2026/9/8/RG-EW300%20PRO_Datasheet_Official_2026-09-08.pdf'},
+      {'b': 'Switches between router, AP, repeater and WISP modes, with 1 WAN and 3 LAN Fast '
+            'Ethernet ports for wired PCs, TVs and printers.',
+       'h': 'Router, repeater, access point or WISP',
+       'img': 'images/gallery/ruijie-rg-ew300-pro-g1.jpg',
+       'source': 'Ruijie RG-EW300 PRO official datasheet (ruijie.com): '
+                 'https://eo-sgp-cos.ruijie.com/Document/pdf/2026/9/8/RG-EW300%20PRO_Datasheet_Official_2026-09-08.pdf'},
+      {'b': 'Manage it from the Reyee Router app or Ruijie Cloud — free for life — and Ruijie '
+            'backs the router with a three-year warranty.',
+       'h': 'Free cloud management, 3-year warranty',
+       'img': None,
+       'source': 'Ruijie RG-EW300 PRO official datasheet (ruijie.com): '
+                 'https://eo-sgp-cos.ruijie.com/Document/pdf/2026/9/8/RG-EW300%20PRO_Datasheet_Official_2026-09-08.pdf'}],
+ 72: [{'b': 'Up to 300 Mbps on 2.4 GHz (Wi-Fi 4, 802.11n) — enough for HD streaming, online gaming '
+            'and large downloads around the home.',
+       'h': 'N300 speed for everyday home Wi-Fi',
+       'img': 'images/gallery/tp-link-tl-wr840n-g1.jpg',
+       'source': 'TP-Link TL-WR840N official product page (tp-link.com): '
+                 'https://www.tp-link.com/au/home-networking/wifi-router/tl-wr840n/'},
+      {'b': 'Router, access point, range extender and WISP modes cover a new connection, a dead '
+            'zone or a shared wireless link with one box.',
+       'h': 'Four ways to use it',
+       'img': None,
+       'source': 'TP-Link TL-WR840N official product page (tp-link.com): '
+                 'https://www.tp-link.com/au/home-networking/wifi-router/tl-wr840n/'},
+      {'b': 'One 10/100 Mbps WAN port and four 10/100 Mbps LAN ports for wired devices, plus a '
+            'separate 2.4 GHz guest network for visitors.',
+       'h': 'Wired ports and a guest network',
+       'img': 'images/gallery/tp-link-tl-wr840n-g2.jpg',
+       'source': 'TP-Link TL-WR840N official product page (tp-link.com): '
+                 'https://www.tp-link.com/au/home-networking/wifi-router/tl-wr840n/'}],
+ 73: [{'b': 'The N300 designation means up to 300 Mbps wireless on the 2.4 GHz band (802.11n) — '
+            'the everyday speed for browsing, streaming and video calls.',
+       'h': 'N300 Wi-Fi — 300 Mbps',
+       'img': 'images/gallery/tenda-n300-wireless-router-g2.jpg',
+       'source': 'Tenda N300 Wireless Router — N300 designation: 300 Mbps, 802.11n, 2.4 GHz (model '
+                 'designation itself)'},
+      {'b': 'Two external antennas, as shown in the listing photo, spread Wi-Fi across the rooms '
+            'of a home or small shop.',
+       'h': 'Two antennas, simple home coverage',
+       'img': None,
+       'source': 'Two external antennas visible in listing photo '
+                 'images/gallery/tenda-n300-wireless-router-g2.jpg'}],
+ 74: [{'b': '3MP (2304×1296) live monitoring with 0–355° pan and −5–80° tilt — one camera covers '
+            'every corner of the room.',
+       'h': '3MP 2K that turns to follow the room',
+       'img': 'images/gallery/imou-ranger-2-2k-3mp-g2.jpg',
+       'source': 'IMOU official datasheet — Ranger 2 3MP, Rev 001.001 (imoulife.com)'},
+      {'b': 'Human detection finds people in the frame and alerts your phone — not every curtain '
+            'moving in the draught.',
+       'h': 'Human detection, fewer false alarms',
+       'img': None,
+       'source': 'IMOU official datasheet — Ranger 2 3MP, Rev 001.001 (imoulife.com)'},
+      {'b': 'Infrared night vision up to 10 m and auto-cruise that sweeps the room or moves '
+            'between favourite points.',
+       'h': 'Night vision to 10 m, auto-cruise patrols',
+       'img': None,
+       'source': 'IMOU official datasheet — Ranger 2 3MP, Rev 001.001 (imoulife.com)'}],
+ 75: [{'b': '3MP (2304×1296) pan-and-tilt coverage — 355° pan, −5–80° tilt — with human and pet '
+            'detection that alerts your phone.',
+       'h': '3MP 2K with human and pet detection',
+       'img': 'images/gallery/imou-ranger-2-pro-2k-g1.jpg',
+       'source': 'IMOU official datasheet — Ranger 2 Pro 3MP, Rev 001.001 '
+                 '(static-website.imou.com)'},
+      {'b': 'Smart tracking turns the camera to follow moving people and pets, so the action stays '
+            'in frame.',
+       'h': 'Smart tracking follows the movement',
+       'img': None,
+       'source': 'IMOU official datasheet — Ranger 2 Pro 3MP, Rev 001.001 '
+                 '(static-website.imou.com)'},
+      {'b': 'A touch button lets family video-call your app, and Smart Full-Colour Night Vision '
+            'keeps night footage in colour — with Wi-Fi 6 for a steady stream.',
+       'h': 'One-touch call and full-colour night vision',
+       'img': None,
+       'source': 'IMOU official datasheet — Ranger 2 Pro 3MP, Rev 001.001 '
+                 '(static-website.imou.com)'}],
+ 76: [{'b': 'A compact fixed mini dome that sits quietly on a ceiling — full coverage without a '
+            'bulky camera in the room.',
+       'h': 'Mini dome, small and discreet',
+       'img': 'images/gallery/dahua-n22al12-g1.jpg',
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N22AL12 own page, infobox image '
+                 '(photo-replace-2026-11-19.md, round 2)'},
+      {'b': 'A 2MP fixed-lens IP camera: point it once, and it holds the same view on the network, '
+            'day after day.',
+       'h': '2MP fixed-lens network camera',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N22AL12 own page '
+                 '(photo-replace-2026-11-19.md, round 2)'}],
+ 77: [{'b': 'This dome feeds a public-viewing monitor straight over HDMI, so the live picture '
+            "shows on a screen without opening the recorder's menu.",
+       'h': 'HDMI out — live view on a monitor',
+       'img': None,
+       'source': 'Dahua official product page dahuasecurity.com — IPC-HDBW5231E-ZE-HDMI, page '
+                 'lists EN-ZE-HDMI as its external model (photo-replace-2026-11-19.md, round 1)'},
+      {'b': 'The -ZE in the model name is a motorised vari-focal zoom: the view is widened or '
+            'tightened from the screen, instead of climbing a ladder to turn the lens.',
+       'h': 'Motorised zoom (-ZE)',
+       'img': 'images/gallery/dahua-dh-ipc-hdbw5231en-ze-hdmi-g1.jpg',
+       'source': 'Dahua official product page dahuasecurity.com — IPC-HDBW5231E-ZE-HDMI '
+                 '(photo-replace-2026-11-19.md, round 1)'}],
+ 78: [{'b': 'Night Color technology keeps the night picture in colour, so clothes, cars and signs '
+            'stay recognisable after dark.',
+       'h': 'Night Color — colour in the dark',
+       'img': None,
+       'source': 'Dahua official product page dahuasecurity.com — IPC-HDBW4239R-ASE, page lists '
+                 'RN-ASE (photo-replace-2026-11-19.md, round 1)'},
+      {'b': 'ePoE carries power and data over a single network cable across longer runs, so the '
+            'dome can sit far from the recorder without a separate power point nearby.',
+       'h': 'ePoE — power and video on one long cable',
+       'img': None,
+       'source': 'Dahua official product page dahuasecurity.com — IPC-HDBW4239R-ASE '
+                 '(photo-replace-2026-11-19.md, round 1)'}],
+ 79: [{'b': 'Night Color technology keeps the night picture in colour, and the bullet body points '
+            'it down a gate, a street or a yard.',
+       'h': 'Night Color bullet — colour after dark',
+       'img': None,
+       'source': 'Dahua official product page dahuasecurity.com — IPC-HFW4239T-ASE, page lists '
+                 'TN-ASE (photo-replace-2026-11-19.md, round 1)'},
+      {'b': 'ePoE carries power and data over a single network cable across longer runs, so the '
+            'bullet can sit far from the recorder without a separate power point nearby.',
+       'h': 'ePoE — power and video on one long cable',
+       'img': None,
+       'source': 'Dahua official product page dahuasecurity.com — IPC-HFW4239T-ASE '
+                 '(photo-replace-2026-11-19.md, round 1)'}],
+ 80: [{'b': 'Built for hazardous sites — fuel stations, factories, chemical stores — where the '
+            'housing must contain any spark so it can never reach the air outside.',
+       'h': 'Explosion-protected housing',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — DH-EPC230U own page, infobox '
+                 'image 3500x3500 (photo-replace-2026-11-19.md, round 2)'},
+      {'b': 'A 2MP infrared network bullet: night vision in a rugged metal body made for places '
+            'ordinary cameras cannot go.',
+       'h': 'IR bullet for harsh sites',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — DH-EPC230U own page '
+                 '(photo-replace-2026-11-19.md, round 2)'}],
+ 81: [{'b': 'Made for air that eats ordinary cameras — coastal sites and industrial halls — with a '
+            'stainless housing that resists corrosion.',
+       'h': 'Corrosion-resistant — stainless housing',
+       'img': 'images/gallery/dahua-dh-ipc-hdbw8232en-z-sl-g2.jpg',
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — DH-IPC-HDBW8232E-Z-SL own page; '
+                 'image pixel-matched to the EN-Z-SL datasheet hero (photo-replace-2026-11-19.md, '
+                 'round 2)'},
+      {'b': 'The -Z in the model name is a vari-focal lens: the focal length adjusts so the camera '
+            'frames exactly the area that matters, wide or tight.',
+       'h': 'Vari-focal zoom (-Z)',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — DH-IPC-HDBW8232E-Z-SL own page '
+                 '(photo-replace-2026-11-19.md, round 2)'}],
+ 82: [{'b': 'A dual-sensor dome — two 2MP sensors in a single housing — so one mount watches two '
+            'directions at once.',
+       'h': 'Two sensors, two views in one dome',
+       'img': None,
+       'source': 'Own datasheet p.1 hero (DahuaWiki-hosted) — DH-IPC-HDBW4231FN-E2-M '
+                 '(photo-replace-2026-11-19.md, round 2)'},
+      {'b': 'Infrared night vision in a dome that covers what two separate cameras would, from a '
+            'single ceiling mount.',
+       'h': 'IR dome for wide coverage',
+       'img': None,
+       'source': 'Own datasheet p.1 hero (DahuaWiki-hosted) — DH-IPC-HDBW4231FN-E2-M '
+                 '(photo-replace-2026-11-19.md, round 2)'}],
+ 83: [{'b': 'A Starlight sensor keeps the picture in colour when the light is too low for an '
+            'ordinary camera — dusk, dim corridors, street light alone.',
+       'h': 'Starlight — colour in very low light',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N24CL52 own page, infobox image '
+                 '(photo-replace-2026-11-19.md, round 2)'},
+      {'b': 'A 2.8 mm fixed lens gives a wide view of the room, and ePoE carries power and video '
+            'on a single network cable.',
+       'h': '2.8 mm wide view, one cable with ePoE',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N24CL52 own page '
+                 '(photo-replace-2026-11-19.md, round 2)'}],
+ 84: [{'b': 'A Starlight sensor keeps the picture in colour when the light is too low for an '
+            'ordinary camera — dusk, dim yards, street light alone.',
+       'h': 'Starlight — colour in very low light',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N24CB33 own page, infobox image '
+                 '(photo-replace-2026-11-19.md, round 2)'},
+      {'b': 'A 3.6 mm fixed lens looks a little narrower than a 2.8 mm, so it frames a door or a '
+            'gate neatly, with IR night vision and ePoE on one cable.',
+       'h': '3.6 mm mini bullet for doors and gates',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N24CB33 own page '
+                 '(photo-replace-2026-11-19.md, round 2)'}],
+ 85: [{'b': 'A Starlight sensor keeps the picture in colour when the light is too low for an '
+            'ordinary camera — dusk, dim rooms, a single lamp.',
+       'h': 'Starlight — colour in very low light',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N24CG52 own page, infobox image '
+                 '(photo-replace-2026-11-19.md, round 2)'},
+      {'b': 'A fixed-lens eyeball on a ball mount: turn it by hand to the exact corner, with IR '
+            'night vision and ePoE on one cable.',
+       'h': 'Eyeball — aim it by hand',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N24CG52 own page '
+                 '(photo-replace-2026-11-19.md, round 2)'}],
+ 86: [{'b': 'A Starlight sensor keeps the picture in colour when the light is too low for an '
+            'ordinary camera — dusk, dim yards, street light alone.',
+       'h': 'Starlight — colour in very low light',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N25CB5Z own page, infobox image '
+                 '(photo-replace-2026-11-19.md, round 2)'},
+      {'b': 'A vari-focal lens adjusts the view from wide to tight, so one bullet can cover a yard '
+            'or focus on a gate, with IR night vision and ePoE on one cable.',
+       'h': 'Vari-focal bullet — zoom to fit the scene',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N25CB5Z own page '
+                 '(photo-replace-2026-11-19.md, round 2)'},
+      {'b': 'The gallery shows the card slot inside the housing, so footage can also be stored in '
+            'the camera itself on a memory card.',
+       'h': 'On-board card slot',
+       'img': 'images/gallery/dahua-n25cb5z-g2.jpg',
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N25CB5Z own page; card slot '
+                 "visible in the product's own gallery image dahua-n25cb5z-g2.jpg"}],
+ 87: [{'b': 'A Starlight sensor keeps the picture in colour when the light is too low for an '
+            'ordinary camera — dusk, dim rooms, a single lamp.',
+       'h': 'Starlight — colour in very low light',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N25CL5Z own page, infobox image '
+                 '(photo-replace-2026-11-19.md, round 2)'},
+      {'b': 'A vari-focal lens adjusts the view from wide to tight, so one dome can cover a hall '
+            'or focus on a till, with IR night vision and ePoE on one cable.',
+       'h': 'Vari-focal dome — zoom to fit the scene',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N25CL5Z own page '
+                 '(photo-replace-2026-11-19.md, round 2)'}],
+ 88: [{'b': 'A 4K eyeball camera: the picture holds four times the detail of Full HD, so faces and '
+            'number plates stay readable from further away.',
+       'h': '4K detail — four times Full HD',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N84CG52 own page, infobox image '
+                 '(photo-replace-2026-11-19.md, round 2)'},
+      {'b': 'A 2.8 mm fixed lens gives a wide view of the room, with infrared night vision and '
+            'power plus video on a single ePoE cable.',
+       'h': '2.8 mm wide view, IR and ePoE',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N84CG52 own page '
+                 '(photo-replace-2026-11-19.md, round 2)'}],
+ 89: [{'b': 'The official datasheet lists this mini dome at 8 MP (3840 x 2160) — true 4K '
+            'resolution, so fine detail survives even when the picture is zoomed in.',
+       'h': 'True 4K — 8 MP, 3840 x 2160',
+       'img': None,
+       'source': "Official Dahua datasheet p.1 — 'Pro Series | N84CL52 — 4K IR 2.8 mm ePoE Mini "
+                 "Dome — 8 MP (3840x2160), 2.8 mm Fixed Lens, ePoE' (photo-replace-2026-11-19.md, "
+                 'round 2)'},
+      {'b': 'A 2.8 mm fixed lens gives a wide view of the room, with infrared night vision and '
+            'power plus video on a single ePoE cable.',
+       'h': '2.8 mm wide view, IR and ePoE',
+       'img': None,
+       'source': 'Official Dahua datasheet p.1 — N84CL52, 2.8 mm Fixed Lens, ePoE '
+                 '(photo-replace-2026-11-19.md, round 2)'}],
+ 90: [{'b': 'A 128-channel Intelligent Video Surveillance Server — one box that runs a whole '
+            "site's cameras and AI.",
+       'h': '128 channels on one intelligent server',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-IVSS7008-1T, Rev 001.001'},
+      {'b': 'Face recognition on up to 4 video-stream channels, against a database of up to '
+            '100,000 faces.',
+       'h': 'Face recognition built in',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-IVSS7008-1T, Rev 001.001'},
+      {'b': 'Eight SATA bays hold up to 10 TB each, with RAID 0/1/5/10 and 400 Mbps incoming '
+            'bandwidth.',
+       'h': '80 TB of storage, RAID protected',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-IVSS7008-1T, Rev 001.001'}],
+ 91: [{'b': 'A 256-channel Intelligent Video Surveillance Server with a quad-core processor for '
+            'large, demanding sites.',
+       'h': '256 channels of intelligent surveillance',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-IVSS7016DR-4T, Rev 001.001'},
+      {'b': 'Face recognition on up to 16 video-stream channels, against a database of up to '
+            '100,000 faces.',
+       'h': 'Face recognition at scale',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-IVSS7016DR-4T, Rev 001.001'},
+      {'b': 'Sixteen SAS/SATA bays hold up to 10 TB each, with RAID 0/1/5/10, redundant power and '
+            '512 Mbps incoming bandwidth.',
+       'h': '160 TB, redundant power, RAID',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-IVSS7016DR-4T, Rev 001.001'}],
+ 92: [{'b': 'A 16-channel 1U 4K NVR with 16 built-in PoE ports, so every camera takes power and '
+            'picture over one cable.',
+       'h': '16 channels, 16 PoE ports — cameras plug straight in',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-NVR4216-16P-I (Analytics+ series)'},
+      {'b': 'Face recognition on up to 2 channels and perimeter protection on up to 4, with a '
+            '20,000-face database.',
+       'h': 'Analytics+ that sees people and faces',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-NVR4216-16P-I (Analytics+ series)'},
+      {'b': 'Ports 1–8 support ePoE/EoC, reaching cameras up to 800 m away over a single cable.',
+       'h': 'Long reach on the first eight ports',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-NVR4216-16P-I (Analytics+ series)'}],
+ 93: [{'b': 'A 16-channel 1U 16PoE WizMind NVR — 4K recording with 320 Mbps incoming bandwidth for '
+            'busy camera systems.',
+       'h': 'WizMind AI on 16 PoE channels',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-NVR5216-16P-I, Rev 001.001'},
+      {'b': 'Face recognition on up to 4 channels at 24 face images per second, against a database '
+            'of up to 100,000 faces.',
+       'h': 'Face recognition on four channels',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-NVR5216-16P-I, Rev 001.001'},
+      {'b': 'Ports 1–8 support ePoE/EoC, so cameras up to 800 m away connect over a single cable.',
+       'h': 'ePoE reach up to 800 m',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-NVR5216-16P-I, Rev 001.001'}],
+ 94: [{'b': 'A 16-channel network video recorder that records in 4K — sixteen cameras on one box, '
+            'every stream stored in full detail.',
+       'h': '16 channels of 4K recording',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N54B3P own page, infobox image '
+                 '(photo-replace-2026-11-19.md, round 2, H2)'},
+      {'b': 'ePoE ports power the cameras over the same network cable that carries their video, so '
+            'each camera needs only one cable back to the recorder.',
+       'h': 'ePoE recorder — power for the cameras',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N54B3P own page '
+                 '(photo-replace-2026-11-19.md, round 2, H2)'}],
+ 95: [{'b': 'A 16-channel network video recorder that records in 4K — sixteen cameras on one box, '
+            'every stream stored in full detail.',
+       'h': '16 channels of 4K recording',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N52B3P own page, infobox image '
+                 '(photo-replace-2026-11-19.md, round 2, H2)'},
+      {'b': 'A slim 1U-high recorder that fits a standard rack shelf, with ePoE ports that power '
+            'the cameras over the same cable as their video.',
+       'h': 'Slim 1U box, ePoE inside',
+       'img': 'images/gallery/dahua-n52b3p-g2.jpg',
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N52B3P own page; rear panel '
+                 "with PoE ports visible in the product's own gallery image dahua-n52b3p-g2.jpg"}],
+ 96: [{'b': 'A 32-channel network video recorder that records in 4K — the recorder for large '
+            'shops, warehouses and multi-floor buildings.',
+       'h': '32 channels of 4K recording',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N54B5N own page '
+                 '(photo-replace-2026-11-19.md, round 2, H2)'},
+      {'b': 'Two network ports let the camera network and the viewing network run separately, so '
+            'camera traffic never crowds the office network.',
+       'h': 'Dual NIC — two network ports',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N54B5N own page '
+                 '(photo-replace-2026-11-19.md, round 2, H2)'}],
+ 97: [{'b': 'A 32-channel network video recorder that records in 4K — the recorder for large '
+            'shops, warehouses and multi-floor buildings.',
+       'h': '32 channels of 4K recording',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N52B5P own page, infobox image '
+                 '(photo-replace-2026-11-19.md, round 2, H2)'},
+      {'b': 'Thirty-two channels in a slim 1U-high box, with ePoE ports that power the cameras '
+            'over the same cable as their video.',
+       'h': 'Slim 1U box, ePoE inside',
+       'img': 'images/gallery/dahua-n52b5p-g2.jpg',
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N52B5P own page; rear panel '
+                 "with PoE ports visible in the product's own gallery image dahua-n52b5p-g2.jpg"}],
+ 98: [{'b': 'An 8-channel network video recorder that records in 4K — the right size for a home or '
+            'a small shop with a handful of cameras.',
+       'h': '8 channels of 4K recording — the compact recorder',
+       'img': None,
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N52B2P own page; own datasheet '
+                 'p.1 hero (photo-replace-2026-11-19.md, round 2, H2)'},
+      {'b': 'A slim 1U-high recorder with ePoE ports that power the cameras over the same cable as '
+            'their video — one cable per camera, nothing else to wire.',
+       'h': 'Slim 1U box, ePoE inside',
+       'img': 'images/gallery/dahua-n52b2p-g2.jpg',
+       'source': 'DahuaWiki (Dahua Technology USA official wiki) — N52B2P own page; rear panel '
+                 "with PoE ports visible in the product's own gallery image dahua-n52b2p-g2.jpg"}],
+ 99: [{'b': 'A Video Management System server with DSS Express preinstalled, managing up to 512 IP '
+            'cameras from one box.',
+       'h': 'DSS Express — 512 cameras, one server',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-DSS4004-S2, Rev 001.001'},
+      {'b': 'Real-time face recognition on up to 64 channels per overview, with 36-channel sync '
+            'playback.',
+       'h': 'Face recognition across the site',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-DSS4004-S2, Rev 001.001'},
+      {'b': 'Access control and video intercom integrate with the same system — one platform for '
+            'the whole site.',
+       'h': 'Security beyond cameras',
+       'img': None,
+       'source': 'Dahua official datasheet — DHI-DSS4004-S2, Rev 001.001'}],
+ 100: [{'b': 'A Video Management System server with DSS Pro preinstalled: up to 512 IP devices and '
+             '2,000 video channels per server.',
+        'h': 'DSS Pro — 2,000 channels per server',
+        'img': None,
+        'source': 'Dahua official datasheet — DHI-DSS7016DR-S2, Rev 001.002'},
+       {'b': 'Fifteen hot-plug HDD bays hold up to 200 TB, with RAID 0/1/5/6/10 and 700 Mbps video '
+             'in, out and storage.',
+        'h': '200 TB of hot-plug storage',
+        'img': None,
+        'source': 'Dahua official datasheet — DHI-DSS7016DR-S2, Rev 001.002'},
+       {'b': 'A 7-inch HD LCD on the front panel shows the system at a glance, in a 3U rack-mount '
+             'chassis.',
+        'h': 'A screen on the box itself',
+        'img': None,
+        'source': 'Dahua official datasheet — DHI-DSS7016DR-S2, Rev 001.002'}],
+ 101: [{'b': 'A 128-channel Super 4K NVR with 384 Mbps incoming bandwidth — one box for the '
+             'largest camera systems.',
+        'h': '128 channels of Super 4K recording',
+        'img': None,
+        'source': 'Dahua official datasheet — DHI-NVR6A08-128-4KS2, Rev 001.008'},
+       {'b': 'Eight SATA III bays hold up to 10 TB each, with RAID 0/1/5/6/10/50/60 and N+M hot '
+             'standby.',
+        'h': '80 TB across eight SATA bays',
+        'img': None,
+        'source': 'Dahua official datasheet — DHI-NVR6A08-128-4KS2, Rev 001.008'},
+       {'b': 'Two HDMI outputs up to 3840×2160 can show different sources, plus a VGA output — and '
+             'SMD+ on 32 channels.',
+        'h': 'Two 4K HDMI outputs, different sources',
+        'img': None,
+        'source': 'Dahua official datasheet — DHI-NVR6A08-128-4KS2, Rev 001.008'}],
+ 102: [{'b': 'A 64-channel Super 4K NVR with 384 Mbps incoming bandwidth and cameras up to 12MP.',
+        'h': '64 channels of Super 4K recording',
+        'img': None,
+        'source': 'Dahua official datasheet — DHI-NVR6A08-64-4KS2, Rev 001.010'},
+       {'b': 'Eight SATA III bays with RAID 0/1/5/6/10/50/60, and SMD+ on 32 channels to cut false '
+             'alarms.',
+        'h': 'Eight SATA bays, full RAID',
+        'img': None,
+        'source': 'Dahua official datasheet — DHI-NVR6A08-64-4KS2, Rev 001.010'},
+       {'b': 'Two HDMI outputs up to 3840×2160 showing different sources, plus VGA — the control '
+             'room sees more at once.',
+        'h': 'Two 4K HDMI outputs',
+        'img': None,
+        'source': 'Dahua official datasheet — DHI-NVR6A08-64-4KS2, Rev 001.010'}],
+ 103: [{'b': 'A 32-channel Super 4K NVR with 384 Mbps incoming bandwidth and IP cameras up to '
+             '12MP.',
+        'h': '32 channels of Super 4K recording',
+        'img': None,
+        'source': 'Dahua official datasheet — DHI-NVR6A08-32-4KS2'},
+       {'b': 'Eight SATA bays with RAID 0/1/5/6/10/50/60 and N+M hot standby — recordings stay '
+             'safe if a drive fails.',
+        'h': 'Eight SATA bays, enterprise RAID',
+        'img': None,
+        'source': 'Dahua official datasheet — DHI-NVR6A08-32-4KS2'},
+       {'b': 'Two HDMI outputs up to 3840×2160 plus VGA, with ONVIF support for third-party '
+             'cameras.',
+        'h': '4K display on two HDMI outputs',
+        'img': None,
+        'source': 'Dahua official datasheet — DHI-NVR6A08-32-4KS2'}],
+ 104: [{'b': 'A 24-channel network video recorder that records in 4K — the middle-size recorder '
+             'for shops and offices with cameras on every floor.',
+        'h': '24 channels of 4K recording',
+        'img': None,
+        'source': 'DahuaWiki (Dahua Technology USA official wiki) — N54A4P own page, infobox image '
+                  '(photo-replace-2026-11-19.md, round 2, H2)'},
+       {'b': 'A deeper 1.5U-high chassis for a 24-camera system, with room for the storage and '
+             'cooling a bigger job needs.',
+        'h': '1.5U recorder for bigger jobs',
+        'img': 'images/gallery/dahua-n54a4p-g2.jpg',
+        'source': 'DahuaWiki (Dahua Technology USA official wiki) — N54A4P own page; rear panel '
+                  "visible in the product's own gallery image dahua-n54a4p-g2.jpg"}],
+ 105: [{'b': 'A 24-channel network video recorder that records in 4K — the middle-size recorder '
+             'for shops and offices with cameras on every floor.',
+        'h': '24 channels of 4K recording',
+        'img': None,
+        'source': 'DahuaWiki (Dahua Technology USA official wiki) — N52A4P own page, infobox image '
+                  '(photo-replace-2026-11-19.md, round 2, H2)'},
+       {'b': 'Twenty-four channels in a slim 1U-high box that fits a standard rack shelf — big '
+             'capacity without a big box.',
+        'h': '24 channels in a slim 1U box',
+        'img': 'images/gallery/dahua-n52a4p-g2.jpg',
+        'source': 'DahuaWiki (Dahua Technology USA official wiki) — N52A4P own page; rear panel '
+                  "visible in the product's own gallery image dahua-n52a4p-g2.jpg"}],
+ 106: [{'b': 'A 16-channel network video recorder that records in 4K — sixteen cameras on one box, '
+             'every stream stored in full detail.',
+        'h': '16 channels of 4K recording',
+        'img': None,
+        'source': 'DahuaWiki (Dahua Technology USA official wiki) — N42B3P own page; front-panel '
+                  'photo from its own wiki page (photo-replace-2026-11-19.md, round 2, H2)'},
+       {'b': 'A slim 1U-high recorder that fits a standard rack shelf — sixteen 4K channels '
+             'without a big box.',
+        'h': 'Slim 1U box for sixteen cameras',
+        'img': 'images/gallery/dahua-n42b3p-g2.jpg',
+        'source': 'DahuaWiki (Dahua Technology USA official wiki) — N42B3P own page; rear panel '
+                  "visible in the product's own gallery image dahua-n42b3p-g2.jpg"}],
+ 107: [{'b': 'An 8-channel network video recorder that records in 4K — the right size for a home '
+             'or a small shop with a handful of cameras.',
+        'h': '8 channels of 4K recording — the small-site recorder',
+        'img': None,
+        'source': 'DahuaWiki (Dahua Technology USA official wiki) — N42B2P own page; own datasheet '
+                  'p.1 hero (photo-replace-2026-11-19.md, round 2, H2)'},
+       {'b': 'A compact 1U-high recorder that fits a standard rack shelf — small-site recording '
+             'without a big box.',
+        'h': 'Compact 1U box',
+        'img': None,
+        'source': 'DahuaWiki (Dahua Technology USA official wiki) — N42B2P own page '
+                  '(photo-replace-2026-11-19.md, round 2, H2)'}]}
+SHOWPIECE = {10: 'images/hero-dark/hikvision-2mp-dome-camera.jpg',
+ 11: 'images/hero-dark/hikvision-5mp-bullet-camera.jpg',
+ 12: 'images/hero-dark/dahua-2mp-dome-camera.jpg',
+ 13: 'images/hero-dark/dahua-5mp-bullet-camera.jpg',
+ 14: 'images/hero-dark/tiandy-5mp-camera.jpg',
+ 15: 'images/hero-dark/tiandy-ip-camera.jpg',
+ 16: 'images/gallery/ezviz-indoor-camera-g3.jpg',
+ 17: 'images/gallery/ezviz-outdoor-camera-g2.jpg',
+ 18: 'images/hero-dark/imou-ranger-series.jpg',
+ 19: 'images/hero-dark/v380-pro-wifi-camera.jpg',
+ 20: 'images/gallery/ruijie-wifi-router-g2.jpg',
+ 21: 'images/hero-dark/ruijie-access-point.jpg',
+ 22: 'images/hero-dark/tp-link-archer-router.jpg',
+ 23: 'images/hero-dark/tp-link-wifi-access-point.jpg',
+ 24: 'images/hero-dark/tp-link-network-switch.jpg',
+ 25: 'images/hero-dark/tenda-wifi-router.jpg',
+ 26: 'images/gallery/tenda-network-switch-g2.jpg',
+ 27: 'images/hero-dark/tenda-access-point.jpg',
+ 28: 'images/gallery/ubiquiti-unifi-access-point-g2.jpg',
+ 29: 'images/gallery/ubiquiti-unifi-switch-g4.jpg',
+ 30: 'images/hero-dark/audionic-earbuds.jpg',
+ 31: 'images/hero-dark/audionic-bluetooth-speaker.jpg',
+ 32: 'images/hero-dark/audionic-soundbar.jpg',
+ 33: 'images/hero-dark/audionic-home-theater-system.jpg',
+ 34: 'images/hero-dark/audionic-party-speaker.jpg',
+ 35: 'images/hero-dark/audionic-wireless-microphone.jpg',
+ 36: 'images/hero-dark/audionic-multimedia-speaker.jpg',
+ 37: 'images/hero-dark/audionic-subwoofer.jpg',
+ 38: 'images/hero-dark/audionic-portable-speaker.jpg',
+ 40: 'images/hero-dark/audionic-conference-speaker.jpg',
+ 41: 'images/hero-dark/samsung-43-inch-led.jpg',
+ 42: 'images/hero-dark/samsung-55-inch-led.jpg',
+ 43: 'images/hero-dark/samsung-65-inch-led.jpg',
+ 44: 'images/hero-dark/lg-43-inch-smart-led.jpg',
+ 46: 'images/hero-dark/lg-65-inch-smart-led.jpg',
+ 47: 'images/hero-dark/sony-43-inch-bravia.jpg',
+ 48: 'images/hero-dark/sony-55-inch-bravia.jpg',
+ 49: 'images/hero-dark/sony-65-inch-bravia.jpg',
+ 50: 'images/hero-dark/sony-75-inch-bravia.jpg',
+ 54: 'images/hero-dark/dahua-dh-hac-hdw1209tlqp-led.jpg',
+ 55: 'images/hero-dark/dahua-dh-hac-t1a41p-4mp-ir-eyeball.jpg',
+ 56: 'images/hero-dark/dahua-dh-hac-t5e20p-2mp-economy-hd-indoor-eyeball.jpg',
+ 57: 'images/hero-dark/dahua-dh-ipc-t1e29-a-il-2mp-dome.jpg',
+ 58: 'images/hero-dark/dahua-dh-ipc-b1e49-a-il-smart-dual-light-camera.jpg',
+ 59: 'images/hero-dark/tiandy-tc-321-2mp.jpg',
+ 60: 'images/hero-dark/tiandy-tc-c331.jpg',
+ 61: 'images/hero-dark/v380-e27.jpg',
+ 62: 'images/hero-dark/icsee-v1-single-lens.jpg',
+ 63: 'images/hero-dark/dahua-dhi-nvr4116hs-4ks3.jpg',
+ 64: 'images/hero-dark/dahua-dhi-nvr2108hs-4ks3.jpg',
+ 66: 'images/hero-dark/dahua-dhi-nvr1108hs-s3-h.jpg',
+ 67: 'images/hero-dark/tiandy-tc-r3108.jpg',
+ 68: 'images/hero-dark/tiandy-tc-r3104.jpg',
+ 69: 'images/hero-dark/tiandy-nvr-tc-r3120.jpg',
+ 70: 'images/gallery/ruijie-rg-ew300n-n300-wireless-smart-router-g1.jpg',
+ 71: 'images/hero-dark/ruijie-rg-ew300-pro.jpg',
+ 72: 'images/hero-dark/tp-link-tl-wr840n.jpg',
+ 73: 'images/hero-dark/tenda-n300-wireless-router.jpg',
+ 74: 'images/hero-dark/imou-ranger-2-2k-3mp.jpg',
+ 75: 'images/hero-dark/imou-ranger-2-pro-2k.jpg',
+ 76: 'images/hero-dark/dahua-n22al12.jpg',
+ 77: 'images/hero-dark/dahua-dh-ipc-hdbw5231en-ze-hdmi.jpg',
+ 78: 'images/hero-dark/dahua-dh-ipc-hdbw4239rn-ase.jpg',
+ 79: 'images/hero-dark/dahua-dh-ipc-hfw4239tn-ase.jpg',
+ 80: 'images/hero-dark/dahua-dh-epc230u.jpg',
+ 81: 'images/hero-dark/dahua-dh-ipc-hdbw8232en-z-sl.jpg',
+ 82: 'images/hero-dark/dahua-dh-ipc-hdbw4231fn-e2-m.jpg',
+ 83: 'images/hero-dark/dahua-n24cl52.jpg',
+ 84: 'images/hero-dark/dahua-n24cb33.jpg',
+ 85: 'images/hero-dark/dahua-n24cg52.jpg',
+ 86: 'images/hero-dark/dahua-n25cb5z.jpg',
+ 87: 'images/hero-dark/dahua-n25cl5z.jpg',
+ 88: 'images/hero-dark/dahua-n84cg52.jpg',
+ 89: 'images/hero-dark/dahua-4k-ir-epoe-mini-dome.jpg',
+ 90: 'images/hero-dark/dahua-dhi-ivss7008-1t.jpg',
+ 91: 'images/hero-dark/dahua-dhi-ivss7016dr-4t.jpg',
+ 92: 'images/hero-dark/dahua-dhi-nvr4216-16p-i.jpg',
+ 93: 'images/hero-dark/dahua-dhi-nvr5216-16p-i.jpg',
+ 94: 'images/hero-dark/dahua-n54b3p.jpg',
+ 95: 'images/full/p95.jpg',
+ 96: 'images/hero-dark/dahua-n54b5n.jpg',
+ 97: 'images/hero-dark/dahua-n52b5p.jpg',
+ 98: 'images/gallery/dahua-n52b2p-g1.jpg',
+ 99: 'images/hero-dark/dahua-dhi-dss4004-s2.jpg',
+ 100: 'images/hero-dark/dahua-dhi-dss7016dr-s2.jpg',
+ 101: 'images/hero-dark/dahua-dhi-nvr6a08-128-4ks2.jpg',
+ 102: 'images/hero-dark/dahua-dhi-nvr6a08-64-4ks2.jpg',
+ 103: 'images/hero-dark/dahua-dhi-nvr6a08-32-4ks2.jpg',
+ 104: 'images/hero-dark/dahua-n54a4p.jpg',
+ 105: 'images/hero-dark/dahua-n52a4p.jpg',
+ 106: 'images/hero-dark/dahua-n42b3p.jpg',
+ 107: 'images/hero-dark/dahua-n42b2p.jpg'}
+SHOWPIECE_THUMB = {10: 'images/hero-dark-thumb/hikvision-2mp-dome-camera.jpg',
+ 11: 'images/hero-dark-thumb/hikvision-5mp-bullet-camera.jpg',
+ 12: 'images/hero-dark-thumb/dahua-2mp-dome-camera.jpg',
+ 13: 'images/hero-dark-thumb/dahua-5mp-bullet-camera.jpg',
+ 14: 'images/hero-dark-thumb/tiandy-5mp-camera.jpg',
+ 15: 'images/hero-dark-thumb/tiandy-ip-camera.jpg',
+ 16: 'images/gallery-thumb/ezviz-indoor-camera-g3.jpg',
+ 17: 'images/gallery-thumb/ezviz-outdoor-camera-g2.jpg',
+ 18: 'images/hero-dark-thumb/imou-ranger-series.jpg',
+ 19: 'images/hero-dark-thumb/v380-pro-wifi-camera.jpg',
+ 20: 'images/gallery-thumb/ruijie-wifi-router-g2.jpg',
+ 21: 'images/hero-dark-thumb/ruijie-access-point.jpg',
+ 22: 'images/hero-dark-thumb/tp-link-archer-router.jpg',
+ 23: 'images/hero-dark-thumb/tp-link-wifi-access-point.jpg',
+ 24: 'images/hero-dark-thumb/tp-link-network-switch.jpg',
+ 25: 'images/hero-dark-thumb/tenda-wifi-router.jpg',
+ 26: 'images/gallery-thumb/tenda-network-switch-g2.jpg',
+ 27: 'images/hero-dark-thumb/tenda-access-point.jpg',
+ 28: 'images/gallery-thumb/ubiquiti-unifi-access-point-g2.jpg',
+ 29: 'images/gallery-thumb/ubiquiti-unifi-switch-g4.jpg',
+ 30: 'images/hero-dark-thumb/audionic-earbuds.jpg',
+ 31: 'images/hero-dark-thumb/audionic-bluetooth-speaker.jpg',
+ 32: 'images/hero-dark-thumb/audionic-soundbar.jpg',
+ 33: 'images/hero-dark-thumb/audionic-home-theater-system.jpg',
+ 34: 'images/hero-dark-thumb/audionic-party-speaker.jpg',
+ 35: 'images/hero-dark-thumb/audionic-wireless-microphone.jpg',
+ 36: 'images/hero-dark-thumb/audionic-multimedia-speaker.jpg',
+ 37: 'images/hero-dark-thumb/audionic-subwoofer.jpg',
+ 38: 'images/hero-dark-thumb/audionic-portable-speaker.jpg',
+ 40: 'images/hero-dark-thumb/audionic-conference-speaker.jpg',
+ 41: 'images/hero-dark-thumb/samsung-43-inch-led.jpg',
+ 42: 'images/hero-dark-thumb/samsung-55-inch-led.jpg',
+ 43: 'images/hero-dark-thumb/samsung-65-inch-led.jpg',
+ 44: 'images/hero-dark-thumb/lg-43-inch-smart-led.jpg',
+ 46: 'images/hero-dark-thumb/lg-65-inch-smart-led.jpg',
+ 47: 'images/hero-dark-thumb/sony-43-inch-bravia.jpg',
+ 48: 'images/hero-dark-thumb/sony-55-inch-bravia.jpg',
+ 49: 'images/hero-dark-thumb/sony-65-inch-bravia.jpg',
+ 50: 'images/hero-dark-thumb/sony-75-inch-bravia.jpg',
+ 54: 'images/hero-dark-thumb/dahua-dh-hac-hdw1209tlqp-led.jpg',
+ 55: 'images/hero-dark-thumb/dahua-dh-hac-t1a41p-4mp-ir-eyeball.jpg',
+ 56: 'images/hero-dark-thumb/dahua-dh-hac-t5e20p-2mp-economy-hd-indoor-eyeball.jpg',
+ 57: 'images/hero-dark-thumb/dahua-dh-ipc-t1e29-a-il-2mp-dome.jpg',
+ 58: 'images/hero-dark-thumb/dahua-dh-ipc-b1e49-a-il-smart-dual-light-camera.jpg',
+ 59: 'images/hero-dark-thumb/tiandy-tc-321-2mp.jpg',
+ 60: 'images/hero-dark-thumb/tiandy-tc-c331.jpg',
+ 61: 'images/hero-dark-thumb/v380-e27.jpg',
+ 62: 'images/hero-dark-thumb/icsee-v1-single-lens.jpg',
+ 63: 'images/hero-dark-thumb/dahua-dhi-nvr4116hs-4ks3.jpg',
+ 64: 'images/hero-dark-thumb/dahua-dhi-nvr2108hs-4ks3.jpg',
+ 66: 'images/hero-dark-thumb/dahua-dhi-nvr1108hs-s3-h.jpg',
+ 67: 'images/hero-dark-thumb/tiandy-tc-r3108.jpg',
+ 68: 'images/hero-dark-thumb/tiandy-tc-r3104.jpg',
+ 69: 'images/hero-dark-thumb/tiandy-nvr-tc-r3120.jpg',
+ 70: 'images/gallery-thumb/ruijie-rg-ew300n-n300-wireless-smart-router-g1.jpg',
+ 71: 'images/hero-dark-thumb/ruijie-rg-ew300-pro.jpg',
+ 72: 'images/hero-dark-thumb/tp-link-tl-wr840n.jpg',
+ 73: 'images/hero-dark-thumb/tenda-n300-wireless-router.jpg',
+ 74: 'images/hero-dark-thumb/imou-ranger-2-2k-3mp.jpg',
+ 75: 'images/hero-dark-thumb/imou-ranger-2-pro-2k.jpg',
+ 76: 'images/hero-dark-thumb/dahua-n22al12.jpg',
+ 77: 'images/hero-dark-thumb/dahua-dh-ipc-hdbw5231en-ze-hdmi.jpg',
+ 78: 'images/hero-dark-thumb/dahua-dh-ipc-hdbw4239rn-ase.jpg',
+ 79: 'images/hero-dark-thumb/dahua-dh-ipc-hfw4239tn-ase.jpg',
+ 80: 'images/hero-dark-thumb/dahua-dh-epc230u.jpg',
+ 81: 'images/hero-dark-thumb/dahua-dh-ipc-hdbw8232en-z-sl.jpg',
+ 82: 'images/hero-dark-thumb/dahua-dh-ipc-hdbw4231fn-e2-m.jpg',
+ 83: 'images/hero-dark-thumb/dahua-n24cl52.jpg',
+ 84: 'images/hero-dark-thumb/dahua-n24cb33.jpg',
+ 85: 'images/hero-dark-thumb/dahua-n24cg52.jpg',
+ 86: 'images/hero-dark-thumb/dahua-n25cb5z.jpg',
+ 87: 'images/hero-dark-thumb/dahua-n25cl5z.jpg',
+ 88: 'images/hero-dark-thumb/dahua-n84cg52.jpg',
+ 89: 'images/hero-dark-thumb/dahua-4k-ir-epoe-mini-dome.jpg',
+ 90: 'images/hero-dark-thumb/dahua-dhi-ivss7008-1t.jpg',
+ 91: 'images/hero-dark-thumb/dahua-dhi-ivss7016dr-4t.jpg',
+ 92: 'images/hero-dark-thumb/dahua-dhi-nvr4216-16p-i.jpg',
+ 93: 'images/hero-dark-thumb/dahua-dhi-nvr5216-16p-i.jpg',
+ 94: 'images/hero-dark-thumb/dahua-n54b3p.jpg',
+ 96: 'images/hero-dark-thumb/dahua-n54b5n.jpg',
+ 97: 'images/hero-dark-thumb/dahua-n52b5p.jpg',
+ 98: 'images/gallery-thumb/dahua-n52b2p-g1.jpg',
+ 99: 'images/hero-dark-thumb/dahua-dhi-dss4004-s2.jpg',
+ 100: 'images/hero-dark-thumb/dahua-dhi-dss7016dr-s2.jpg',
+ 101: 'images/hero-dark-thumb/dahua-dhi-nvr6a08-128-4ks2.jpg',
+ 102: 'images/hero-dark-thumb/dahua-dhi-nvr6a08-64-4ks2.jpg',
+ 103: 'images/hero-dark-thumb/dahua-dhi-nvr6a08-32-4ks2.jpg',
+ 104: 'images/hero-dark-thumb/dahua-n54a4p.jpg',
+ 105: 'images/hero-dark-thumb/dahua-n52a4p.jpg',
+ 106: 'images/hero-dark-thumb/dahua-n42b3p.jpg',
+ 107: 'images/hero-dark-thumb/dahua-n42b2p.jpg'}
+
+def features_html(p):
+    """Image-led feature sections (DJI pattern: huge image + bold heading +
+    1-2 lines). Wide scene shots fill the band; square/portrait product
+    shots sit centred at full size so nothing is ever cropped."""
+    secs = FEATURES.get(p["id"]) or []
+    if not secs:
+        return ""
+    out = []
+    for i, s in enumerate(secs):
+        img_html = ""
+        if s.get("img") and (STAGING / s["img"]).is_file():
+            im = Image.open(STAGING / s["img"])
+            wide = im.width / im.height >= 1.25
+            cls = "feature-img wide" if wide else "feature-img"
+            img_html = (f'<div class="{cls}"><img src="{detail_hero_uri(s["img"])}" '
+                        f'alt="{esc(s["h"])}" loading="lazy"></div>')
+        out.append(f'<section class="feature-sec"{" id=\"features\"" if i == 0 else ""}>{img_html}'
+                   f'<div class="wrap feature-text"><h2>{esc(s["h"])}</h2><p>{esc(s["b"])}</p></div></section>')
+    return "\n".join(out)
+
 # 6-item spec strips, footnote numbers exactly as DJI shows them.
 DJI_SPECS = {
     "dji-mavic-3-pro": ["4/3 CMOS Hasselblad Camera", "Dual Tele Cameras",
@@ -372,7 +2022,7 @@ DJI_COMPARE = [
         "4/3 CMOS Hasselblad Camera · 1/1.3″ Medium Tele Camera · 1/2″ Tele Camera",
         "5.1K/50fps", "43 mins", "Omnidirectional Obstacle Sensing",
         "DJI O3+ up to 15 km — 1080p/60fps Live Feed"]),
-    ("dji-air-3s", ["Rs 455,000", "724 g",
+    ("dji-air-3s", ["From Rs 455,000", "724 g",
         "1″ CMOS Wide-Angle Camera · 1/1.3″ CMOS Medium Tele Camera",
         "4K/60fps HDR or 4K/120fps", "45 mins",
         "Nightscape Omnidirectional Obstacle Sensing",
@@ -381,19 +2031,19 @@ DJI_COMPARE = [
         "1/1.3″ CMOS Wide-Angle Camera · 1/1.3″ CMOS Medium Tele Camera",
         "4K/60fps HDR or 4K/100fps", "46 mins", "Omnidirectional Obstacle Sensing",
         "DJI O4 up to 20 km (FCC) · 10 km (CE/SRRC/MIC)"]),
-    ("dji-mini-4-pro", ["Rs 275,000", "Under 249 g",
+    ("dji-mini-4-pro", ["From Rs 275,000", "Under 249 g",
         "1/1.3″ CMOS Wide-Angle Camera · True Vertical Shooting",
         "4K/60fps HDR · Slow Motion 4K/100fps", "34/45 mins (depending on battery)",
         "Omnidirectional Obstacle Sensing, APAS 5.0",
         "DJI O4 up to 20 km — 1080p/60fps Live Feed"]),
     ("dji-mini-3-pro", ["Rs 230,000", "Under 249 g",
         "1/1.3″ CMOS Wide-Angle Camera · True Vertical Shooting",
-        "4K/60fps · 4K/30fps HDR · Slow Motion 1080p/120fps", "—",
+        "4K/60fps · 4K/30fps HDR · Slow Motion 1080p/120fps", "34/47 mins (depending on battery)",
         "Forward/Backward/Downward Obstacle Sensing, APAS 4.0",
         "DJI O3 up to 12 km — 1080p/30fps Live Feed"]),
     ("dji-mini-3", ["Rs 185,000", "Under 249 g",
         "1/1.3″ CMOS Wide-Angle Camera · True Vertical Shooting",
-        "4K/30fps HDR", "—", "Downward Obstacle Sensing · Smart RTH",
+        "4K/30fps HDR", "38/51 mins (depending on battery)", "Downward Obstacle Sensing · Smart RTH",
         "DJI O2 up to 10 km — 720p/30fps Live Feed"]),
 ]
 
@@ -414,6 +2064,41 @@ def hero_uri(name: str) -> str:
     buf = io.BytesIO()
     im.save(buf, "JPEG", quality=70, optimize=True)
     return _b64(buf.getvalue())
+
+def detail_hero_uri(rel: str, max_w: int = 1920) -> str:
+    """Detail-hero background as a data URI (max 1920px wide, q70).
+    hero_uri() only knows the hero/ dir and caps at 2560; detail heroes
+    may come from gallery/ or full/ too, and 1920px is enough for the
+    ~460-760px hero band (DJI @1x is 1919px wide). Never upscales.
+    Byte impact vs hero_uri()'s 2560 cap (q70 JPEG, b64 in page):
+    air3s 70->47KB, mavic3-cine 127->78KB, from-air 274->170KB,
+    hero-drone 139->75KB -- roughly a third smaller per hero."""
+    p = STAGING / rel
+    im = Image.open(p).convert("RGB")
+    if im.width > max_w:
+        im = im.resize((max_w, round(im.height * max_w / im.width)), Image.LANCZOS)
+    buf = io.BytesIO()
+    im.save(buf, "JPEG", quality=70, optimize=True)
+    return _b64(buf.getvalue())
+
+def detail_hero_for(p):
+    """(hero rel path, css background-position, hero video URL or None).
+    Priority: products.json "hero" / "hero_video" fields (with optional
+    "hero_pos") > the DETAIL_HERO map by slug (entries may carry "video")
+    > the product's own photo_full.
+    Video URLs are DJI's real hero-video URLs (external https, mp4) --
+    supplied by the separate video worker; this template only has to be
+    ready for them. No video is assigned yet, so every drone currently
+    renders the Ken Burns image hero. Returns (None, "center", None) when
+    the product has no photo at all -- the caller then renders the plain
+    black hero."""
+    if p.get("hero") or p.get("hero_video"):
+        return (p.get("hero") or p.get("photo_full"),
+                p.get("hero_pos", "center"), p.get("hero_video"))
+    m = DETAIL_HERO.get(p["slug"])
+    if m:
+        return m["hero"], m.get("pos", "center"), m.get("video")
+    return p.get("photo_full"), "center", None
 
 def img_uri(rel: str) -> str:
     return _b64((STAGING / rel).read_bytes())
@@ -620,7 +2305,7 @@ def chrome(depth, title, desc, body, extra_head=""):
       <img src="{depth}assets/logo-mark-white.svg" alt="AK Khan Enterprises" class="logo">
       <p><strong>AK KHAN ENTERPRISES</strong></p>
       <p>{esc(TAGLINE)}</p>
-      <p>Trusted since 2015.</p>
+      <p>Trusted electronics &amp; security shop.</p>
       <p class="foot-social">
         <a href="{FB_URL}" target="_blank" rel="noopener" aria-label="Facebook">{ICON_FB}</a>
         <a href="{IG1}" target="_blank" rel="noopener" aria-label="Instagram @ak_khan682">{ICON_IG}</a>
@@ -813,8 +2498,8 @@ body.no-hero main{padding-top:64px}
 .grid-fullbleed{margin:0 16px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .card{position:relative;aspect-ratio:4/3;overflow:hidden;background:#111}
 .card::before,.card::after{content:"";position:absolute;left:0;right:0;z-index:1;pointer-events:none}
-.card::before{top:0;height:60%;background:linear-gradient(180deg,rgba(0,0,0,.78),rgba(0,0,0,.42) 55%,rgba(0,0,0,0))}
-.card::after{bottom:0;height:55%;background:linear-gradient(0deg,rgba(0,0,0,.82),rgba(0,0,0,.45) 55%,rgba(0,0,0,0))}
+.card::before{top:0;height:60%;background:linear-gradient(180deg,rgba(0,0,0,.62),rgba(0,0,0,.30) 55%,rgba(0,0,0,0))}
+.card::after{bottom:0;height:55%;background:linear-gradient(0deg,rgba(0,0,0,.68),rgba(0,0,0,.32) 55%,rgba(0,0,0,0))}
 .card-img{position:absolute;inset:0;display:block;padding:0;background:#111}
 .card-img img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .4s}
 .card:hover .card-img img{transform:scale(1.04)}
@@ -823,11 +2508,11 @@ body.no-hero main{padding-top:64px}
 .card-top{display:flex;flex-direction:column;gap:8px;align-items:center;min-width:0}
 .card-foot{display:flex;flex-direction:column;gap:6px;align-items:center}
 .card-cat{font-size:.78rem;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.85);font-weight:700}
-.card-body h3{font-size:1.35rem;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.45);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-body h3{font-size:1.35rem;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.55);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .card-body h3 a{color:#fff}
 .card-body h3 a:hover{color:rgba(255,255,255,.75)}
-.card-tag{color:rgba(255,255,255,.92);font-size:.95rem;max-width:44ch;text-shadow:0 1px 10px rgba(0,0,0,.4);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card .price{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+.card-tag{color:rgba(255,255,255,.92);font-size:.95rem;max-width:44ch;text-shadow:0 1px 10px rgba(0,0,0,.5);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .price{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.5)}
 .card .price .was{color:rgba(255,255,255,.7)}
 .card .price-note{color:rgba(255,255,255,.75)}
 .card .more-link{color:#fff}
@@ -947,7 +2632,7 @@ body.no-hero main{padding-top:64px}
 .video-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .video-card.wide{grid-column:1/-1}
 .video-card{background:#111;overflow:hidden;color:#fff}
-.video-thumb{position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;border:0;background:#000;cursor:pointer}
+.video-thumb{position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;border:0;background:radial-gradient(120% 100% at 50% 0%,#2a2a2a 0%,#111 55%,#000 100%);cursor:pointer}
 .video-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .video-thumb .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center}
 .video-thumb .play svg{width:26px;height:26px;fill:#000;margin-left:3px}
@@ -980,20 +2665,58 @@ body.no-hero main{padding-top:64px}
    inline max-width cap. White-background JPEGs sit on light grey, never
    as a white rectangle on black; the full image opens on tap via the
    existing lightbox). */
-.detail-hero{background:#000;color:#fff;text-align:center;padding:64px 20px 0}
+.detail-hero{position:relative;background:#000;color:#fff;text-align:center;padding:64px 20px 40px}
+/* Round 6 -- DJI-style full-bleed hero photo (has-bg): the photo fills the
+   band, text sits in the top third over a stronger scrim than the homepage
+   hero (product photos are brighter). Desktop ~460-760px tall; the gallery
+   now sits BELOW the hero on its own grey stage, not inside it. */
+.detail-hero.has-bg{min-height:clamp(560px,86vh,860px);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:110px 20px 80px;overflow:hidden}
+/* Round 6b -- VIDEO-READY hero (boss 19 Nov 23:05: DJI's product hero is a
+   LOOPING VIDEO, not a still). The hero image lives on .detail-hero-bg
+   (not on the section) so it can move: with a video URL the <video>
+   (autoplay muted loop playsinline, hero frame as poster) sits on top of
+   it; without a video the bg div gets the slow Ken Burns zoom+pan so the
+   hero still feels alive -- never a frozen still. Video URLs are external
+   DJI mp4s (never base64); none assigned yet -- the video worker supplies
+   them into products.json "hero_video" or DETAIL_HERO "video". */
+.detail-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
+.detail-hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.detail-hero.has-bg .hero-overlay{z-index:2}
+.detail-hero.has-bg .detail-hero-inner{z-index:3}
+.detail-hero.has-bg.kenburns .detail-hero-bg{animation:kb-zoom 22s ease-in-out infinite alternate}
+@keyframes kb-zoom{from{transform:scale(1) translate(0,0)}to{transform:scale(1.08) translate(-1.2%,-1%)}}
+@media(prefers-reduced-motion:reduce){.detail-hero.has-bg.kenburns .detail-hero-bg{animation:none}}
+.detail-hero.has-bg .hero-overlay{background:linear-gradient(180deg,rgba(0,0,0,.60),rgba(0,0,0,.45) 45%,rgba(0,0,0,.72))}
+.detail-hero-inner{position:relative;z-index:1;width:100%}
+.detail-hero.has-bg h1,.detail-hero.has-bg .tagline{text-shadow:0 2px 18px rgba(0,0,0,.6)}
+/* Round 8 -- image-led feature sections (DJI pattern: huge image + bold
+   heading + 1-2 lines). Wide scene shots fill the band; square/portrait
+   product shots sit centred at full size so nothing is ever cropped. */
+.feature-sec{background:#fff;text-align:center;padding:0 0 72px}
+.feature-sec .feature-img.wide img{width:100%;height:72vh;object-fit:cover;display:block}
+.feature-sec .feature-img:not(.wide) img{width:min(920px,100%);height:auto;display:block;margin:0 auto}
+.feature-sec .feature-text{padding-top:40px}
+.feature-sec h2{font-size:clamp(1.7rem,3.4vw,2.6rem);font-weight:700;margin:0 auto;max-width:24ch}
+.feature-sec p{color:#425466;font-size:1.05rem;line-height:1.7;max-width:56ch;margin:16px auto 0}
+
 .detail-hero .kicker{color:#9a9a9a}
+.detail-hero.has-bg .kicker{color:#d6d6d6;text-shadow:0 1px 12px rgba(0,0,0,.8)}
 .detail-hero h1{margin:12px auto 0;max-width:22ch}
-.detail-hero h1.dji-name{text-transform:uppercase;font-weight:200}
+.detail-hero h1.dji-name{font-weight:200}
 .detail-hero .tagline{font-size:clamp(1.05rem,2vw,1.25rem);font-weight:600;color:#d6d6d6;margin:14px auto 0;max-width:56ch}
 .detail-hero .price{font-size:1.5rem;margin-top:18px}
 .detail-hero .price .was{color:#9a9a9a}
 .detail-hero .price-note{color:#9a9a9a}
+.detail-hero.has-bg .price-note{color:#c8c8c8;text-shadow:0 1px 12px rgba(0,0,0,.8)}
 .detail-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:24px 0 0}
 .detail-actions .btn{min-width:200px}
 .detail-hero .confirm-note{color:#9a9a9a;font-size:.92rem;margin-top:16px}
-.detail-photo-wrap{background:#ebebeb;margin-top:48px;min-height:78vh;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:zoom-in}
+.detail-hero.has-bg .confirm-note{color:#c8c8c8;text-shadow:0 1px 12px rgba(0,0,0,.8)}
+/* Round 6 -- compare-link legibility over a bright hero photo. */
+.detail-hero .compare-link{margin-top:26px!important}.detail-hero .compare-link button{color:#fff!important;text-shadow:0 1px 10px rgba(0,0,0,.9),0 0 6px rgba(0,0,0,.7)}
+.detail-photo-wrap{background:#000;margin-top:0;min-height:78vh;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:zoom-in}
 .detail-photo-wrap img{margin:0 auto;max-height:78vh !important;width:auto;max-width:100%;object-fit:contain}
-.detail-photo-wrap .zoom-hint{color:#767676;font-size:.85rem;padding:14px 0 26px}
+.detail-photo-wrap .zoom-hint{color:#9a9a9a;font-size:.85rem;padding:14px 0 26px}
 /* product gallery (audionic.co format): main image + thumb strip + dots
    + prev/next arrows. Single-photo products keep the plain block above.
    Gallery images are base64 data URIs (snapshot pushes are text-only). */
@@ -1104,9 +2827,9 @@ body.no-hero main{padding-top:64px}
   /* ROUND 7 mobile cards: 4:3 tile at ~358px wide is ~268px tall — tighter
      type + padding so eyebrow/name/tagline + price/CTAs still fit. */
   .card-body{padding:18px 16px}
-  .card-body h3{font-size:1.12rem}
-  .card-tag{font-size:.85rem}
-  .card .price{font-size:1.1rem}
+  .card-body h3{font-size:1.12rem;text-shadow:0 1px 3px rgba(0,0,0,.8),0 1px 12px rgba(0,0,0,.55)}
+  .card-tag{font-size:.85rem;text-shadow:0 1px 3px rgba(0,0,0,.8),0 1px 12px rgba(0,0,0,.55)}
+  .card .price{font-size:1.1rem;text-shadow:0 1px 3px rgba(0,0,0,.8),0 1px 12px rgba(0,0,0,.55)}
   .card .price-note{font-size:.78rem}
   .card-cta .btn{padding:8px 16px;font-size:.85rem}
   .feature-tile .f-body{padding:28px 24px}
@@ -1199,7 +2922,7 @@ body.no-hero main{padding-top:64px}
 /* drones featured banner (DJI Camera Drones Flip banner, framed/inset):
    light-grey gradient, text top-centre, product photo bottom-centre */
 @media(max-width:900px){.feat-quotes{grid-template-columns:1fr}.spec-strip{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh !important}.feature-tile.feat-banner,.feature-tile.feat-banner .f-body{min-height:460px}}
+@media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh !important}.detail-hero.has-bg{min-height:440px;padding:104px 20px 56px}.feature-tile.feat-banner,.feature-tile.feat-banner .f-body{min-height:460px}}
 """
 
 # ---------- JS ----------
@@ -1693,6 +3416,19 @@ def build_product(p):
                         "cap": img_cap(full),
                         "alt": f"{p['name']} — product photo",
                         "file": True})
+
+    # Round 8 -- gallery main = dramatic showpiece (dark-stage / scene) when
+    # one exists; the light-stage primary stays as a thumb (file=True so its
+    # data-full switches the main back). JS restores the main from gm.src
+    # for thumb 0 (the showpiece) and uses data-full for the rest.
+    show = SHOWPIECE.get(p["id"])
+    if show and g_items and show != p.get("photo_full") and (STAGING / show).is_file():
+        g_items.insert(0, {"src": img_uri(show),
+                           "thumb": img_uri(SHOWPIECE_THUMB.get(p["id"], show)),
+                           "cap": img_cap(show),
+                           "alt": f"{p['name']} — product photo",
+                           "file": False})
+        g_items[1]["file"] = True
     if len(g_items) > 1:
         thumbs = "".join(
             f'<button class="g-thumb{" active" if i == 0 else ""}" type="button"'
@@ -1726,7 +3462,7 @@ def build_product(p):
     has_film = bool(film_anchor)
     if has_film:
         second_pill = '<a class="btn btn-outline btn-lg" href="#film">Watch Film &rsaquo;</a>'
-        compare_link = f'<p style="margin-top:14px"><button class="more-link" type="button" data-compare="{esc(p["slug"])}" style="background:none;border:0;cursor:pointer;font:inherit;color:#ccc">+ Add to Compare</button></p>'
+        compare_link = f'<p class="compare-link" style="margin-top:14px"><button class="more-link" type="button" data-compare="{esc(p["slug"])}" style="background:none;border:0;cursor:pointer;font:inherit;color:#ccc">+ Add to Compare</button></p>'
     else:
         second_pill = f'<button class="btn btn-outline btn-lg" type="button" data-compare="{esc(p["slug"])}">Add to Compare</button>'
         compare_link = ""
@@ -1740,7 +3476,8 @@ def build_product(p):
         kicker_html = f'<p class="kicker">{esc(eyebrow)}</p>' if eyebrow else ""
         hero_head = f"""{kicker_html}
   <h1 class="dji-name">{esc(p['name'])}</h1>
-  <p class="tagline">{esc(tagline)}</p>"""
+  <p class="tagline">{esc(tagline)}</p>
+  {price_html(p)}"""
         intro_h, intro_p = DJI_INTRO[p["slug"]]
         if intro_h:
             intro_html = (f'<div class="dji-intro-text"><h2>{esc(intro_h)}</h2>'
@@ -1772,13 +3509,49 @@ def build_product(p):
         endcard = ""
         feat_anchor = ""
         confirm_html = '<p class="confirm-note">Full specifications and today&rsquo;s price are confirmed on WhatsApp for this exact model.</p>'
+    # Round 6 -- DJI-style full-bleed hero photo behind the name/tagline.
+    # The gallery moves OUT of the hero section (it sits on its own grey
+    # stage below); the hero keeps only the text + buttons, like DJI.
+    # Round 6b -- VIDEO-READY: with a hero_video URL the hero is a looping
+    # <video> (autoplay muted loop playsinline, hero frame as poster);
+    # without one the bg div gets the Ken Burns class so the still moves.
+    hero_rel, hero_pos, hero_video = detail_hero_for(p)
+    if hero_rel and (STAGING / hero_rel).is_file():
+        hero_uri_str = detail_hero_uri(hero_rel)
+        bg_div = ('  <div class="detail-hero-bg" style="background-image:url(\'' + hero_uri_str + '\');'
+                  'background-position:' + hero_pos + '"></div>')
+        if hero_video:
+            video_tag = ('  <video class="detail-hero-video" autoplay muted loop playsinline poster="' + hero_uri_str + '">'
+                         '<source src="' + esc(hero_video) + '" type="video/mp4"></video>')
+            hero_cls = "detail-hero has-bg has-video"
+        else:
+            video_tag = ""
+            hero_cls = "detail-hero has-bg kenburns"
+        hero_parts = ['<section class="' + hero_cls + '" id="overview">', bg_div]
+        if video_tag:
+            hero_parts.append(video_tag)
+        hero_parts.append('  <div class="hero-overlay"></div>')
+        hero_parts.append('  <div class="detail-hero-inner">')
+        hero_open = "\n".join(hero_parts)
+        hero_close = "  </div>\n</section>"
+    else:
+        hero_open = '<section class="detail-hero" id="overview">\n  <div class="detail-hero-inner">'
+        hero_close = "  </div>\n</section>"
+
+    # Round 8 -- image-led feature sections (FEATURES map, filled from the
+    # workers' verified data). The subnav "Features" link appears when the
+    # product has image-led sections or DJI's own feature blocks.
+    features_new = features_html(p)
+    if features_new or is_dji:
+        feat_anchor = '<a href="#features">Features</a>'
+
     body = f"""
 <div class="subnav"><div class="subnav-inner">
 <span class="subnav-name">{esc(p['name'])}</span>
 <nav class="subnav-links" aria-label="Product sections"><a href="#overview">Overview</a>{feat_anchor}{film_anchor}<a href="#about">About</a><a href="#related">Related</a></nav>
 <a class="btn btn-light" href="{wa_link(p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>
 </div></div>
-<section class="detail-hero" id="overview">
+{hero_open}
   {hero_head}
   <div class="detail-actions">
     <a class="btn btn-light btn-lg" href="{wa_link(p['name'])}" target="_blank" rel="noopener">WhatsApp Inquiry</a>
@@ -1786,8 +3559,11 @@ def build_product(p):
   </div>
   {compare_link}
   {confirm_html}
-  {gallery}
-</section>
+{hero_close}
+{dji_top}
+{gallery}
+{features_new}
+{features}
 {dji_top}
 {features}
 {product_video(p)}
@@ -1802,7 +3578,7 @@ def build_product(p):
 <div class="grid">{''.join(card(x, depth="../") for x in rel)}</div>
 </div></section>
 {cta_band('../')}
-<div class="lightbox" id="lightbox"><img src="" alt=""></div>
+<div class="lightbox" id="lightbox"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt=""></div>
 """
     write(f"products/{p['slug']}.html", chrome("../", f"{p['name']} — AK Khan Enterprises, Quetta",
         f"{p['name']} ({p['brand']}) at AK Khan Enterprises, Quetta. {p['tagline']} Price and availability confirmed on WhatsApp.", body))
@@ -1849,7 +3625,7 @@ def build_explore():
 # ----- static info pages -----
 FAQS = [
     ("Where is AK Khan Enterprises?", f"{ADDRESS}, Pakistan. Walk in during shop hours, or message us on WhatsApp ({WA_DISPLAY}) before you come."),
-    ("Why are there no prices on the website?", "Prices change with stock and the market. The shop confirms today's exact price personally on WhatsApp so you never rely on an old listed price."),
+    ("Why do some products not show a price?", "Prices change with stock and the market. The shop confirms today's exact price personally on WhatsApp so you never rely on an old listed price."),
     ("How do I order?", "Open any product and press WhatsApp Inquiry. The message opens ready to send; the shop confirms availability, final price, delivery and payment with you directly."),
     ("Do you deliver outside Quetta?", "Ask on WhatsApp with your city and the product — the shop will confirm what delivery is possible for that item."),
     ("Can I see a product before buying?", "Yes. Visit the shop, or ask on WhatsApp for photos of the exact unit in stock."),
@@ -1916,10 +3692,10 @@ def build_support():
 def build_info():
     brands = sorted(set(p["brand"] for p in products))
     simple_page("about.html", "About Us — AK Khan Enterprises, Quetta",
-        "About AK Khan Enterprises, Quetta — drones, cameras, networking, sound and displays since 2015.",
+        "About AK Khan Enterprises, Quetta — drones, cameras, networking, sound and displays.",
         "About Us", "AK Khan Enterprises",
         f"""<p><strong>{esc(TAGLINE)}</strong></p>
-<p>AK Khan Enterprises is an electronics and security shop in Quetta, trusted since 2015. The shop stocks DJI drones, security cameras and recorders, networking equipment, Audionic sound systems and LED TVs — five ranges, under one roof, at {esc(ADDRESS)}.</p>
+<p>AK Khan Enterprises is an electronics and security shop in Quetta. The shop stocks DJI drones, security cameras and recorders, networking equipment, Audionic sound systems and LED TVs — five ranges, under one roof, at {esc(ADDRESS)}.</p>
 <p>Customers can walk into the shop to see a product before buying, or order on WhatsApp — the shop confirms today's price, availability and complete details personally for every product.</p>
 <h3>What the shop stocks</h3>
 <p>Drones ({len([p for p in products if p['category']=='drones'])} products), Cameras ({len([p for p in products if p['category']=='cctv'])} products), Displays ({len([p for p in products if p['category']=='displays'])} products), Networking ({len([p for p in products if p['category']=='networking'])} products) and Sound ({len([p for p in products if p['category']=='audio'])} products).</p>
@@ -1940,7 +3716,7 @@ def build_info():
 <div class="contact-card"><h3>WhatsApp</h3><p><a href="{wa_link()}" target="_blank" rel="noopener">{WA_DISPLAY}</a></p><p>The fastest way to ask about any product, price or availability.</p></div>
 <div class="contact-card"><h3>Email</h3><p><a href="mailto:{EMAIL}">{EMAIL}</a></p></div>
 <div class="contact-card"><h3>Visit the shop</h3><p>{esc(ADDRESS)}</p></div>
-<div class="contact-card"><h3>Social media</h3><p><a href="{IG1}" target="_blank" rel="noopener">Instagram @ak_khan682</a><br><a href="{IG2}" target="_blank" rel="noopener">Instagram @akkhan.enterprises</a><br><a href="{FB_URL}" target="_blank" rel="noopener">Facebook</a></p></div>
+<div class="contact-card"><h3>Social media</h3><p><a href="{IG1}" target="_blank" rel="noopener">Instagram @ak_khan682</a><br><a href="{IG2}" target="_blank" rel="noopener">Instagram @akkhan.enterprises</a><br><a href="{FB_URL}" target="_blank" rel="noopener">Facebook 61595712927205</a></p></div>
 </div>""")
     simple_page("privacy.html", "Privacy Policy — AK Khan Enterprises",
         "Privacy policy — AK Khan Enterprises. This website has no online checkout and collects no payment details.",
@@ -2030,7 +3806,7 @@ function render(){
   var rows=[['Product',function(p){return '<a href="products/'+p.slug+'.html"><strong>'+p.name+'</strong></a>';}],
     ['Photo',function(p){return p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'">':'Photo on request';}],
     ['Brand',function(p){return p.brand;}],['Category',function(p){return p.cat;}],
-    ['Price',function(p){return p.price;}],['About',function(p){return p.tag;}],
+    ['Price',function(p){return (p.slug==='dji-air-3s'||p.slug==='dji-mini-4-pro'||p.slug==='dji-mavic-3-pro')&&p.price.slice(0,2)==='Rs'?'From '+p.price:p.price;}],['About',function(p){return p.tag;}],
     ['Enquire',function(p){return '<a class="btn btn-dark" href="https://wa.me/__WA_NUM__?text='+encodeURIComponent('Assalam-o-Alaikum! I am interested in '+p.name+'. Please share its current price, availability and complete details.')+'" target="_blank" rel="noopener">WhatsApp Inquiry</a>';}]];
   out.innerHTML='<div style="overflow-x:auto"><table class="compare-table"><tr><th></th>'+items.map(function(){return '<th></th>';}).join('')+'</tr>'+
     rows.map(function(r){return '<tr><th>'+r[0]+'</th>'+items.map(function(p){return '<td>'+r[1](p)+'</td>';}).join('')+'</tr>';}).join('')+'</table></div>';
