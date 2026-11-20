@@ -315,12 +315,20 @@ body.no-hero main{padding-top:64px}
    overscan was tried first and failed: hero heights vary by content,
    so the crop must scale with the hero, not the viewport. */
 @media(max-width:720px){.detail-hero-yt{width:auto;height:140%;min-width:0;min-height:140%;aspect-ratio:16/9}}
+/* Round 23 -- YouTube hero fallback: when youtube.com is unreachable
+   (blocked on the boss's own network) the iframe shows an opaque grey
+   error surface that hides the bg photo, so 8 DJI heroes look dead.
+   site.js probes i.ytimg.com and adds .yt-dead (+ .kenburns, so the still
+   stays alive) -- the dead iframe hides and the cinematic still + Ken
+   Burns shows instead, exactly as the Round 9 comment intended the still
+   to cover a player that never starts. */
+.detail-hero.has-bg.has-yt.yt-dead .detail-hero-yt{display:none}
 .detail-hero.has-bg .hero-overlay{z-index:2}
 .detail-hero.has-bg .detail-hero-inner{z-index:3}
 .detail-hero.has-bg.kenburns .detail-hero-bg{animation:kb-zoom 22s ease-in-out infinite alternate}
 @keyframes kb-zoom{from{transform:scale(1) translate(0,0)}to{transform:scale(1.08) translate(-1.2%,-1%)}}
 @media(prefers-reduced-motion:reduce){.detail-hero.has-bg.kenburns .detail-hero-bg{animation:none}.hero-poster,.shot-poster,.shot-video{animation:none}}
-.detail-hero.has-bg .hero-overlay{background:linear-gradient(180deg,rgba(0,0,0,.60),rgba(0,0,0,.45) 45%,rgba(0,0,0,.72))}
+.detail-hero.has-bg .hero-overlay{background:linear-gradient(180deg,rgba(0,0,0,.70),rgba(0,0,0,.58) 45%,rgba(0,0,0,.82))}
 .detail-hero-inner{position:relative;z-index:1;width:100%}
 .detail-hero.has-bg h1,.detail-hero.has-bg .tagline{text-shadow:0 2px 18px rgba(0,0,0,.6)}
 /* Round 8 -- image-led feature sections (DJI pattern: huge image + bold
@@ -621,6 +629,12 @@ body.no-hero main{padding-top:64px}
 /* drones featured banner (DJI Camera Drones Flip banner, framed/inset):
    light-grey gradient, text top-centre, product photo bottom-centre */
 @media(max-width:900px){.feat-quotes{grid-template-columns:1fr}.spec-strip{grid-template-columns:repeat(2,1fr)}}
+/* Round 23 -- the fixed WhatsApp circle (44px, bottom-right) chopped the
+   spec strip's right-column text at scroll-top on the 3 pages that have
+   one (air-3s, mavic-3-pro, mini-4-pro: "43-Min Max Fli[●]ght"). Give the
+   right-column cells clearance from the button's zone on mobile; the grid
+   itself stays centred. */
+@media(max-width:720px){.spec-strip .spec:nth-child(even){padding-right:48px}}
 @media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh !important}.detail-hero.has-bg{min-height:440px;padding:104px 20px 56px}.feature-tile.feat-banner,.feature-tile.feat-banner .f-body{min-height:460px}}
 /* Round 20 — CGI animation: everything moves like a film. All motion is
    transform/opacity only (compositor-friendly); reduced-motion users get

@@ -441,3 +441,27 @@ document.querySelectorAll('[data-compare]').forEach(function(b){
     b.textContent='Added to compare';
   });
 });
+
+// Round 23 -- YouTube hero fallback: the 8 detail pages with a YouTube
+// iframe hero (agras, air-3, avata-2, matrice-30t, mini-2, mini-3,
+// mini-5-pro, neo) show a dead grey error surface when youtube.com is
+// unreachable -- YouTube is blocked on the boss's own network, so the
+// hero looks dead to him. Probe the video's thumbnail (same i.ytimg.com
+// host the film facades already use); on error/timeout hide the iframe
+// and let the bg photo show with Ken Burns, so the hero stays alive.
+// On a network where YouTube loads, nothing changes.
+(function(){
+  var frames=document.querySelectorAll('iframe.detail-hero-yt');
+  if(!frames.length)return;
+  frames.forEach(function(f){
+    var m=(f.src||'').match(/\/embed\/([A-Za-z0-9_-]{6,})/);
+    if(!m)return;
+    var hero=f.closest('.detail-hero');
+    if(!hero)return;
+    var done=false,img=new Image(),t=setTimeout(fail,4000);
+    function fail(){if(done)return;done=true;hero.classList.add('yt-dead');hero.classList.add('kenburns');}
+    img.onload=function(){if(done)return;done=true;clearTimeout(t);};
+    img.onerror=fail;
+    img.src='https://i.ytimg.com/vi/'+m[1]+'/hqdefault.jpg';
+  });
+})();
