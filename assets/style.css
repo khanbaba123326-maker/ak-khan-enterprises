@@ -271,6 +271,22 @@ body.no-hero main{padding-top:64px}
    them into products.json "hero_video" or DETAIL_HERO "video". */
 .detail-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
 .detail-hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+/* Round 9 -- YouTube hero: the iframe covers the hero band exactly like
+   object-fit:cover (16:9 video into any hero aspect). pointer-events:none
+   so the hero text/buttons stay clickable and the video can never be
+   paused by a stray tap; the cinematic still behind it covers the slow
+   start while the player buffers. */
+.detail-hero-yt{position:absolute;top:50%;left:50%;width:100%;height:56.25vw;min-width:177.78vh;min-height:100%;transform:translate(-50%,-50%);border:0;z-index:1;pointer-events:none}
+/* Round 9 -- mobile: DJI's films carry burned-in captions in the bottom
+   ~12% of the frame. On a portrait hero the 16:9 video shows its full
+   height, so the captions collide with the hero's confirm-note (seen on
+   Mini 3 mobile, 20 Nov). Overscan the video to 140% of the hero height
+   (aspect-ratio keeps it 16:9) so the visible window always ends at
+   ~86% of the frame -- the captions fall below the hero's bottom edge,
+   the same crop the desktop cover fit already gives. A fixed vw
+   overscan was tried first and failed: hero heights vary by content,
+   so the crop must scale with the hero, not the viewport. */
+@media(max-width:720px){.detail-hero-yt{width:auto;height:140%;min-width:0;min-height:140%;aspect-ratio:16/9}}
 .detail-hero.has-bg .hero-overlay{z-index:2}
 .detail-hero.has-bg .detail-hero-inner{z-index:3}
 .detail-hero.has-bg.kenburns .detail-hero-bg{animation:kb-zoom 22s ease-in-out infinite alternate}
@@ -288,6 +304,20 @@ body.no-hero main{padding-top:64px}
 .feature-sec .feature-text{padding-top:40px}
 .feature-sec h2{font-size:clamp(1.7rem,3.4vw,2.6rem);font-weight:700;margin:0 auto;max-width:24ch}
 .feature-sec p{color:#425466;font-size:1.05rem;line-height:1.7;max-width:56ch;margin:16px auto 0}
+/* Round 9 -- pacing variants. .alt: same shape, text left-aligned so
+   neighbouring sections don't repeat. .overlay: wide scene goes
+   full-bleed with the text overlaid bottom-left on a gradient scrim
+   (DJI's own pattern) -- the image IS the section. */
+.feature-sec.alt .feature-text{text-align:left}
+.feature-sec.alt h2{margin:0;max-width:28ch}
+.feature-sec.alt p{margin:16px 0 0}
+.feature-sec.overlay{position:relative;padding:0;min-height:78vh;display:flex;align-items:flex-end;overflow:hidden;text-align:left}
+.feature-sec.overlay .feature-img{position:absolute;inset:0}
+.feature-sec.overlay .feature-img img{width:100%;height:100%;object-fit:cover}
+.feature-sec.overlay::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.72));pointer-events:none}
+.feature-sec.overlay .feature-text{position:relative;z-index:1;padding:0 40px 56px;text-align:left}
+.feature-sec.overlay h2{color:#fff;margin:0;max-width:28ch;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.feature-sec.overlay p{color:#e8e8e8;margin:16px 0 0;text-shadow:0 1px 12px rgba(0,0,0,.8)}
 
 .detail-hero .kicker{color:#9a9a9a}
 .detail-hero.has-bg .kicker{color:#d6d6d6;text-shadow:0 1px 12px rgba(0,0,0,.8)}

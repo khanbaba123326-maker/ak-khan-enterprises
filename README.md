@@ -56,9 +56,10 @@ to rebuild. Byte-reproducible: run twice, second run produces zero diff.
 - No specs table anywhere (the data contains no technical specs).
 - Product 89 (Dahua 4K IR ePoE Mini Dome) shows the verified N84CL52 photo
   (official Dahua datasheet).
-- Only the 11 verified DJI YouTube films are embedded, via a sharp
+- Only the 12 verified DJI YouTube films are embedded, via a sharp
   maxresdefault thumbnail facade (click loads the player). The DJI Mini 3
-  film (48_kEK9iFKU) is private and is never embedded.
+  film (48_kEK9iFKU) is private and is never embedded -- Mini 3 now uses
+  the verified 'Meet DJI Mini 3' film (6VbOozPmbr4).
 - No Laptops / Photography / Accessories category pages: the data has no
   such products, so those pages would be empty. No "New Arrivals" or
   "Best Sellers" labels: the data has no dates or sales figures.
