@@ -619,115 +619,20 @@ body.no-hero main{padding-top:64px}
    light-grey gradient, text top-centre, product photo bottom-centre */
 @media(max-width:900px){.feat-quotes{grid-template-columns:1fr}.spec-strip{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh !important}.detail-hero.has-bg{min-height:440px;padding:104px 20px 56px}.feature-tile.feat-banner,.feature-tile.feat-banner .f-body{min-height:460px}}
-/* ROUND 19 — mobile text BELOW the photo (boss approved 20 Nov): on a phone
-   the customer saw text covering the product — the photo was hidden behind
-   kicker/title/tagline/price. DJI's "Compare Camera Drones" pattern: photo in
-   its own zone, text below on a clean light background. Mobile ≤720px only:
-   cards / innovation tiles / field tiles / category tiles become a column —
-   photo on top (nothing overlaid on it), text block below on white with dark
-   text. Desktop unchanged; hero and Shot-on film cards untouched. */
-@media(max-width:720px){
-  /* --- featured / category cards: photo block on top, text block below --- */
-  .card{aspect-ratio:auto;display:flex;flex-direction:column;background:#fff}
-  .card::before,.card::after{display:none}
-  .card-img{position:static;flex:none;aspect-ratio:4/3}
-  .card-body{position:static;flex:none;background:#fff;color:#111;padding:22px 22px 26px;justify-content:flex-start;gap:14px;text-align:center}
-  .card-top{gap:6px}
-  .card-foot{gap:8px}
-  .card-cat{color:#767676;text-shadow:none}
-  .card-body h3{color:#111;text-shadow:none}
-  .card-body h3 a{color:#111}
-  .card-body h3 a:hover{color:#555}
-  .card-tag{color:#555;text-shadow:none}
-  .card .price{color:#111;text-shadow:none}
-  .card .price .was{display:inline;color:#767676;text-shadow:none}
-  .card .price-note{display:block;color:#767676;text-shadow:none}
-  .card .more-link{color:#111;text-shadow:none}
-  .card .more-link:hover{color:#555}
-  /* --- innovation tiles: photo block on top, text block below --- */
-  .feature-tile{display:flex;flex-direction:column;min-height:0;background:#fff}
-  .feature-tile::before,.feature-tile::after{display:none}
-  .feature-tile .f-img{position:static;flex:none;aspect-ratio:4/3;overflow:hidden}
-  .feature-tile .f-body{position:static;min-height:0;background:#fff;color:#111;padding:24px 22px 28px;justify-content:flex-start;gap:16px}
-  .feature-tile.wide .f-body{min-height:0;max-width:none;padding:24px 22px 28px}
-  .feature-tile.feat-banner,.feature-tile.feat-banner .f-body{min-height:0}
-  .feature-tile .f-body .kicker{color:#767676;text-shadow:none}
-  .feature-tile .f-body h2{color:#111;text-shadow:none}
-  .feature-tile .f-body p{color:#555;text-shadow:none}
-  .feature-tile .f-body .price{color:#111;text-shadow:none}
-  .feature-tile .price .was{color:#767676;text-shadow:none}
-  .feature-tile .price-note{display:block;color:#767676}
-  .feature-tile .more-link{text-shadow:none}
-  .feature-tile .btn-light{background:#111;color:#fff}
-  /* --- field tiles: the photo is the element's background — reserve the top
-     band (75% of width = 4:3) for it, text div below on solid white --- */
-  .field-tile{display:block;min-height:0;padding-top:75%;background-size:100% auto;background-position:top center;background-repeat:no-repeat;background-color:#fff}
-  .field-tile::after{display:none}
-  .field-tile div{position:static;background:#fff;color:#111;padding:24px 22px 28px}
-  .field-tile h3{color:#111;text-shadow:none}
-  .field-tile p{color:#555;text-shadow:none}
-  .field-tile .more-link{color:#111;text-shadow:none}
-  /* --- category tiles: same background-photo treatment --- */
-  .cat-tile{display:block;min-height:0;padding-top:75%;background-size:100% auto;background-position:top center;background-repeat:no-repeat;background-color:#fff}
-  .cat-tile.wide{min-height:0}
-  .cat-tile::after{display:none}
-  .cat-tile div{position:static;background:#fff;color:#111;padding:24px 22px 28px}
-  .cat-tile h3{color:#111;text-shadow:none}
-  .cat-tile p{color:#555;text-shadow:none}
-  .cat-tile .kicker{color:#767676;text-shadow:none}
-}
-
-/* Round 20 — REVERT Round 19 (boss: text-below-photo ruined the show).
-   Mobile tiles back to full-bleed overlay (DJI show restored), but ONLY
-   the NAME + PRICE sit on the photo, small, at the bottom edge — kicker,
-   tagline, Learn more, price-note and struck price are hidden on mobile,
-   so the product is never covered. Tile photo taller: 4:3 -> 4:5, so the
-   product shows fully in the upper part with a slim text strip below.
-   Top scrim off (no top text); bottom scrim kept slim, in the text zone
-   only (R18 halo shadows kept). Photo lift + DJI type kept. Desktop,
-   hero and Shot-on untouched. */
-@media(max-width:720px){
-  /* --- featured / category cards: overlay again, name + price only --- */
-  .card{aspect-ratio:4/5;display:block;background:#111}
-  .card::before{display:none}
-  .card::after{display:block;height:30%}
-  .card-img{position:absolute;inset:0;flex:none;aspect-ratio:auto}
-  .card-body{position:absolute;inset:0;z-index:2;background:transparent;color:#fff;padding:0 20px 16px;justify-content:flex-end;gap:6px}
-  .card-body .card-cat,.card-body .card-tag,.card .price-note,.card .more-link,.card .card-cta{display:none}
-  .card-body h3{color:#fff;font-size:1.05rem;font-weight:500;line-height:1.3;text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 12px rgba(0,0,0,.75),0 0 24px rgba(0,0,0,.5)}
-  .card-body h3 a{color:#fff}
-  .card .price{color:#fff;font-size:1rem;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 10px rgba(0,0,0,.8),0 0 22px rgba(0,0,0,.55)}
-  .card .price .was{display:none}
-  /* --- innovation tiles: overlay again, name + price only --- */
-  .feature-tile,.feature-tile.wide{display:block;min-height:0;aspect-ratio:4/5;background:#000}
-  .feature-tile::before{display:none}
-  .feature-tile::after{display:block;height:34%}
-  .feature-tile .f-img{position:absolute;inset:0;flex:none;aspect-ratio:auto}
-  .feature-tile .f-body,.feature-tile.wide .f-body{position:absolute;inset:0;z-index:2;min-height:0;max-width:none;background:transparent;color:#fff;padding:0 22px 18px;justify-content:flex-end;gap:8px}
-  .feature-tile.feat-banner,.feature-tile.feat-banner .f-body{min-height:0}
-  .feature-tile .f-body .kicker,.feature-tile .f-body p,.feature-tile .f-body .price-note,.feature-tile .f-cta{display:none}
-  .feature-tile .f-body p.price{display:block}
-  .feature-tile .f-body h2{color:#fff;font-size:1.15rem;font-weight:500;line-height:1.25;text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 12px rgba(0,0,0,.75),0 0 24px rgba(0,0,0,.5)}
-  .feature-tile .f-body .price{color:#fff;font-size:1rem;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 10px rgba(0,0,0,.8),0 0 22px rgba(0,0,0,.55)}
-  .feature-tile .price .was{display:none}
-  /* --- field tiles: photo band sized to EACH photo's own aspect (the
-     three photos are wide: 1.44 / 1.50 / 1.79) so the name sits right
-     under the photo — no black band, no crop, scene fully visible --- */
-  .field-tile{display:flex;align-items:flex-end;min-height:0;background-size:100% auto;background-position:top center;background-repeat:no-repeat;background-color:#111}
-  .field-grid .field-tile:nth-child(1){padding-top:69.5%}
-  .field-grid .field-tile:nth-child(2){padding-top:66.7%}
-  .field-grid .field-tile:nth-child(3){padding-top:55.9%}
-  .field-tile::after{display:block;top:auto;bottom:0;height:36%;background:linear-gradient(0deg,rgba(0,0,0,.72),rgba(0,0,0,.30) 55%,rgba(0,0,0,0))}
-  .field-tile div{position:relative;background:transparent;color:#fff;padding:0 22px 18px}
-  .field-tile h3{color:#fff;font-size:1.15rem;font-weight:500;line-height:1.3;text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 12px rgba(0,0,0,.75),0 0 24px rgba(0,0,0,.5)}
-  .field-tile p,.field-tile .more-link{display:none}
-  /* --- category tiles: photo band sized to each photo (all 4:3 = 75%
-     except the panoramic Drones banner, 26.7%) — name right under it --- */
-  .cat-tile{display:flex;align-items:flex-end;min-height:0;padding-top:75%;background-size:100% auto;background-position:top center;background-repeat:no-repeat;background-color:#111}
-  .cat-tile[href="drones.html"]{padding-top:26.7%}
-  .cat-tile.wide{min-height:0}
-  .cat-tile::after{display:block;top:auto;bottom:0;height:36%}
-  .cat-tile div{position:relative;background:transparent;color:#fff;padding:0 22px 18px}
-  .cat-tile h3{color:#fff;font-size:1.15rem;font-weight:500;line-height:1.3;text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 12px rgba(0,0,0,.75),0 0 24px rgba(0,0,0,.5)}
-  .cat-tile p,.cat-tile .kicker{display:none}
-}
+/* Round 20 — CGI animation: everything moves like a film. All motion is
+   transform/opacity only (compositor-friendly); reduced-motion users get
+   stills. Desktop layout + mobile revert untouched. */
+/* Ken Burns drift on tile photos — the container moves, so the img keeps
+   its own hover zoom and the two never fight. */
+.card-img{animation:kb-zoom 30s ease-in-out infinite alternate}
+.feature-tile .f-img{animation:kb-zoom 34s ease-in-out infinite alternate}
+/* Hover lift on tiles + buttons (desktop hover; touch unaffected). The
+   combined transition keeps the .reveal fade working on the same elements. */
+.card,.field-tile,.cat-tile{transition:transform .35s ease,opacity .6s ease}
+.card:hover,.field-tile:hover,.cat-tile:hover{transform:translateY(-4px)}
+.btn{transition:transform .25s ease,box-shadow .25s ease,background .25s ease,opacity .25s ease}
+.btn:hover{transform:translateY(-2px)}
+/* Scroll-hint bob (desktop only — hidden on mobile). */
+.scroll-hint{animation:hint-bob 2.2s ease-in-out infinite}
+@keyframes hint-bob{from{transform:translateX(-50%) translateY(0)}to{transform:translateX(-50%) translateY(7px)}}
+@media(prefers-reduced-motion:reduce){.card-img,.feature-tile .f-img,.scroll-hint{animation:none}.card,.field-tile,.cat-tile,.btn{transition:none}}
