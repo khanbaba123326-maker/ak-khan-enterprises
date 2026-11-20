@@ -619,3 +619,60 @@ body.no-hero main{padding-top:64px}
    light-grey gradient, text top-centre, product photo bottom-centre */
 @media(max-width:900px){.feat-quotes{grid-template-columns:1fr}.spec-strip{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.detail-photo-wrap{min-height:0}.detail-photo-wrap img{max-height:60vh !important}.detail-hero.has-bg{min-height:440px;padding:104px 20px 56px}.feature-tile.feat-banner,.feature-tile.feat-banner .f-body{min-height:460px}}
+/* ROUND 19 — mobile text BELOW the photo (boss approved 20 Nov): on a phone
+   the customer saw text covering the product — the photo was hidden behind
+   kicker/title/tagline/price. DJI's "Compare Camera Drones" pattern: photo in
+   its own zone, text below on a clean light background. Mobile ≤720px only:
+   cards / innovation tiles / field tiles / category tiles become a column —
+   photo on top (nothing overlaid on it), text block below on white with dark
+   text. Desktop unchanged; hero and Shot-on film cards untouched. */
+@media(max-width:720px){
+  /* --- featured / category cards: photo block on top, text block below --- */
+  .card{aspect-ratio:auto;display:flex;flex-direction:column;background:#fff}
+  .card::before,.card::after{display:none}
+  .card-img{position:static;flex:none;aspect-ratio:4/3}
+  .card-body{position:static;flex:none;background:#fff;color:#111;padding:22px 22px 26px;justify-content:flex-start;gap:14px;text-align:center}
+  .card-top{gap:6px}
+  .card-foot{gap:8px}
+  .card-cat{color:#767676;text-shadow:none}
+  .card-body h3{color:#111;text-shadow:none}
+  .card-body h3 a{color:#111}
+  .card-body h3 a:hover{color:#555}
+  .card-tag{color:#555;text-shadow:none}
+  .card .price{color:#111;text-shadow:none}
+  .card .price .was{display:inline;color:#767676;text-shadow:none}
+  .card .price-note{display:block;color:#767676;text-shadow:none}
+  .card .more-link{color:#111;text-shadow:none}
+  .card .more-link:hover{color:#555}
+  /* --- innovation tiles: photo block on top, text block below --- */
+  .feature-tile{display:flex;flex-direction:column;min-height:0;background:#fff}
+  .feature-tile::before,.feature-tile::after{display:none}
+  .feature-tile .f-img{position:static;flex:none;aspect-ratio:4/3;overflow:hidden}
+  .feature-tile .f-body{position:static;min-height:0;background:#fff;color:#111;padding:24px 22px 28px;justify-content:flex-start;gap:16px}
+  .feature-tile.wide .f-body{min-height:0;max-width:none;padding:24px 22px 28px}
+  .feature-tile.feat-banner,.feature-tile.feat-banner .f-body{min-height:0}
+  .feature-tile .f-body .kicker{color:#767676;text-shadow:none}
+  .feature-tile .f-body h2{color:#111;text-shadow:none}
+  .feature-tile .f-body p{color:#555;text-shadow:none}
+  .feature-tile .f-body .price{color:#111;text-shadow:none}
+  .feature-tile .price .was{color:#767676;text-shadow:none}
+  .feature-tile .price-note{display:block;color:#767676}
+  .feature-tile .more-link{text-shadow:none}
+  .feature-tile .btn-light{background:#111;color:#fff}
+  /* --- field tiles: the photo is the element's background — reserve the top
+     band (75% of width = 4:3) for it, text div below on solid white --- */
+  .field-tile{display:block;min-height:0;padding-top:75%;background-size:100% auto;background-position:top center;background-repeat:no-repeat;background-color:#fff}
+  .field-tile::after{display:none}
+  .field-tile div{position:static;background:#fff;color:#111;padding:24px 22px 28px}
+  .field-tile h3{color:#111;text-shadow:none}
+  .field-tile p{color:#555;text-shadow:none}
+  .field-tile .more-link{color:#111;text-shadow:none}
+  /* --- category tiles: same background-photo treatment --- */
+  .cat-tile{display:block;min-height:0;padding-top:75%;background-size:100% auto;background-position:top center;background-repeat:no-repeat;background-color:#fff}
+  .cat-tile.wide{min-height:0}
+  .cat-tile::after{display:none}
+  .cat-tile div{position:static;background:#fff;color:#111;padding:24px 22px 28px}
+  .cat-tile h3{color:#111;text-shadow:none}
+  .cat-tile p{color:#555;text-shadow:none}
+  .cat-tile .kicker{color:#767676;text-shadow:none}
+}
