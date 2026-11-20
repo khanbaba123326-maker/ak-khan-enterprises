@@ -88,7 +88,7 @@ var hc=document.getElementById('heroCarousel');
 if(hc){
   var hSlides=Array.prototype.slice.call(hc.querySelectorAll('.hero-slide'));
   var hList=hc.querySelectorAll('.hero-list button');
-  var hIdx=0,hTimer=null;
+  var hIdx=0,hTimer=null,hLastGo=Date.now(),hPending=-1;
   // Round 12 -- SELF-HOSTED HERO FILMS: the 4 DJI films are re-encoded
   // to 720p (~2-2.5MB each, no audio) and embedded as base64 in
   // assets/hero-film-*.js (same origin as the site). No external CDN, no
@@ -121,6 +121,35 @@ if(hc){
     var v=hVideos[j];if(!v)return;
     if(v.readyState>=2){var p=v.play();if(p&&p.catch){p.catch(function(){});}}
   }
+  // Round 13 -- CAROUSEL WAITS FOR FILMS: on a slow connection the 5s
+  // timer used to advance to a slide whose film had not arrived yet, so
+  // the hero sat on a poster still. A slide is "ready" only when its
+  // video exists, has data (readyState>=2) and is actually playing.
+  // The timer advances ONLY to a ready slide; otherwise it stays on the
+  // current (playing, looping) slide, so the hero ALWAYS shows motion,
+  // never a poster. Reduced-motion users get posters by design, so every
+  // slide counts as ready for them. If a film script fails to load, its
+  // slide also counts as ready (poster fallback) so one dead film can
+  // never freeze the carousel.
+  var hFilmFailed={};
+  function hReady(j){
+    if(hReduced)return true;
+    var v=hVideos[j];
+    if(v)return v.readyState>=2&&!v.paused;
+    return !!hFilmFailed[hSlides[j].dataset.film];
+  }
+  // Called whenever a video starts playing or a film lands: if a manual
+  // jump is waiting on that slide, go there; else, if the next slide is
+  // ready and the current slide has already shown for a full 5s, advance
+  // now instead of waiting for the next timer tick.
+  function hMaybeAdvance(){
+    if(hPending>=0){
+      if(hReady(hPending)){var p=hPending;hPending=-1;hGo(p);hStart();}
+      return;
+    }
+    var nxt=(hIdx+1)%hSlides.length;
+    if(hReady(nxt)&&Date.now()-hLastGo>=5000){hGo(nxt);}
+  }
   function hWireVideo(j){
     if(hVideos[j]||hReduced)return;
     var s=hSlides[j],key=s.dataset.film,url=hFilmUrl(key);
@@ -129,8 +158,8 @@ if(hc){
     v.className='hero-video';
     v.muted=true;v.loop=true;v.playsInline=true;v.preload='auto';v.autoplay=true;
     v.setAttribute('aria-hidden','true');
-    v.addEventListener('playing',function(){s.classList.add('hero-film-on');});
-    v.addEventListener('canplay',function(){if(j===hIdx){hPlayVideo(j);}});
+    v.addEventListener('playing',function(){s.classList.add('hero-film-on');hMaybeAdvance();});
+    v.addEventListener('canplay',function(){if(j===hIdx||j===(hIdx+1)%hSlides.length){hPlayVideo(j);}});
     // Insert BEFORE the overlay/text so the video sits under them
     // (z-index 0, same as the poster) and never covers the copy.
     var ov=s.querySelector('.hero-overlay');
@@ -144,6 +173,8 @@ if(hc){
   // slide change, so a late-arriving film is used as soon as it can be.
   window.__heroFilmArrived=function(key){
     hSlides.forEach(function(s,j){if(s.dataset.film===key){hWireVideo(j);}});
+    hFilm();
+    hMaybeAdvance();
   };
   function hFilm(){
     hSlides.forEach(function(s,j){
@@ -151,7 +182,10 @@ if(hc){
       if(keep&&!hReduced){
         hWireVideo(j);
         var v=hVideos[j];
-        if(v){if(j===hIdx){hPlayVideo(j);}else{v.pause();}}
+        // Round 13: PRE-ROLL -- play the next slide's video too (it is
+        // hidden, non-active slides are opacity:0, so this is invisible)
+        // so it is already playing when the carousel advances to it.
+        if(v){hPlayVideo(j);}
       }else{
         var v2=hVideos[j];
         if(v2){v2.pause();}
@@ -161,6 +195,7 @@ if(hc){
   }
   function hGo(i){
     hIdx=(i+hSlides.length)%hSlides.length;
+    hLastGo=Date.now();
     hSlides.forEach(function(s,j){s.classList.toggle('active',j===hIdx);});
     var prev=(hIdx-1+hSlides.length)%hSlides.length,next=(hIdx+1)%hSlides.length;
     if(hList.length===3){
@@ -175,24 +210,81 @@ if(hc){
   // for minutes (probe: Slow 3G, 60s, zero films landed); sequential
   // loading gets the active slide's film first so the hero starts
   // moving as soon as possible, then the rest follow in slide order.
+  // Round 13: the queue is a live list -- a manual jump to a film that
+  // has not loaded yet (hQueueFilmFirst) moves that film to the FRONT,
+  // so a tap never waits behind films the user did not ask for. A film
+  // that fails to load is marked failed (hFilmFailed) so its slide
+  // falls back to its poster instead of freezing the carousel.
+  var hFilmQueue=[],hFilmLoading=null,hFilmLoaded={};
+  function hQueueFilm(key){
+    if(!key||hFilmLoaded[key]||hFilmLoading===key||hFilmQueue.indexOf(key)>=0)return;
+    hFilmQueue.push(key);
+  }
+  function hQueueFilmFirst(key){
+    if(!key||hFilmLoaded[key]||hFilmLoading===key)return;
+    var ix=hFilmQueue.indexOf(key);
+    if(ix>=0)hFilmQueue.splice(ix,1);
+    hFilmQueue.unshift(key);
+  }
+  function hLoadNextFilm(){
+    if(hFilmLoading)return;
+    var key=hFilmQueue.shift();
+    if(!key)return;
+    hFilmLoading=key;
+    var sc=document.createElement('script');
+    sc.src='assets/hero-film-'+key+'.js';
+    sc.onload=function(){hFilmLoaded[key]=1;hFilmLoading=null;if(hFilmsDone()){hLoadBelowfoldImages();}hLoadNextFilm();};
+    sc.onerror=function(){hFilmFailed[key]=1;hFilmLoading=null;hMaybeAdvance();if(hFilmsDone()){hLoadBelowfoldImages();}hLoadNextFilm();};
+    document.head.appendChild(sc);
+  }
   (function(){
-    var order=[],seen={};
-    [hIdx,(hIdx+1)%hSlides.length].forEach(function(j){var k=hSlides[j].dataset.film;if(k&&!seen[k]){seen[k]=1;order.push(k);}});
-    ['air3s','mavic3pro','mini3pro','mini4pro'].forEach(function(k){if(!seen[k]){seen[k]=1;order.push(k);}});
-    (function next(){
-      if(!order.length)return;
-      var key=order.shift();
-      var sc=document.createElement('script');
-      sc.src='assets/hero-film-'+key+'.js';
-      sc.onload=function(){next();};
-      sc.onerror=function(){next();};
-      document.head.appendChild(sc);
-    })();
+    var order=[];
+    [hIdx,(hIdx+1)%hSlides.length].forEach(function(j){var k=hSlides[j].dataset.film;if(k)order.push(k);});
+    ['air3s','mavic3pro','mini3pro','mini4pro'].forEach(function(k){if(order.indexOf(k)<0)order.push(k);});
+    order.forEach(function(k){hQueueFilm(k);});
+    hLoadNextFilm();
   })();
-  function hStart(){hStop();hTimer=setInterval(function(){hGo(hIdx+1);},5000);}
+  // Round 13 -- BELOW-FOLD IMAGES: the 10 product/feature/field-tile photos
+  // used to be inline base64 in index.html (1.55MB), so the browser had to
+  // download them before it could reach site.js and start the hero films
+  // (first motion ~58s on Slow 3G even with the films shrunk). They now
+  // live in assets/belowfold-images.js and load only AFTER the hero films
+  // are all in -- or when the user scrolls toward them -- so the hero gets
+  // the slow pipe first. The tiles show a dark placeholder until then.
+  var hBfLoaded=false;
+  function hLoadBelowfoldImages(){
+    if(hBfLoaded)return;hBfLoaded=true;
+    var sc=document.createElement('script');
+    sc.src='assets/belowfold-images.js';
+    document.head.appendChild(sc);
+  }
+  function hFilmsDone(){
+    var keys=['air3s','mavic3pro','mini3pro','mini4pro'];
+    for(var i=0;i<keys.length;i++){if(!hFilmLoaded[keys[i]]&&!hFilmFailed[keys[i]])return false;}
+    return true;
+  }
+  window.addEventListener('scroll',function(){hLoadBelowfoldImages();},{once:true,passive:true});
+  // Round 13: the 5s timer advances ONLY to a film-ready slide; if the
+  // next film has not arrived yet it stays on the current (playing)
+  // slide and tries again on the next tick -- the hero never shows a
+  // poster after the first motion.
+  function hTryAdvance(){
+    var nxt=(hIdx+1)%hSlides.length;
+    if(hReady(nxt)){hGo(nxt);}
+    else{hFilm();}
+  }
+  function hStart(){hStop();hTimer=setInterval(function(){hTryAdvance();},5000);}
   function hStop(){if(hTimer){clearInterval(hTimer);hTimer=null;}}
-  hList.forEach(function(b){b.addEventListener('click',function(){hGo(parseInt(b.dataset.go,10));hStart();});});
-  hc.querySelectorAll('.hero-arrow').forEach(function(a){a.addEventListener('click',function(){hGo(hIdx+parseInt(a.dataset.dir,10));hStart();});});
+  // Manual navigation: switch at once if the target film is ready;
+  // otherwise wait for it -- jump its film to the front of the load
+  // queue and switch the moment it plays.
+  function hRequestGo(i){
+    var t=(i+hSlides.length)%hSlides.length;
+    if(hReady(t)){hPending=-1;hGo(t);hStart();}
+    else{hPending=t;hQueueFilmFirst(hSlides[t].dataset.film);hLoadNextFilm();hFilm();}
+  }
+  hList.forEach(function(b){b.addEventListener('click',function(){hRequestGo(parseInt(b.dataset.go,10));});});
+  hc.querySelectorAll('.hero-arrow').forEach(function(a){a.addEventListener('click',function(){hRequestGo(hIdx+parseInt(a.dataset.dir,10));});});
   // Pause ONLY on a real mouse hover. On touch screens a tap fires an
   // emulated mouseenter with no matching mouseleave, which used to stop
   // the autoplay forever after the first tap on the hero.

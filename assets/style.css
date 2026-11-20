@@ -146,7 +146,7 @@ body.no-hero main{padding-top:64px}
 /* Fields tiles (DJI): 3 per row inside the container, ~390x440, full-bleed
    photo, white title top-centre + subtitle + Learn More link. */
 .field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.field-tile{position:relative;overflow:hidden;min-height:440px;display:flex;color:#fff;background-size:cover;background-position:center}
+.field-tile{position:relative;overflow:hidden;min-height:440px;display:flex;color:#fff;background-color:#111;background-size:cover;background-position:center}
 .field-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.62),rgba(0,0,0,0) 55%)}
 .field-tile div{position:relative;z-index:1;padding:28px 22px;width:100%;text-align:center}
 .field-tile h3{font-size:1.4rem}
