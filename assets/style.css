@@ -469,15 +469,16 @@ body.no-hero main{padding-top:64px}
   .hero-arrow{top:auto;bottom:12px;transform:none;width:44px;height:44px;font-size:1.9rem}
   .hero-arrow.prev{left:auto;right:60px}
   .hero-arrow.next{right:12px}
-  /* ROUND 7 mobile cards: 4:3 tile at ~358px wide is ~268px tall — tighter
-     type + padding so eyebrow/name/tagline + price/CTAs still fit. */
-  .card-body{padding:10px 10px}
-  .card-body h3{font-size:.95rem;-webkit-line-clamp:3;text-shadow:0 1px 3px rgba(0,0,0,.85),0 1px 12px rgba(0,0,0,.6)}
-  .card-tag{display:none}
-  .card .price{font-size:.95rem;text-shadow:0 1px 3px rgba(0,0,0,.85),0 1px 12px rgba(0,0,0,.6)}
+  /* ROUND 16 — mobile cards back to 1 column, big full-width 4:3 tiles
+     (358×269, like Round 14) with DJI-style type: medium-weight
+     headings, light letterspaced eyebrow, regular subtext. */
+  .card-body{padding:26px 28px}
+  .card-body h3{font-size:1.1rem;font-weight:500;line-height:1.3;-webkit-line-clamp:2;text-shadow:0 1px 3px rgba(0,0,0,.85),0 1px 12px rgba(0,0,0,.6)}
+  .card-tag{display:-webkit-box;font-size:.85rem;font-weight:400;line-height:1.5}
+  .card .price{font-size:1.1rem;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.85),0 1px 12px rgba(0,0,0,.6)}
   .card .price-note{display:none}
   .card .price .was{display:none}
-  .card-cta .btn{padding:8px 16px;font-size:.85rem}
+  .card-cta .btn{padding:10px 20px;font-size:.9rem;font-weight:500}
   .feature-tile .f-body{padding:28px 24px}
   .feature-tile.wide .f-body{padding:28px 24px}
   /* Floating WhatsApp pill: icon-only circle on mobile (a labelled pill
@@ -489,36 +490,48 @@ body.no-hero main{padding-top:64px}
   .wa-float svg{width:22px;height:22px}
   .to-top{right:12px;bottom:64px;width:44px;height:44px}
   .footer-bottom{padding-bottom:92px}
-  .grid,.grid-fullbleed,.cat-tiles{grid-template-columns:repeat(2,1fr);gap:10px}
+  .grid,.grid-fullbleed,.cat-tiles{grid-template-columns:1fr;gap:16px}
   .video-grid,.why-grid,.contact-grid{grid-template-columns:1fr}
-  .cat-tile.wide{grid-column:auto;min-height:200px}
+  .cat-tile.wide{grid-column:auto;min-height:420px}
   .detail-actions .btn{min-width:0;width:100%}
   .subnav-links{display:none}
-  .feature-tile .f-body{padding:22px 20px}
-  .feature-tile.wide{min-height:0}
-  .feature-tile.wide .f-body{padding:22px 20px}
-  /* ROUND 15 — mobile compactness: smaller section heads, tighter
-     innovation tiles, shorter field/cat tiles, compact 2-col cards. */
-  h1{font-size:clamp(1.7rem,6vw,2.25rem)}
-  h2{font-size:clamp(1.45rem,5vw,1.9rem)}
-  .sec-head{margin-bottom:26px}
-  .sec-sub{font-size:.95rem}
-  .card-cat{font-size:.6rem;letter-spacing:.12em}
-  .card-top{gap:4px}
-  .card-foot{gap:4px}
-  .card .more-link{font-size:.8rem}
-  .feature-tile .f-body h2{font-size:1.3rem}
-  .feature-tile .f-body .kicker{font-size:.68rem;max-width:none}
-  .feature-tile .f-body p{font-size:.9rem}
+  .feature-tile,.feature-tile .f-body,.feature-tile.wide .f-body{min-height:380px}
+  .feature-tile .f-body{padding:28px 24px}
+  .feature-tile.wide .f-body{padding:28px 24px}
+  /* ROUND 16 — DJI mobile typography + 1-col big tiles: headings go
+     MEDIUM weight (500, never 800) with generous line-height and air;
+     kickers small grey letterspaced, regular weight; subtext regular
+     400. Sizes stay smaller than Round 14 — that was the real complaint. */
+  h1{font-size:clamp(1.7rem,6vw,2.25rem);font-weight:500;line-height:1.25;letter-spacing:0}
+  h2{font-size:clamp(1.45rem,5vw,1.9rem);font-weight:500;line-height:1.25;letter-spacing:0}
+  h3{font-weight:500;line-height:1.3}
+  .sec-head{margin-bottom:32px}
+  .sec-head .kicker{font-size:.75rem;font-weight:400;letter-spacing:.18em}
+  .sec-head h2{margin:12px 0 14px}
+  .sec-sub{font-size:1rem;font-weight:400;line-height:1.6;max-width:32ch;margin-left:auto;margin-right:auto}
+  .hero-content .kicker{font-size:.8rem;font-weight:400;letter-spacing:.14em}
+  .card-cat{font-size:.68rem;font-weight:400;letter-spacing:.16em}
+  .card-top{gap:8px}
+  .card-foot{gap:6px}
+  .card .more-link{font-size:.9rem;font-weight:400}
+  .feature-tile .f-body h2{font-size:1.5rem;font-weight:500;line-height:1.25}
+  .feature-tile .f-body .kicker{font-size:.75rem;font-weight:400;letter-spacing:.16em;max-width:none}
+  .feature-tile .f-body p{font-size:.95rem;font-weight:400;line-height:1.6}
   .feature-tile .price-note{display:none}
-  .feature-tile .f-cta .btn{padding:9px 16px;font-size:.88rem}
-  .feature-tile .f-body{gap:8px}
-  .field-tile{min-height:240px}
-  .field-tile h3{font-size:1.15rem}
-  .cat-tile{min-height:200px}
-  .cat-tile div{padding:14px}
-  .cat-tile h3{font-size:1.1rem}
-  .cat-tile p{font-size:.85rem}
+  .feature-tile .f-cta .btn{padding:10px 20px;font-size:.9rem;font-weight:500}
+  .feature-tile .more-link{font-size:.9rem;font-weight:400}
+  .field-tile{min-height:440px}
+  .field-tile h3{font-size:1.25rem;font-weight:500;line-height:1.3}
+  .field-tile p{font-size:.9rem;font-weight:400}
+  .cat-tile{min-height:340px}
+  .cat-tile div{padding:26px}
+  .cat-tile h3{font-size:1.25rem;font-weight:500;line-height:1.3}
+  .cat-tile p{font-size:.9rem;font-weight:400}
+  .films-sec .shot-on{font-size:1.45rem;font-weight:500;letter-spacing:0}
+  .films-sec .shot-on-sub{font-size:1rem;font-weight:400;line-height:1.6}
+  .hero-cta .btn{font-weight:500}
+  .video-card h3{font-weight:500}
+  .why-col h3{font-size:1.4rem;font-weight:500}
 }
 /* fix-pass additions: category-card WhatsApp pill row, footer social icons,
    drones series strip, support pill row, grey pill. */
