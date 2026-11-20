@@ -167,8 +167,19 @@ body.no-hero main{padding-top:64px}
    Text sits in the TOP third (DJI): huge THIN product name (~70px,
    weight 200), bold tagline ~24-28px, two outline-white pills. */
 .hero-carousel{display:block;overflow:hidden;text-align:center}
-.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s ease;display:flex;align-items:flex-start;justify-content:center}
+.hero-slide{position:absolute;inset:0;background:#000;opacity:0;transition:opacity 1s ease;display:flex;align-items:flex-start;justify-content:center}
 .hero-slide.active{opacity:1;z-index:1}
+/* Round 10 -- homepage video hero: the DJI film fills the slide exactly
+   like the old background photo did (object-fit cover crops the 16:9
+   film to the 2.18:1 hero band). Poster = DJI's own hero still. */
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+/* Round 10 -- NO-GHOST text: the outgoing slide's text fades out fully
+   (0.35s, then visibility hidden) BEFORE the incoming slide's text
+   starts fading in (0.5s delay), so two slides' text is never visible
+   at once. The video backgrounds still crossfade underneath -- only
+   text must never ghost. */
+.hero-slide .hero-content{opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+.hero-slide.active .hero-content{opacity:1;visibility:visible;transition:opacity .6s ease .5s,visibility 0s}
 .hero-slide .hero-content{padding:112px 20px 90px}
 .hero-slide h1{font-size:clamp(2.6rem,5vw,4.4rem);font-weight:200;text-transform:uppercase;letter-spacing:.01em}
 .hero-slide .hero-sub{font-size:clamp(1.4rem,2vw,1.75rem);font-weight:700}

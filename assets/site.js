@@ -89,6 +89,18 @@ if(hc){
   var hSlides=Array.prototype.slice.call(hc.querySelectorAll('.hero-slide'));
   var hList=hc.querySelectorAll('.hero-list button');
   var hIdx=0,hTimer=null;
+  // Round 10 -- video heroes: play ONLY the active slide's film, pause
+  // the rest (bandwidth + CPU). Muted loop, so play() is always allowed.
+  // Reduced-motion users get the poster still instead of motion.
+  var hReduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function hPlay(){
+    hSlides.forEach(function(s,j){
+      var v=s.querySelector('video');if(!v)return;
+      if(j===hIdx&&!hReduced){var p=v.play();if(p&&p.catch){p.catch(function(){});}}
+      else{v.pause();}
+    });
+  }
+  function hPauseAll(){hSlides.forEach(function(s){var v=s.querySelector('video');if(v)v.pause();});}
   function hGo(i){
     hIdx=(i+hSlides.length)%hSlides.length;
     hSlides.forEach(function(s,j){s.classList.toggle('active',j===hIdx);});
@@ -98,6 +110,7 @@ if(hc){
       hList[1].textContent=hSlides[hIdx].dataset.name;hList[1].dataset.go=hIdx;
       hList[2].textContent=hSlides[next].dataset.name;hList[2].dataset.go=next;
     }
+    hPlay();
   }
   function hStart(){hStop();hTimer=setInterval(function(){hGo(hIdx+1);},5000);}
   function hStop(){if(hTimer){clearInterval(hTimer);hTimer=null;}}
@@ -114,7 +127,7 @@ if(hc){
   // pause can never freeze the hero on a phone.
   hc.addEventListener('touchend',hStart,{passive:true});
   window.addEventListener('scroll',function(){if(!hTimer){hStart();}},{passive:true});
-  document.addEventListener('visibilitychange',function(){if(document.hidden){hStop();}else{hStart();}});
+  document.addEventListener('visibilitychange',function(){if(document.hidden){hStop();hPauseAll();}else{hStart();hPlay();}});
   hGo(0);hStart();
 }
 // films carousel: centre card ~1230px, side cards peeking, ‹ › arrows,
