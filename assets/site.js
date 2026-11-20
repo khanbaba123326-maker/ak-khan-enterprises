@@ -36,7 +36,7 @@ function akWireShotVideos(){
   document.querySelectorAll('video.shot-video[data-film]').forEach(function(v){
     if(v.src)return;
     var url=window.__akFilmUrl(v.dataset.film);
-    if(url){v.src=url;var p=v.play();if(p&&p.catch){p.catch(function(){});}}
+    if(url){v.src=url;v.addEventListener('playing',function(){v.classList.add('playing');});var p=v.play();if(p&&p.catch){p.catch(function(){});}}
   });
 }
 window.__akWireShot=akWireShotVideos;
@@ -117,6 +117,10 @@ if(hc){
   // plays (hero-film-on fires on the video 'playing' event, never on a
   // timer). Reduced-motion users get the poster still.
   var hReduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Round 15 -- MOBILE FILMS: phones (<=720px) get the 640x360 variants
+  // (hero-film-{key}-m.js, ~80% smaller) so first motion arrives in ~10s
+  // on a ~10 KB/s connection instead of ~60s; desktops keep the 720p films.
+  var hIsMobile=window.matchMedia&&window.matchMedia('(max-width: 720px)').matches;
   var hVideos={};   // slide index -> <video> element
   var hBlobUrls={}; // film key -> blob: URL (built once per film)
   window.__akHeroVideos=hVideos; // debug handle: harness reads state via this
@@ -249,7 +253,7 @@ if(hc){
     if(!key)return;
     hFilmLoading=key;
     var sc=document.createElement('script');
-    sc.src='assets/hero-film-'+key+'.js';
+    sc.src='assets/hero-film-'+key+(hIsMobile?'-m':'')+'.js';
     sc.onload=function(){hFilmLoaded[key]=1;hFilmLoading=null;if(hFilmsDone()){hLoadBelowfoldImages();}hLoadNextFilm();};
     sc.onerror=function(){hFilmFailed[key]=1;hFilmLoading=null;hMaybeAdvance();if(hFilmsDone()){hLoadBelowfoldImages();}hLoadNextFilm();};
     document.head.appendChild(sc);

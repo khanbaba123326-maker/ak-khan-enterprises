@@ -88,21 +88,21 @@ body.no-hero main{padding-top:64px}
 .grid-fullbleed{margin:0 16px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .card{position:relative;aspect-ratio:4/3;overflow:hidden;background:#111}
 .card::before,.card::after{content:"";position:absolute;left:0;right:0;z-index:1;pointer-events:none}
-.card::before{top:0;height:60%;background:linear-gradient(180deg,rgba(0,0,0,.62),rgba(0,0,0,.30) 55%,rgba(0,0,0,0))}
-.card::after{bottom:0;height:55%;background:linear-gradient(0deg,rgba(0,0,0,.68),rgba(0,0,0,.32) 55%,rgba(0,0,0,0))}
+.card::before{top:0;height:38%;background:linear-gradient(180deg,rgba(0,0,0,.52),rgba(0,0,0,.22) 55%,rgba(0,0,0,0))}
+.card::after{bottom:0;height:38%;background:linear-gradient(0deg,rgba(0,0,0,.60),rgba(0,0,0,.25) 55%,rgba(0,0,0,0))}
 .card-img{position:absolute;inset:0;display:block;padding:0;background:#111}
-.card-img img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .4s}
+.card-img img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .4s;filter:brightness(1.08) contrast(1.05) saturate(1.07)}
 .card:hover .card-img img{transform:scale(1.04)}
 .card-body{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;padding:26px 28px;color:#fff;pointer-events:none}
 .card-body a,.card-body .btn{pointer-events:auto}
 .card-top{display:flex;flex-direction:column;gap:8px;align-items:center;min-width:0}
 .card-foot{display:flex;flex-direction:column;gap:6px;align-items:center}
 .card-cat{font-size:.78rem;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.85);font-weight:700}
-.card-body h3{font-size:1.35rem;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.55);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-body h3{font-size:1.35rem;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.85),0 1px 12px rgba(0,0,0,.6);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .card-body h3 a{color:#fff}
 .card-body h3 a:hover{color:rgba(255,255,255,.75)}
-.card-tag{color:rgba(255,255,255,.92);font-size:.95rem;max-width:44ch;text-shadow:0 1px 10px rgba(0,0,0,.5);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card .price{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.5)}
+.card-tag{color:rgba(255,255,255,.92);font-size:.95rem;max-width:44ch;text-shadow:0 1px 3px rgba(0,0,0,.85),0 1px 10px rgba(0,0,0,.55);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .price{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.85),0 1px 10px rgba(0,0,0,.55)}
 .card .price .was{color:rgba(255,255,255,.7)}
 .card .price-note{color:rgba(255,255,255,.75)}
 .card .more-link{color:#fff}
@@ -128,31 +128,32 @@ body.no-hero main{padding-top:64px}
 .feature-tile{position:relative;background:#000;color:#fff;overflow:hidden;min-height:615px}
 .feature-tile.light{background:#111;color:#fff}
 .feature-tile::before,.feature-tile::after{content:"";position:absolute;left:0;right:0;z-index:1;pointer-events:none}
-.feature-tile::before{top:0;height:55%;background:linear-gradient(180deg,rgba(0,0,0,.72),rgba(0,0,0,.35) 55%,rgba(0,0,0,0))}
-.feature-tile::after{bottom:0;height:50%;background:linear-gradient(0deg,rgba(0,0,0,.78),rgba(0,0,0,.4) 55%,rgba(0,0,0,0))}
+.feature-tile::before{top:0;height:40%;background:linear-gradient(180deg,rgba(0,0,0,.60),rgba(0,0,0,.28) 55%,rgba(0,0,0,0))}
+.feature-tile::after{bottom:0;height:40%;background:linear-gradient(0deg,rgba(0,0,0,.65),rgba(0,0,0,.30) 55%,rgba(0,0,0,0))}
 .feature-tile .f-img{position:absolute;inset:0;background:#000}
-.feature-tile .f-img img{width:100%;height:100%;object-fit:cover;object-position:center}
+.feature-tile .f-img img{width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(1.08) contrast(1.05) saturate(1.07)}
 .feature-tile .f-body{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-between;gap:10px;align-items:flex-start;text-align:left;padding:36px;min-height:615px}
 .feature-tile .f-top{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
 .feature-tile.wide{grid-column:1/-1;min-height:380px}
 .feature-tile.wide .f-body{min-height:380px;max-width:580px;padding:40px 48px}
 .feature-tile.feat-banner{min-height:520px}
 .feature-tile.feat-banner .f-body{min-height:520px}
-.feature-tile .f-body p{color:rgba(255,255,255,.88)}
+.feature-tile .f-body p{color:rgba(255,255,255,.88);text-shadow:0 1px 3px rgba(0,0,0,.85),0 1px 10px rgba(0,0,0,.6)}
 .feature-tile .f-body h2{font-size:clamp(1.7rem,3.4vw,2.4rem);color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.45)}
 .feature-tile .f-body .kicker{color:rgba(255,255,255,.8)}
 /* Round 14: Innovation tiles are light-grey catalogue photos -- strengthen
    the top gradient so white text reads, and keep the long kicker off the product. */
-#innovation .feature-tile::before{height:68%;background:linear-gradient(180deg,rgba(0,0,0,.82),rgba(0,0,0,.55) 60%,rgba(0,0,0,0))}
+#innovation .feature-tile::before{height:50%;background:linear-gradient(180deg,rgba(0,0,0,.68),rgba(0,0,0,.35) 60%,rgba(0,0,0,0))}
 .feature-tile .f-body .kicker{max-width:32ch}
 .feature-tile .f-body .price{text-shadow:0 1px 10px rgba(0,0,0,.65)}
 .feature-tile .price .was{color:rgba(255,255,255,.7)}
 .feature-tile .f-cta{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.feature-tile .more-link{text-shadow:0 1px 3px rgba(0,0,0,.85),0 1px 12px rgba(0,0,0,.6)}
 /* Fields tiles (DJI): 3 per row inside the container, ~390x440, full-bleed
    photo, white title top-centre + subtitle + Learn More link. */
 .field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .field-tile{position:relative;overflow:hidden;min-height:440px;display:flex;color:#fff;background-color:#111;background-size:cover;background-position:center}
-.field-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.62),rgba(0,0,0,0) 55%)}
+.field-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,0) 55%)}
 .field-tile div{position:relative;z-index:1;padding:28px 22px;width:100%;text-align:center}
 .field-tile h3{font-size:1.4rem}
 .field-tile p{font-size:.95rem;color:#eee}
@@ -182,7 +183,7 @@ body.no-hero main{padding-top:64px}
    behind the video (loading cover); .hero-video fills the slide with
    object-fit cover at z-index 0, under the overlay + text, and fades
    in only when the video really plays (hero-film-on). */
-.hero-poster{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
+.hero-poster{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0;animation:kb-zoom 26s ease-in-out infinite alternate}
 .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;opacity:0;transition:opacity .8s ease}
 .hero-slide.hero-film-on .hero-video{opacity:1}
 /* Round 10 -- NO-GHOST text: the outgoing slide's text fades out fully
@@ -236,7 +237,7 @@ body.no-hero main{padding-top:64px}
 .cat-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .cat-tile{position:relative;overflow:hidden;min-height:340px;display:flex;align-items:flex-end;color:#fff;background-size:cover;background-position:center}
 .cat-tile.wide{grid-column:1/-1;min-height:420px}
-.cat-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.82))}
+.cat-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.68))}
 .cat-tile div{position:relative;z-index:1;padding:26px}
 .cat-tile h3{font-size:1.5rem}
 .cat-tile p{font-size:.95rem;color:#ddd}
@@ -315,7 +316,7 @@ body.no-hero main{padding-top:64px}
 .detail-hero.has-bg .detail-hero-inner{z-index:3}
 .detail-hero.has-bg.kenburns .detail-hero-bg{animation:kb-zoom 22s ease-in-out infinite alternate}
 @keyframes kb-zoom{from{transform:scale(1) translate(0,0)}to{transform:scale(1.08) translate(-1.2%,-1%)}}
-@media(prefers-reduced-motion:reduce){.detail-hero.has-bg.kenburns .detail-hero-bg{animation:none}}
+@media(prefers-reduced-motion:reduce){.detail-hero.has-bg.kenburns .detail-hero-bg{animation:none}.hero-poster,.shot-poster,.shot-video{animation:none}}
 .detail-hero.has-bg .hero-overlay{background:linear-gradient(180deg,rgba(0,0,0,.60),rgba(0,0,0,.45) 45%,rgba(0,0,0,.72))}
 .detail-hero-inner{position:relative;z-index:1;width:100%}
 .detail-hero.has-bg h1,.detail-hero.has-bg .tagline{text-shadow:0 2px 18px rgba(0,0,0,.6)}
@@ -436,8 +437,6 @@ body.no-hero main{padding-top:64px}
   .support-hero{height:420px}
   .footer-inner{grid-template-columns:1fr 1fr}
   .mega-menu{display:none!important}
-}
-@media(max-width:720px){
   .menu-btn{display:block}
   .main-nav{display:none;position:absolute;top:100%;left:0;right:0;background:#000;flex-direction:column;align-items:stretch;padding:10px 20px 20px}
   .site-header.solid .main-nav{background:#fff}
@@ -445,7 +444,9 @@ body.no-hero main{padding-top:64px}
   .nav-link{padding:13px 4px;border-top:1px solid #222;font-size:1.02rem}
   .site-header.solid .nav-link{border-top-color:var(--line)}
   .nav-wa{text-align:center;margin-top:10px}
-  .sec{padding:48px 0}
+}
+@media(max-width:720px){
+  .sec{padding:36px 0}
   .footer-inner{grid-template-columns:1fr}
   .hero{min-height:360px}
   /* Mobile hero (boss's phone, 360-412px): title must fit on ONE line
@@ -455,7 +456,7 @@ body.no-hero main{padding-top:64px}
      chevrons parked bottom-right, clear of pills AND list; hero no
      longer a giant 520px block. Bottom content padding (118px) reserves
      the band the list + chevrons sit in. */
-  .hero-content{padding:96px 16px 30px}
+  .hero-content{padding:84px 16px 26px}
   .hero-content h1{font-size:clamp(1.55rem,7vw,2.3rem)}
   .hero-slide .hero-content{padding:88px 16px 118px}
   .hero-slide h1{font-size:clamp(1.55rem,7.2vw,2.4rem)}
@@ -470,11 +471,12 @@ body.no-hero main{padding-top:64px}
   .hero-arrow.next{right:12px}
   /* ROUND 7 mobile cards: 4:3 tile at ~358px wide is ~268px tall — tighter
      type + padding so eyebrow/name/tagline + price/CTAs still fit. */
-  .card-body{padding:18px 16px}
-  .card-body h3{font-size:1.12rem;text-shadow:0 1px 3px rgba(0,0,0,.8),0 1px 12px rgba(0,0,0,.55)}
-  .card-tag{font-size:.85rem;text-shadow:0 1px 3px rgba(0,0,0,.8),0 1px 12px rgba(0,0,0,.55)}
-  .card .price{font-size:1.1rem;text-shadow:0 1px 3px rgba(0,0,0,.8),0 1px 12px rgba(0,0,0,.55)}
-  .card .price-note{font-size:.78rem}
+  .card-body{padding:10px 10px}
+  .card-body h3{font-size:.95rem;-webkit-line-clamp:3;text-shadow:0 1px 3px rgba(0,0,0,.85),0 1px 12px rgba(0,0,0,.6)}
+  .card-tag{display:none}
+  .card .price{font-size:.95rem;text-shadow:0 1px 3px rgba(0,0,0,.85),0 1px 12px rgba(0,0,0,.6)}
+  .card .price-note{display:none}
+  .card .price .was{display:none}
   .card-cta .btn{padding:8px 16px;font-size:.85rem}
   .feature-tile .f-body{padding:28px 24px}
   .feature-tile.wide .f-body{padding:28px 24px}
@@ -487,12 +489,36 @@ body.no-hero main{padding-top:64px}
   .wa-float svg{width:22px;height:22px}
   .to-top{right:12px;bottom:64px;width:44px;height:44px}
   .footer-bottom{padding-bottom:92px}
-  .grid,.grid-fullbleed,.video-grid,.why-grid,.cat-tiles,.contact-grid{grid-template-columns:1fr}
-  .cat-tile.wide{grid-column:auto;min-height:340px}
+  .grid,.grid-fullbleed,.cat-tiles{grid-template-columns:repeat(2,1fr);gap:10px}
+  .video-grid,.why-grid,.contact-grid{grid-template-columns:1fr}
+  .cat-tile.wide{grid-column:auto;min-height:200px}
   .detail-actions .btn{min-width:0;width:100%}
   .subnav-links{display:none}
-  .feature-tile .f-body{padding:28px 24px}
-  .feature-tile.wide .f-body{padding:28px 24px}
+  .feature-tile .f-body{padding:22px 20px}
+  .feature-tile.wide{min-height:0}
+  .feature-tile.wide .f-body{padding:22px 20px}
+  /* ROUND 15 — mobile compactness: smaller section heads, tighter
+     innovation tiles, shorter field/cat tiles, compact 2-col cards. */
+  h1{font-size:clamp(1.7rem,6vw,2.25rem)}
+  h2{font-size:clamp(1.45rem,5vw,1.9rem)}
+  .sec-head{margin-bottom:26px}
+  .sec-sub{font-size:.95rem}
+  .card-cat{font-size:.6rem;letter-spacing:.12em}
+  .card-top{gap:4px}
+  .card-foot{gap:4px}
+  .card .more-link{font-size:.8rem}
+  .feature-tile .f-body h2{font-size:1.3rem}
+  .feature-tile .f-body .kicker{font-size:.68rem;max-width:none}
+  .feature-tile .f-body p{font-size:.9rem}
+  .feature-tile .price-note{display:none}
+  .feature-tile .f-cta .btn{padding:9px 16px;font-size:.88rem}
+  .feature-tile .f-body{gap:8px}
+  .field-tile{min-height:240px}
+  .field-tile h3{font-size:1.15rem}
+  .cat-tile{min-height:200px}
+  .cat-tile div{padding:14px}
+  .cat-tile h3{font-size:1.1rem}
+  .cat-tile p{font-size:.85rem}
 }
 /* fix-pass additions: category-card WhatsApp pill row, footer social icons,
    drones series strip, support pill row, grey pill. */
@@ -518,6 +544,13 @@ body.no-hero main{padding-top:64px}
 .films-dots{display:flex;gap:8px;justify-content:center;margin-top:20px}
 .films-dots button{width:8px;height:8px;border-radius:50%;border:0;background:#5a5a5a;cursor:pointer;padding:0}
 .films-dots button.active{background:#fff}
+/* Round 15 -- Shot-on poster: a real film frame behind each card's video
+   (data-URI JPEG, ~70KB total), slowly zooming like the hero poster, so
+   the cards are never black while their film downloads on a slow
+   connection. The video fades in over the poster the moment it plays. */
+.shot-poster{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0;animation:kb-zoom 26s ease-in-out infinite alternate}
+.video-thumb video.shot-video{position:relative;z-index:1;opacity:0;transition:opacity .8s ease}
+.video-thumb video.shot-video.playing{opacity:1}
 /* back-to-top (DJI floating button, bottom-right above the WhatsApp pill) */
 .to-top{position:fixed;right:18px;bottom:84px;z-index:150;width:48px;height:48px;border-radius:50%;border:0;background:#000;color:#fff;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.35);display:none;align-items:center;justify-content:center}
 .to-top.show{display:flex}
