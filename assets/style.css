@@ -141,6 +141,11 @@ body.no-hero main{padding-top:64px}
 .feature-tile .f-body p{color:rgba(255,255,255,.88)}
 .feature-tile .f-body h2{font-size:clamp(1.7rem,3.4vw,2.4rem);color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.45)}
 .feature-tile .f-body .kicker{color:rgba(255,255,255,.8)}
+/* Round 14: Innovation tiles are light-grey catalogue photos -- strengthen
+   the top gradient so white text reads, and keep the long kicker off the product. */
+#innovation .feature-tile::before{height:68%;background:linear-gradient(180deg,rgba(0,0,0,.82),rgba(0,0,0,.55) 60%,rgba(0,0,0,0))}
+.feature-tile .f-body .kicker{max-width:32ch}
+.feature-tile .f-body .price{text-shadow:0 1px 10px rgba(0,0,0,.65)}
 .feature-tile .price .was{color:rgba(255,255,255,.7)}
 .feature-tile .f-cta{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
 /* Fields tiles (DJI): 3 per row inside the container, ~390x440, full-bleed
@@ -242,6 +247,7 @@ body.no-hero main{padding-top:64px}
 .video-card{background:#111;overflow:hidden;color:#fff}
 .video-thumb{position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;border:0;background:radial-gradient(120% 100% at 50% 0%,#2a2a2a 0%,#111 55%,#000 100%);cursor:pointer}
 .video-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.video-thumb video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
 .video-thumb .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center}
 .video-thumb .play svg{width:26px;height:26px;fill:#000;margin-left:3px}
 .video-card iframe{width:100%;aspect-ratio:16/9;border:0;display:block}

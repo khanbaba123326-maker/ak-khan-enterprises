@@ -17,6 +17,7 @@ var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isInter
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
 // video facade: sharp maxresdefault thumbnail; click loads the real player.
 document.querySelectorAll('.video-thumb').forEach(function(t){
+  if(!t.dataset.vid)return; // Round 14: self-hosted Shot on cards are plain links, not YouTube facades.
   t.addEventListener('click',function(){
     var vid=t.dataset.vid,title=t.dataset.title||'Video';
     var f=document.createElement('iframe');
@@ -25,6 +26,20 @@ document.querySelectorAll('.video-thumb').forEach(function(t){
     t.replaceWith(f);
   });
 });
+
+// Round 14 -- Shot on: self-hosted looping videos reusing the hero films.
+// The homepage Shot on cards carry a <video class="shot-video" data-film>;
+// when a film's base64 lands, its blob URL (built once by the hero loader)
+// is shared here, so the cards play real video with ZERO new bytes.
+function akWireShotVideos(){
+  if(!window.__akFilmUrl)return;
+  document.querySelectorAll('video.shot-video[data-film]').forEach(function(v){
+    if(v.src)return;
+    var url=window.__akFilmUrl(v.dataset.film);
+    if(url){v.src=url;var p=v.play();if(p&&p.catch){p.catch(function(){});}}
+  });
+}
+window.__akWireShot=akWireShotVideos;
 // lightbox (product photo)
 var lb=document.getElementById('lightbox');
 function openLB(src,alt){if(!lb)return;lb.querySelector('img').src=src;lb.querySelector('img').alt=alt||'';lb.classList.add('open');document.body.style.overflow='hidden';}
@@ -117,6 +132,7 @@ if(hc){
     try{hBlobUrls[key]=URL.createObjectURL(hB64ToBlob(F[key]));}catch(_){return null;}
     return hBlobUrls[key];
   }
+  window.__akFilmUrl=hFilmUrl; // Round 14: Shot on cards share the hero films' blob URLs.
   function hPlayVideo(j){
     var v=hVideos[j];if(!v)return;
     if(v.readyState>=2){var p=v.play();if(p&&p.catch){p.catch(function(){});}}
@@ -192,6 +208,7 @@ if(hc){
         s.classList.remove('hero-film-on');
       }
     });
+    if(window.__akWireShot){window.__akWireShot();} // Round 14: wire Shot on videos whenever hero films are (re)wired.
   }
   function hGo(i){
     hIdx=(i+hSlides.length)%hSlides.length;
