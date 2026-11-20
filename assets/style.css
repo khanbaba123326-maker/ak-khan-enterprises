@@ -506,16 +506,16 @@ body.no-hero main{padding-top:64px}
   h2{font-size:clamp(1.45rem,5vw,1.9rem);font-weight:500;line-height:1.25;letter-spacing:0}
   h3{font-weight:500;line-height:1.3}
   .sec-head{margin-bottom:32px}
-  .sec-head .kicker{font-size:.75rem;font-weight:400;letter-spacing:.18em}
+  .sec-head .kicker{font-size:.75rem;font-weight:400;letter-spacing:.02em;text-transform:none}
   .sec-head h2{margin:12px 0 14px}
   .sec-sub{font-size:1rem;font-weight:400;line-height:1.6;max-width:32ch;margin-left:auto;margin-right:auto}
-  .hero-content .kicker{font-size:.8rem;font-weight:400;letter-spacing:.14em}
-  .card-cat{font-size:.68rem;font-weight:400;letter-spacing:.16em}
+  .hero-content .kicker{font-size:.8rem;font-weight:400;letter-spacing:.02em;text-transform:none;color:#9a9a9a}
+  .card-cat{font-size:.68rem;font-weight:400;letter-spacing:.02em;text-transform:none}
   .card-top{gap:8px}
   .card-foot{gap:6px}
   .card .more-link{font-size:.9rem;font-weight:400}
   .feature-tile .f-body h2{font-size:1.5rem;font-weight:500;line-height:1.25}
-  .feature-tile .f-body .kicker{font-size:.75rem;font-weight:400;letter-spacing:.16em;max-width:none}
+  .feature-tile .f-body .kicker{font-size:.75rem;font-weight:400;letter-spacing:.02em;text-transform:none;max-width:none}
   .feature-tile .f-body p{font-size:.95rem;font-weight:400;line-height:1.6}
   .feature-tile .price-note{display:none}
   .feature-tile .f-cta .btn{padding:10px 20px;font-size:.9rem;font-weight:500}
@@ -532,6 +532,12 @@ body.no-hero main{padding-top:64px}
   .hero-cta .btn{font-weight:500}
   .video-card h3{font-weight:500}
   .why-col h3{font-size:1.4rem;font-weight:500}
+  /* ROUND 17 — DJI kickers: title case grey, never all-caps. The HTML
+     already holds Title Case text ("Featured", "Triple-Lens Camera
+     Drone"); the caps came from CSS text-transform:uppercase. This
+     blanket rule catches every other kicker on mobile (detail-hero,
+     cat-tile) at regular weight. */
+  .kicker,.card-cat,.cat-tile .kicker{text-transform:none;letter-spacing:.02em;font-weight:400}
 }
 /* fix-pass additions: category-card WhatsApp pill row, footer social icons,
    drones series strip, support pill row, grey pill. */
