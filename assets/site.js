@@ -15,6 +15,10 @@ if(btn&&nav){btn.addEventListener('click',function(){var o=nav.classList.toggle(
 // scroll reveal
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:.12});
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+// Round 20 -- CGI reveal: cards + category tiles fade/slide in on scroll,
+// same .reveal language as the tiles. Class added by JS only, so without
+// JS the cards stay visible.
+document.querySelectorAll('.card,.cat-tile').forEach(function(el){el.classList.add('reveal');io.observe(el);});
 // video facade: sharp maxresdefault thumbnail; click loads the real player.
 document.querySelectorAll('.video-thumb').forEach(function(t){
   if(!t.dataset.vid)return; // Round 14: self-hosted Shot on cards are plain links, not YouTube facades.
@@ -40,6 +44,53 @@ function akWireShotVideos(){
   });
 }
 window.__akWireShot=akWireShotVideos;
+// Round 20 -- 4K CHUNK LOADER (top-level, so the hero loader AND the
+// detail-hero loader both use it): each 3840x2160 film is split into
+// <=2.8MB part files (assets/<kind>/<key>-p<N>.js, push limit) holding
+// window.__AK_FILM_PARTS['<key>-hero'|'...-detail'][i] base64 pieces.
+// Parts load sequentially and are assembled into one base64 string;
+// `done` gets it, `fail` runs if any part is missing/broken.
+function akLoadFilm(key,kind,parts,base,done,fail){
+  var idx=0;
+  (function next(){
+    if(idx>=parts){
+      var P=(window.__AK_FILM_PARTS||{})[key+'-'+kind]||{},b='';
+      for(var i=0;i<parts;i++){b+=P[i]||'';}
+      if(b){done(b);}else{fail();}
+      return;
+    }
+    var s=document.createElement('script');
+    s.src=base+key+'-p'+(idx+1)+'.js';
+    idx++;
+    s.onload=next;
+    s.onerror=function(){fail();};
+    document.head.appendChild(s);
+  })();
+}
+// Round 20 -- 4K DETAIL HEROES: each product page's
+// <video class="detail-hero-video" data-film="..."> gets its 4K film from
+// the chunk files; the poster shows until the film plays. The assets base
+// is derived from this script's own src, so it works from any page depth.
+(function(){
+  var vids=document.querySelectorAll('video.detail-hero-video[data-film]');
+  if(!vids.length)return;
+  var parts={air3s:2,mavic3pro:7,mini3pro:3,mini4pro:7}; // detail parts (manifest)
+  var base='assets/';
+  var ss=document.getElementsByTagName('script');
+  for(var i=0;i<ss.length;i++){var s=ss[i].getAttribute('src')||'';if(s.indexOf('site.js')>=0){base=s.slice(0,s.lastIndexOf('/')+1);break;}}
+  vids.forEach(function(v){
+    var key=v.getAttribute('data-film');
+    akLoadFilm(key,'detail',parts[key]||1,base+'detail-film-4k/',function(b64){
+      try{
+        var bin=atob(b64),arr=new Uint8Array(bin.length);
+        for(var j=0;j<bin.length;j++){arr[j]=bin.charCodeAt(j);}
+        v.src=URL.createObjectURL(new Blob([arr],{type:'video/mp4'}));
+        v.addEventListener('playing',function(){v.classList.add('playing');});
+        var p=v.play();if(p&&p.catch){p.catch(function(){});}
+      }catch(_){}
+    },function(){});
+  });
+})();
 // lightbox (product photo)
 var lb=document.getElementById('lightbox');
 function openLB(src,alt){if(!lb)return;lb.querySelector('img').src=src;lb.querySelector('img').alt=alt||'';lb.classList.add('open');document.body.style.overflow='hidden';}
@@ -117,10 +168,8 @@ if(hc){
   // plays (hero-film-on fires on the video 'playing' event, never on a
   // timer). Reduced-motion users get the poster still.
   var hReduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // Round 15 -- MOBILE FILMS: phones (<=720px) get the 640x360 variants
-  // (hero-film-{key}-m.js, ~80% smaller) so first motion arrives in ~10s
-  // on a ~10 KB/s connection instead of ~60s; desktops keep the 720p films.
-  var hIsMobile=window.matchMedia&&window.matchMedia('(max-width: 720px)').matches;
+  // Round 20 -- 4K serves every screen: one 3840x2160 film per product
+  // (the old 640x360 mobile variants are retired; the boss ordered 4K).
   var hVideos={};   // slide index -> <video> element
   var hBlobUrls={}; // film key -> blob: URL (built once per film)
   window.__akHeroVideos=hVideos; // debug handle: harness reads state via this
@@ -247,16 +296,31 @@ if(hc){
     if(ix>=0)hFilmQueue.splice(ix,1);
     hFilmQueue.unshift(key);
   }
+  // Round 20 -- 4K: the queue advances ONLY when a film has arrived (or
+  // failed) -- never on a loader's onload, because a chunk loader's onload
+  // fires before its parts land. __heroFilmArrived wires the video;
+  // __heroFilmFailed marks the slide as poster-fallback so one dead film
+  // can never freeze the carousel.
+  var hFilmParts={air3s:2,mavic3pro:4,mini3pro:2,mini4pro:4}; // hero parts (manifest)
+  window.__heroFilmFailed=function(key){hFilmFailed[key]=1;hMaybeAdvance();};
   function hLoadNextFilm(){
     if(hFilmLoading)return;
     var key=hFilmQueue.shift();
     if(!key)return;
     hFilmLoading=key;
-    var sc=document.createElement('script');
-    sc.src='assets/hero-film-'+key+(hIsMobile?'-m':'')+'.js';
-    sc.onload=function(){hFilmLoaded[key]=1;hFilmLoading=null;if(hFilmsDone()){hLoadBelowfoldImages();}hLoadNextFilm();};
-    sc.onerror=function(){hFilmFailed[key]=1;hFilmLoading=null;hMaybeAdvance();if(hFilmsDone()){hLoadBelowfoldImages();}hLoadNextFilm();};
-    document.head.appendChild(sc);
+    akLoadFilm(key,'hero',hFilmParts[key]||1,'assets/hero-film-4k/',function(b64){
+      window.__HERO_FILMS=window.__HERO_FILMS||{};
+      window.__HERO_FILMS[key]=b64;
+      hFilmLoaded[key]=1;hFilmLoading=null;
+      if(window.__heroFilmArrived)window.__heroFilmArrived(key);
+      if(hFilmsDone()){hLoadBelowfoldImages();}
+      hLoadNextFilm();
+    },function(){
+      hFilmFailed[key]=1;hFilmLoading=null;
+      if(window.__heroFilmFailed)window.__heroFilmFailed(key);
+      if(hFilmsDone()){hLoadBelowfoldImages();}
+      hLoadNextFilm();
+    });
   }
   (function(){
     var order=[];
@@ -319,9 +383,24 @@ if(hc){
   window.addEventListener('scroll',function(){if(!hTimer){hStart();}},{passive:true});
   document.addEventListener('visibilitychange',function(){if(document.hidden){hStop();}else{hStart();hFilm();}});
   hGo(0);hStart();
+  // Round 20 -- hero parallax (CGI feel): the playing film drifts down
+  // slower than the page scroll. Only the film (it has no CSS animation);
+  // the poster keeps its kb-zoom and sits behind, so no gap ever shows.
+  // Reduced-motion: off.
+  if(!hReduced){
+    var hParTicking=false;
+    function hParallax(){
+      hParTicking=false;
+      var y=window.scrollY||0;
+      var off=y>330?40:Math.round(y*0.12);
+      var vs=hc.querySelectorAll('video.hero-video');
+      for(var i=0;i<vs.length;i++){vs[i].style.transform='translateY('+off+'px)';}
+    }
+    window.addEventListener('scroll',function(){if(!hParTicking){hParTicking=true;requestAnimationFrame(hParallax);}},{passive:true});
+  }
 }
-// films carousel: centre card ~1230px, side cards peeking, ‹ › arrows,
-// dot indicators below (DJI "Shot on").
+// films carousel: FULL-BLEED films (DJI "Shot on"), ‹ › arrows at
+// mid-height on the video edges, dash indicators below.
 var fc=document.getElementById('filmsCarousel');
 if(fc){
   var fTrack=fc.querySelector('.films-track');
@@ -332,11 +411,12 @@ if(fc){
   fCards.forEach(function(c,i){var d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Go to film '+(i+1));d.addEventListener('click',function(){fGo(i);});fDotsWrap.appendChild(d);});
   fc.appendChild(fDotsWrap);
   var fDots=Array.prototype.slice.call(fDotsWrap.querySelectorAll('button'));
+  // Round 20 -- films FULL-BLEED (DJI): each film fills the whole
+  // carousel width, no peeking side cards; the track slides by exactly
+  // one card width.
   function fLayout(){
-    var cardW=fCards[0].getBoundingClientRect().width+16;
-    var wrapW=fc.getBoundingClientRect().width;
-    var off=(wrapW-fCards[0].getBoundingClientRect().width)/2-fIdx*cardW;
-    fTrack.style.transform='translateX('+off+'px)';
+    var cardW=fCards[0].getBoundingClientRect().width;
+    fTrack.style.transform='translateX('+(-fIdx*cardW)+'px)';
   }
   function fGo(i){fIdx=(i+fCards.length)%fCards.length;fLayout();fDots.forEach(function(d,j){d.classList.toggle('active',j===fIdx);});}
   fc.querySelector('.films-arrow.prev').addEventListener('click',function(){fGo(fIdx-1);});

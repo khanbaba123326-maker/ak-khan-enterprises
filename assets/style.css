@@ -8,7 +8,7 @@ a{color:inherit;text-decoration:none}
 h1,h2,h3{line-height:1.15;font-weight:800;letter-spacing:-.02em}
 h1{font-size:clamp(2.25rem,5.5vw,3.5rem)}
 h2{font-size:clamp(1.9rem,4vw,2.75rem)}
-.kicker{color:var(--mut);text-transform:uppercase;letter-spacing:.22em;font-size:.78rem;font-weight:700}
+.kicker{color:var(--mut);text-transform:none;letter-spacing:.02em;font-size:.78rem;font-weight:400}
 .wrap{max-width:1280px;margin:0 auto;padding:0 20px}
 .sec{padding:72px 0}
 .sec.dark{background:var(--black);color:#fff}
@@ -195,7 +195,10 @@ body.no-hero main{padding-top:64px}
 .hero-slide.active .hero-content{opacity:1;visibility:visible;transition:opacity .6s ease .5s,visibility 0s}
 .hero-slide .hero-content{padding:112px 20px 90px}
 .hero-slide h1{font-size:clamp(2.6rem,5vw,4.4rem);font-weight:200;text-transform:uppercase;letter-spacing:.01em;text-shadow:0 2px 4px rgba(0,0,0,.65),0 2px 22px rgba(0,0,0,.5)}
-.hero-slide .hero-sub{font-size:clamp(1.4rem,2vw,1.75rem);font-weight:700}
+/* Round 20 -- DJI mixed-weight hero title: brand + line bold, model light
+   ("DJI MAVIC" bold, "4 PRO" light), like DJI's own hero. */
+.hero-slide h1 strong{font-weight:700}
+.hero-slide .hero-sub{font-size:clamp(1.4rem,2vw,1.75rem);font-weight:600}
 .hero-slide.strong .hero-overlay{background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.32) 45%,rgba(0,0,0,.6))}
 .hero-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:6;background:none;color:#fff;border:0;width:64px;height:96px;font-size:3.4rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;text-shadow:0 2px 14px rgba(0,0,0,.6);opacity:.9}
 .hero-arrow:hover{opacity:1}
@@ -636,3 +639,40 @@ body.no-hero main{padding-top:64px}
 .scroll-hint{animation:hint-bob 2.2s ease-in-out infinite}
 @keyframes hint-bob{from{transform:translateX(-50%) translateY(0)}to{transform:translateX(-50%) translateY(7px)}}
 @media(prefers-reduced-motion:reduce){.card-img,.feature-tile .f-img,.scroll-hint{animation:none}.card,.field-tile,.cat-tile,.btn{transition:none}}
+/* ROUND 20 -- DJI SAME-TO-SAME: hero list -> centred dashes, films
+   full-bleed, header mobile hamburger-left/logo-centred. Layouts the boss
+   did not ask about are untouched. */
+/* Hero slide list (DJI): centred dashes at the bottom, not a text list.
+   The buttons' text is JS-injected (slide names) and stays as the
+   accessible name; font-size:0 hides it visually. */
+.hero-list{left:50%;transform:translateX(-50%);bottom:26px;flex-direction:row;gap:10px;max-width:calc(100% - 40px);text-align:center}
+.hero-list button{font-size:0;line-height:0;padding:0;width:26px;height:3px;background:rgba(255,255,255,.45);border-radius:2px;text-shadow:none}
+.hero-list button.current{background:#fff;width:38px}
+.hero-list button.current::before{display:none}
+.hero-list button:hover{background:rgba(255,255,255,.85)}
+/* The scroll-hint sat at bottom-centre (bottom:22px), exactly where DJI's
+   dashes now live -- it collided with them. DJI's hero has no scroll
+   hint; the dashes are the bottom-centre element. Already hidden on
+   mobile; hide on desktop too. */
+.hero-carousel .scroll-hint{display:none}
+/* Films FULL-BLEED (DJI "Shot on"): each film fills the whole carousel
+   width edge to edge, no peeking side cards; the caption overlays the
+   video bottom on a scrim instead of sitting in a black band below it. */
+.films-track{gap:0}
+.films-track .video-card{flex:0 0 100%;position:relative}
+.films-track .video-card .v-body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:22px 28px 20px;background:linear-gradient(0deg,rgba(0,0,0,.72),rgba(0,0,0,.3) 62%,rgba(0,0,0,0))}
+.films-track .video-card .v-body h3{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 12px rgba(0,0,0,.75)}
+.films-track .video-card .v-body p{color:#eee;text-shadow:0 1px 2px rgba(0,0,0,.9)}
+.films-track .video-card .v-body a{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.9)}
+.films-arrow{top:50%;transform:translateY(-50%)}
+.films-arrow.prev{left:20px}
+.films-arrow.next{right:20px}
+.films-dots button{width:26px;height:3px;border-radius:2px;background:rgba(255,255,255,.35)}
+.films-dots button.active{background:#fff;width:36px}
+@media(max-width:720px){.films-arrow{display:none}}
+/* Header mobile (DJI): hamburger left, logo centred. */
+@media(max-width:900px){
+.site-header .header-inner{position:relative}
+.site-header .menu-btn{order:-1;margin-left:0}
+.site-header .brand{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+}
