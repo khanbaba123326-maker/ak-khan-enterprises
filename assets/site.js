@@ -81,26 +81,91 @@ if(grid){
   if(sortSel)sortSel.addEventListener('change',applyFilter);
   applyFilter();
 }
-// hero carousel: rotating stills, ~5s autoplay, crossfade, bottom-left
-// prev / current / next slide list; click a list name to jump; pause on
-// real mouse hover only — touch never pauses (see below).
+// hero carousel: DJI's official YouTube films, ~5s autoplay, crossfade,
+// bottom-left prev / current / next slide list; click a list name to
+// jump; pause on real mouse hover only — touch never pauses (see below).
 var hc=document.getElementById('heroCarousel');
 if(hc){
   var hSlides=Array.prototype.slice.call(hc.querySelectorAll('.hero-slide'));
   var hList=hc.querySelectorAll('.hero-list button');
   var hIdx=0,hTimer=null;
-  // Round 10 -- video heroes: play ONLY the active slide's film, pause
-  // the rest (bandwidth + CPU). Muted loop, so play() is always allowed.
-  // Reduced-motion users get the poster still instead of motion.
+  // Round 11 -- YOUTUBE HERO (IFrame API): the ACTIVE slide's player
+  // and the NEXT slide's player are loaded (a 2-player window); the
+  // rest have no src. Preloading the next film while the current slide
+  // plays means each film is already moving when its slide becomes
+  // active. YouTube adapts to the connection, so the films move even
+  // on slow 3G where the 6-12MB CDN mp4s never started. The IFrame API
+  // (not plain embed params) is what kills the player chrome:
+  // unloadModule('captions') removes the subtitle bar that
+  // cc_load_policy=0 did NOT remove, setLoop(true) loops without the
+  // playlist param (so no prev/next playlist buttons), and the iframe
+  // stays transparent until the player fires PLAYING -- so the DJI
+  // poster still, not a black loading screen, is the cover while the
+  // film buffers. Reduced-motion users get the poster still.
   var hReduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function hPlay(){
+  var hPlayers={};
+  var hApiReady=false;
+  function hYtUrl(id){
+    return 'https://www.youtube.com/embed/'+id+'?autoplay=1&mute=1&controls=0&playsinline=1&rel=0&modestbranding=1&cc_load_policy=0&enablejsapi=1';
+  }
+  function hMakePlayer(j){
+    var f=hSlides[j].querySelector('iframe.hero-yt');if(!f||hPlayers[j]||!hApiReady)return;
+    try{
+      hPlayers[j]=new YT.Player(f,{
+        playerVars:{autoplay:1,mute:1,controls:0,disablekb:1,fs:0,playsinline:1,rel:0,modestbranding:1,cc_load_policy:0},
+        events:{
+          onReady:function(e){var q=e.target;q.mute();try{q.setLoop(true);}catch(_){}try{q.unloadModule('captions');}catch(_){}q.playVideo();},
+          onStateChange:function(e){
+            if(e.data===YT.PlayerState.PLAYING){hSlides[j].classList.add('hero-film-on');}
+            else if(e.data===YT.PlayerState.ENDED){e.target.playVideo();}
+          }
+        }
+      });
+    }catch(_){}
+  }
+  function hKillPlayer(j){
+    if(hPlayers[j]){try{hPlayers[j].destroy();}catch(_){}delete hPlayers[j];}
+    hSlides[j].classList.remove('hero-film-on');
+  }
+  // player.destroy() REMOVES the iframe from the DOM, so a slide that
+  // was unloaded must get a fresh iframe when it is loaded again.
+  // The film id lives on the slide (data-yt) for exactly this reason.
+  function hFrame(s){
+    var f=s.querySelector('iframe.hero-yt');
+    if(!f){
+      f=document.createElement('iframe');
+      f.className='hero-yt';
+      f.setAttribute('title',s.dataset.name+' film');
+      f.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
+      f.setAttribute('allowfullscreen','');
+      s.appendChild(f);
+    }
+    return f;
+  }
+  function hFilm(){
     hSlides.forEach(function(s,j){
-      var v=s.querySelector('video');if(!v)return;
-      if(j===hIdx&&!hReduced){var p=v.play();if(p&&p.catch){p.catch(function(){});}}
-      else{v.pause();}
+      var keep=(j===hIdx)||(j===(hIdx+1)%hSlides.length);
+      if(keep&&!hReduced){
+        var f=hFrame(s);
+        if(f.getAttribute('src')!==hYtUrl(s.dataset.yt)){f.src=hYtUrl(s.dataset.yt);}
+        hMakePlayer(j);
+      }else{
+        hKillPlayer(j);
+        var g=s.querySelector('iframe.hero-yt');
+        if(g&&g.getAttribute('src')){g.removeAttribute('src');}
+      }
     });
   }
-  function hPauseAll(){hSlides.forEach(function(s){var v=s.querySelector('video');if(v)v.pause();});}
+  // Load the IFrame API; when ready, build players for the slides that
+  // already have a src. If it never arrives, plain embed autoplay still
+  // plays -- fade the film in after a delay so the hero never sits on
+  // the poster.
+  window.onYouTubeIframeAPIReady=function(){hApiReady=true;hSlides.forEach(function(s,j){var f=s.querySelector('iframe.hero-yt');if(f&&f.getAttribute('src')){hMakePlayer(j);}});};
+  (function(){
+    var sc=document.createElement('script');sc.src='https://www.youtube.com/iframe_api';
+    document.head.appendChild(sc);
+    setTimeout(function(){if(!hApiReady&&!hReduced){hSlides.forEach(function(s,j){if(j===hIdx||j===(hIdx+1)%hSlides.length){s.classList.add('hero-film-on');}});}},8000);
+  })();
   function hGo(i){
     hIdx=(i+hSlides.length)%hSlides.length;
     hSlides.forEach(function(s,j){s.classList.toggle('active',j===hIdx);});
@@ -110,7 +175,7 @@ if(hc){
       hList[1].textContent=hSlides[hIdx].dataset.name;hList[1].dataset.go=hIdx;
       hList[2].textContent=hSlides[next].dataset.name;hList[2].dataset.go=next;
     }
-    hPlay();
+    hFilm();
   }
   function hStart(){hStop();hTimer=setInterval(function(){hGo(hIdx+1);},5000);}
   function hStop(){if(hTimer){clearInterval(hTimer);hTimer=null;}}
@@ -127,7 +192,7 @@ if(hc){
   // pause can never freeze the hero on a phone.
   hc.addEventListener('touchend',hStart,{passive:true});
   window.addEventListener('scroll',function(){if(!hTimer){hStart();}},{passive:true});
-  document.addEventListener('visibilitychange',function(){if(document.hidden){hStop();hPauseAll();}else{hStart();hPlay();}});
+  document.addEventListener('visibilitychange',function(){if(document.hidden){hStop();}else{hStart();hFilm();}});
   hGo(0);hStart();
 }
 // films carousel: centre card ~1230px, side cards peeking, ‹ › arrows,
