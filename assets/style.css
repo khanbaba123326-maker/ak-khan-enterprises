@@ -854,3 +854,78 @@ h2{font-size:clamp(2.4rem,5.5vw,4rem);font-weight:800;letter-spacing:-.03em;line
 .g-dots,.detail-photo-wrap .zoom-hint{display:none}
 @media(max-width:720px){.g-thumb img{width:68px;height:68px}.g-arrow{width:36px;height:44px;font-size:1.7rem}}
 @media(prefers-reduced-motion:reduce){#galleryMain,.detail-photo-wrap>img{animation:none}}
+/* ROUND 26 — DJI "story" detail pages (pilot: Mavic 3 Pro, Ruijie EW300N,
+   Dahua 2MP Dome; 21 Nov). Scoped `body.story` so the other 105 catalogue
+   pages are untouched until rollout. Presentation only: no photo, name,
+   model, price or copy changes — the converter (round26_convert.py) only
+   re-presents existing photos + existing copy.
+   - Hero: product name in large THIN type (DJI), tagline, pill buttons.
+     Hero films are kept (Mavic); still heroes keep their Ken Burns bg.
+   - .story-specs: black six-chip strip (DJI's strip, reused verbatim
+     where the page has one) + intro paragraph.
+   - .story-shot: every own photo big and full-bleed, warm grade + slow
+     Ken Burns. Three treatments:
+       --overlay  scene/dark photos: cover + bottom gradient + white caption
+       --light    white-bg product shots: light #f4f4f4 stage, contain,
+                  caption below in dark text (product fully visible)
+       --contained near-black photos (mean lum <40, >60% pixels <30):
+                  dark stage, contain — NEVER cover, or the frame reads as
+                  an empty black block (Ruijie router-on-black trap).
+     Crop/grade modifiers (boss correction: single-photo pages stay RICH by
+     re-presenting the SAME photo differently — never identical repeats):
+       .story-crop-tight (zoomed, top-weighted), .story-crop-wide
+       (low-weighted), .story-crop-left, .story-grade-warm, .story-grade-soft.
+   - .story-buy: final buy banner — small product photo centred, spec line,
+     price centred, WhatsApp pill centred (DJI's end banner).
+   - Gallery + lightbox are GONE from story pages (converter removes the
+     nodes); the safety-net rule below hides any leftover. Shared site.js
+     gallery code is inert on story pages (guarded by #galleryMain) and is
+     deleted only at full rollout, once zero pages contain a gallery. */
+body.story .detail-hero h1{font-weight:200;font-size:clamp(2.3rem,10.5vw,4rem);letter-spacing:-.01em}
+body.story .detail-hero .tagline{font-weight:500}
+body.story .detail-hero.has-bg{min-height:clamp(600px,88vh,880px)}
+.story-specs{background:#000;color:#fff;text-align:center;padding:0 0 56px}
+.story-spec-strip{display:grid;grid-template-columns:repeat(2,1fr);gap:20px 24px;max-width:960px;margin:0 auto;padding:56px 20px 8px}
+.story-spec{font-size:.95rem;font-weight:600;color:#e8e8e8;line-height:1.45;border-top:1px solid rgba(255,255,255,.18);padding-top:16px}
+.story-intro{max-width:820px;margin:36px auto 0;padding:0 20px;color:#cfcfcf;font-size:1.08rem;line-height:1.75}
+.story-shots{margin:0}
+.story-shot{margin:0;position:relative;overflow:hidden}
+.story-shot img{display:block;width:100%;filter:sepia(.16) saturate(1.08) contrast(1.03) brightness(1.01);animation:story-kb 26s ease-in-out infinite alternate}
+.story-shot figcaption{padding:0 22px}
+.story-shot figcaption h2{font-size:clamp(1.6rem,7vw,2.4rem);font-weight:700;letter-spacing:-.01em;line-height:1.15;margin:0 auto;max-width:26ch}
+.story-shot figcaption p{font-size:1.02rem;line-height:1.7;max-width:56ch;margin:14px auto 0}
+.story-kicker{color:#9a9a9a;text-transform:uppercase;letter-spacing:.16em;font-size:.75rem;font-weight:700;margin:0 0 10px}
+.story-shot--overlay img{height:82vh;object-fit:cover}
+.story-shot--overlay::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 42%,rgba(0,0,0,.78));pointer-events:none}
+.story-shot--overlay figcaption{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:0 22px 36px;text-align:left;color:#fff}
+.story-shot--overlay figcaption h2{margin:0;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.story-shot--overlay figcaption p{color:#e8e8e8;margin:14px 0 0;text-shadow:0 1px 12px rgba(0,0,0,.8)}
+.story-shot--overlay .story-kicker{color:#d6d6d6}
+.story-shot--light{background:#f4f4f4}
+.story-shot--light img{height:60vh;object-fit:contain;padding:28px 16px 0}
+.story-shot--light figcaption{padding:10px 22px 48px;text-align:center;color:#111}
+.story-shot--light figcaption p{color:#425466}
+.story-shot--contained{background:#000}
+.story-shot--contained img{height:56vh;object-fit:contain;padding:28px 16px 0}
+.story-shot--contained figcaption{padding:10px 22px 48px;text-align:center;color:#fff}
+.story-shot--contained figcaption p{color:#cfcfcf}
+.story-crop-tight img{animation-name:story-kb-tight;transform-origin:50% 32%}
+.story-crop-wide img{animation-name:story-kb-wide;transform-origin:50% 78%}
+.story-crop-left img{animation-name:story-kb-left;transform-origin:18% 50%}
+.story-grade-warm img{filter:sepia(.3) saturate(1.14) contrast(1.02) brightness(1.01)}
+.story-grade-soft img{filter:brightness(1.05) saturate(.95) contrast(.99)}
+@keyframes story-kb{from{transform:scale(1)}to{transform:scale(1.06)}}
+@keyframes story-kb-tight{from{transform:scale(1.28)}to{transform:scale(1.38)}}
+@keyframes story-kb-wide{from{transform:scale(1.1)}to{transform:scale(1.17)}}
+@keyframes story-kb-left{from{transform:scale(1.16)}to{transform:scale(1.24)}}
+.story-buy{background:#000;color:#fff;text-align:center;padding:72px 20px 84px;border-top:1px solid #222}
+.story-buy-photo{display:block;max-height:280px;width:auto;max-width:86%;object-fit:contain;margin:0 auto 28px}
+.story-buy h2{font-size:clamp(1.9rem,8vw,2.75rem);font-weight:700;margin-bottom:8px}
+.story-buy-specs{color:#bdbdbd;max-width:60ch;margin:12px auto 0;font-size:1rem}
+.story-buy .price{font-size:1.5rem;margin-top:20px}
+.story-buy .price .was{color:#9a9a9a}
+.story-buy .price-note{color:#c8c8c8}
+.story-buy .detail-actions{margin-top:24px}
+body.story .detail-photo-wrap,body.story #lightbox{display:none!important}
+@media(min-width:721px){.story-spec-strip{grid-template-columns:repeat(3,1fr)}.story-shot--overlay img{height:88vh}.story-shot--light img{height:68vh}}
+@media(prefers-reduced-motion:reduce){.story-shot img{animation:none}}
