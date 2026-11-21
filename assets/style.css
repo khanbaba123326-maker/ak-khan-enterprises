@@ -929,3 +929,47 @@ body.story .detail-hero.has-bg{min-height:clamp(600px,88vh,880px)}
 body.story .detail-photo-wrap,body.story #lightbox{display:none!important}
 @media(min-width:721px){.story-spec-strip{grid-template-columns:repeat(3,1fr)}.story-shot--overlay img{height:88vh}.story-shot--light img{height:68vh}}
 @media(prefers-reduced-motion:reduce){.story-shot img{animation:none}}
+
+/* ROUND 27 — FULL DJI MATCHING (audit-first, one build; 21 Nov 2026).
+   Audit: round27-report.md §2. Appended overrides (loaded last, so they win).
+   Price untouched throughout (boss: price later, matching first). */
+/* A1 — hero names thin on ALL slides: the h1 wraps the brand in <strong>,
+   which renders bold while the rest is weight 200 (DJI: whole name thin). */
+.hero-slide h1 strong{font-weight:200}
+/* A2 — hero taglines thin (DJI): homepage .hero-sub was 600; detail-hero
+   .tagline was 500. */
+.hero-slide .hero-sub{font-weight:300}
+body.story .detail-hero .tagline{font-weight:300}
+/* A4 — hero < > arrows gone (DJI: dashes only). Dashes + auto-advance stay. */
+.hero-arrow{display:none}
+/* B2 + F5 — tile kickers + story kickers normal-case at ALL widths (DJI:
+   grey normal-case). The R17 override lived in a mobile-only media query,
+   so desktop still showed caps. */
+.card-cat,.cat-tile .kicker{text-transform:none;letter-spacing:.02em;font-weight:400}
+.story-kicker{text-transform:none;letter-spacing:.02em}
+/* C1 — films < > arrows gone at all widths (were hidden <=720px only). */
+.films-arrow{display:none}
+/* D1 — drones category series strip: thumbnail picker -> DJI text-link bar. */
+.series-strip{background:#fff;padding:12px 0;border-bottom:1px solid #ececec}
+.series-strip-inner{gap:26px}
+.series-item{flex-direction:row;padding:6px 4px;font-size:.92rem;color:#555}
+.series-item img,.series-item svg{display:none}
+/* E1 — story shots FULL-BLEED (the biggest gap): white renders were
+   letterboxed cards on a #f4f4f4 stage. White stage + natural aspect =
+   white fills edge-to-edge; 82vh cap keeps desktop sane (white-on-white
+   letterbox is invisible). --overlay already cover; --contained untouched
+   (near-black photos stay contain on black — Ruijie trap rule). */
+.story-shot--light{background:#fff}
+.story-shot--light img{height:auto;max-height:82vh;padding:0;object-fit:contain}
+/* E4 — spec intro: at most 2 lines on display (facts stay in markup). */
+.story-intro{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* E5 — buy banner photo: full-bleed white band, not a pasted square.
+   Breaks out of the banner's 72px top / 20px side padding; product fully
+   visible (contain, no crop); white fills edge-to-edge. */
+.story-buy-photo{display:block;width:calc(100% + 40px);max-width:none;height:clamp(240px,38vw,320px);object-fit:contain;background:#fff;margin:-72px -20px 28px}
+/* ROUND 27 FIXUP (verification 21 Nov): .more-link defaults to dark ink
+   (style.css:117), which is invisible on the black films section and on the
+   dark innovation tiles. The WhatsApp links there survive only via inline
+   color:inherit. Force white in both dark contexts. */
+.feature-tile .more-link{color:#fff}
+.films-sec .more-link{color:#fff}
