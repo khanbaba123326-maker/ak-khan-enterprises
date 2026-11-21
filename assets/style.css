@@ -973,3 +973,98 @@ body.story .detail-hero .tagline{font-weight:300}
    color:inherit. Force white in both dark contexts. */
 .feature-tile .more-link{color:#fff}
 .films-sec .more-link{color:#fff}
+
+/* ROUND 28 — DJI-CLEAN TILES + PHOTOS (boss 21 Nov: "ek hi baar mein sab
+   kuch" — every product, every photo as clean as DJI's; text pasted ON
+   photos is gone everywhere). Appended overrides win by order.
+   - Tiles (.card, .feature-tile, .field-tile, .cat-tile): text block on a
+     plain white background ABOVE a clean full-width photo; no scrims, no
+     text-shadows, no colour grade on the photo, no Ken Burns drift on tile
+     photos (drift would overlap the caption below), no price on tiles.
+     Prices are only HIDDEN (display:none); values stay in the markup and
+     on detail pages. Photos, links, WhatsApp URLs unchanged.
+   - Films ("Shot on"): caption moves below the film on black (was
+     overlaid on the video bottom with a scrim).
+   - Story shots --overlay (99 shots, 53 pages): caption moves below the
+     photo on white (was overlaid with a gradient scrim); warm sepia grade
+     off story photos (true colour, like DJI).
+   - Hero bands (homepage + detail) are DJI's own pattern (name over the
+     hero film/photo) and are NOT changed. */
+/* R28-A — product cards (homepage Featured, category grids, related) */
+.card{display:flex;flex-direction:column;background:#fff;color:#111;aspect-ratio:auto;overflow:hidden}
+.card::before,.card::after{display:none}
+.card-img{position:static;order:2;animation:none;overflow:hidden}
+.card-img::after{display:none}
+.card-img img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;filter:none}
+.card-body{position:static;order:1;z-index:auto;display:flex;flex-direction:column;justify-content:flex-start;gap:8px;align-items:flex-start;text-align:left;padding:20px 4px 26px;color:#111;pointer-events:auto}
+.card-top{align-items:flex-start;gap:6px}
+.card-foot{align-items:flex-start;gap:8px}
+.card-cat{color:#767676;font-size:.8rem;font-weight:400;text-transform:none;letter-spacing:.02em;text-shadow:none}
+.card-body h3{color:#111;font-size:1.25rem;font-weight:700;text-shadow:none}
+.card-body h3 a{color:#111}
+.card-body h3 a:hover{color:#555}
+.card-tag{color:#555;font-size:.95rem;opacity:1;text-shadow:none}
+.card .more-link{color:#111;font-weight:600;text-shadow:none}
+.card .more-link:hover{color:#555}
+.card .no-photo{background:#f2f3f5;color:#767676}
+.card .no-photo span{color:#111}
+/* R28-B — feature tiles (homepage Innovation, category feat-banner) */
+.feature-tile{display:flex;flex-direction:column;background:#fff;color:#111;min-height:0;overflow:hidden}
+.feature-tile::before,.feature-tile::after{display:none}
+#innovation .feature-tile::before,#innovation .feature-tile::after{display:none}
+.feature-tile .f-img{position:static;order:2;animation:none;background:#fff;overflow:hidden}
+.feature-tile .f-img img{width:100%;height:auto;filter:none}
+.feature-tile .f-body{position:static;order:1;z-index:auto;min-height:0;max-width:none;justify-content:flex-start;gap:10px;align-items:flex-start;text-align:left;padding:40px 20px 6px}
+.feature-tile .f-top{gap:8px;align-items:flex-start}
+.feature-tile .f-body .kicker{color:#767676;text-shadow:none;font-size:.85rem;max-width:none}
+.feature-tile .f-body h2{font-size:clamp(2rem,5vw,3.25rem);font-weight:800;color:#111;text-shadow:none;line-height:1.05}
+.feature-tile .f-body p{color:#555;text-shadow:none}
+.feature-tile .f-cta{gap:24px;margin-top:8px}
+.feature-tile .more-link{color:#111;text-shadow:none;font-weight:600}
+.feature-tile .more-link:hover{color:#555}
+.feature-tile.wide{min-height:0}
+.feature-tile.wide .f-body{min-height:0;max-width:none;padding:40px 20px 6px}
+.feature-tile.feat-banner{min-height:0}
+.feature-tile.feat-banner .f-body{min-height:0}
+/* R28-C — field tiles (homepage Fields) */
+.field-tile{display:flex;flex-direction:column;background:#fff;color:#111;min-height:0;overflow:hidden}
+.field-tile::after{display:none}
+.field-tile .field-text{width:100%;padding:36px 20px 6px;text-align:center}
+.field-tile h3{color:#111;font-size:clamp(1.35rem,3vw,1.6rem);font-weight:700;text-shadow:none}
+.field-tile p{color:#555;font-size:.98rem;text-shadow:none}
+.field-tile .more-link{color:#111;text-shadow:none;font-weight:600}
+.field-tile .field-img{width:100%;aspect-ratio:16/10;padding:0;background-color:#fff;background-size:cover;background-position:center}
+/* R28-D — category tiles (Related categories) */
+.cat-tile{display:flex;flex-direction:column;background:#fff;color:#111;min-height:0;overflow:hidden}
+.cat-tile::after{display:none}
+.cat-tile .cat-text{padding:28px 20px 6px}
+.cat-tile h3{color:#111;font-size:1.4rem;font-weight:700;text-shadow:none}
+.cat-tile p{color:#555;text-shadow:none}
+.cat-tile .kicker{color:#767676;text-shadow:none}
+.cat-tile .cat-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.cat-tile.wide{min-height:0}
+/* R28-E — "Shot on" films: caption below the film, not on it */
+.films-track .video-card .v-body{position:static;padding:18px 22px 26px;background:#000}
+.films-track .video-card .v-body h3{color:#fff;text-shadow:none}
+.films-track .video-card .v-body p{color:#bbb;text-shadow:none}
+.films-track .video-card .v-body a{color:#fff;text-shadow:none}
+/* R28-F — story shots --overlay: caption below the photo */
+.story-shot--overlay::after{display:none}
+.story-shot--overlay figcaption{position:static;padding:36px 22px 48px;text-align:center;color:#111}
+.story-shot--overlay figcaption h2{margin:0 auto;text-shadow:none}
+.story-shot--overlay figcaption p{color:#425466;margin:14px auto 0;text-shadow:none}
+.story-shot--overlay .story-kicker{color:#767676}
+.story-shot img{filter:none}
+/* R28-G — no price on any tile (values untouched, detail pages keep prices) */
+.card .price,.card .price-note,.feature-tile .price,.feature-tile .price-note,.cat-tile .price,.field-tile .price{display:none}
+/* R28-H — no-photo placeholder keeps its square stage now that .card-img
+   is static (was 1:1 by the old absolute tile); brands-page WhatsApp pill
+   goes black on the now-white card (was white-on-dark, invisible on white). */
+.card .no-photo{aspect-ratio:1/1;height:auto}
+.card .card-cta{justify-content:flex-start;margin-top:4px}
+.card .card-cta .btn-light{background:#000;color:#fff}
+.card .card-cta .btn-light:hover{background:#333}
+/* R28-I — long unbreakable model names must wrap, never clip at the card edge (mobile). The name text lives inside the heading's <a>, so the rule must cover the link too. */
+.card-body h3,.card-body h3 a,.feature-tile .f-body h2,.feature-tile .f-body h2 a,.cat-tile h3,.cat-tile h3 a,.field-tile h3,.field-tile h3 a{overflow-wrap:break-word;word-break:break-word}
+/* R28-J — card headings must be normal wrapping blocks: the -webkit-box line-clamp laid the name out as one unbreakable flex line and clipped it instead of wrapping. */
+.card-body h3{display:block;-webkit-line-clamp:unset;overflow:visible}
