@@ -434,3 +434,60 @@ document.querySelectorAll('[data-compare]').forEach(function(b){
     img.src='https://i.ytimg.com/vi/'+m[1]+'/hqdefault.jpg';
   });
 })();
+
+// Round 29 -- DJI-Store buy layout (product pages only): gallery thumbs,
+// video tab, variant cards, quantity stepper, WhatsApp order link.
+(function(){
+  var buy=document.querySelector('.buy'); if(!buy) return;
+  var mainImg=buy.querySelector('.buy-main-img');
+  var film=buy.querySelector('.buy-film');
+  var thumbs=Array.prototype.slice.call(buy.querySelectorAll('.buy-thumb'));
+  function setActive(btn){thumbs.forEach(function(t){t.classList.toggle('is-active',t===btn);});}
+  function showPhoto(btn){
+    if(film){film.hidden=true;if(film.tagName==='VIDEO'){film.pause();}}
+    if(mainImg){mainImg.hidden=false;mainImg.src=btn.getAttribute('data-src');}
+    setActive(btn);
+  }
+  function showVideo(btn){
+    if(!film)return;
+    if(mainImg){mainImg.hidden=true;}
+    film.hidden=false;
+    if(film.tagName==='VIDEO'){var p=film.play();if(p&&p.catch){p.catch(function(){});}}
+    setActive(btn);
+  }
+  thumbs.forEach(function(t){
+    t.addEventListener('click',function(){
+      if(t.getAttribute('data-kind')==='video'){showVideo(t);}else{showPhoto(t);}
+    });
+  });
+  var orderLink=document.getElementById('waOrder');
+  var qtyEl=document.getElementById('buyQty');
+  var productName=buy.getAttribute('data-name')||'';
+  var productPrice=buy.getAttribute('data-price')||'';
+  function orderText(){
+    var qty=qtyEl?parseInt(qtyEl.textContent,10)||1:1;
+    var v=buy.querySelector('.buy-variant.is-active');
+    var variant=v?v.getAttribute('data-variant'):'';
+    var msg='Assalam-o-Alaikum! I would like to order '+productName;
+    if(variant){msg+=' — '+variant;}
+    msg+='. Quantity: '+qty+'.';
+    if(productPrice){msg+=' Price: '+productPrice+'.';}
+    msg+=' Please confirm the price, availability and delivery.';
+    return msg;
+  }
+  function refreshOrder(){
+    if(orderLink){orderLink.href='https://wa.me/923067000682?text='+encodeURIComponent(orderText());}
+  }
+  var variants=Array.prototype.slice.call(buy.querySelectorAll('.buy-variant'));
+  variants.forEach(function(v){
+    v.addEventListener('click',function(){
+      variants.forEach(function(x){x.classList.toggle('is-active',x===v);});
+      refreshOrder();
+    });
+  });
+  var minus=document.getElementById('qtyMinus'),plus=document.getElementById('qtyPlus');
+  function setQty(n){n=Math.max(1,Math.min(99,n));if(qtyEl){qtyEl.textContent=String(n);}refreshOrder();}
+  if(minus){minus.addEventListener('click',function(){setQty((parseInt(qtyEl.textContent,10)||1)-1);});}
+  if(plus){plus.addEventListener('click',function(){setQty((parseInt(qtyEl.textContent,10)||1)+1);});}
+  refreshOrder();
+})();
