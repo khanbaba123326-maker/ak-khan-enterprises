@@ -1163,3 +1163,55 @@ body.story .detail-hero .tagline{font-weight:300}
 .card-body{flex:1 0 auto}
 @media(max-width:1100px){.grid-fullbleed{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.grid-fullbleed{grid-template-columns:1fr}}
+
+/* ================= Round 35 — beauty polish (23 Nov) =================
+   Boss: "ye ajeeb sa hai ... mobile mein bhi khoobsurat lage" + "video
+   bhi poori aaye aur khoobsurat bhi lage". Fixes: (1) Featured grid can
+   never overflow or cut a card at any width; (2) every film shows its
+   FULL 16:9 frame — no cover-crop anywhere; (3) home hero is a true
+   16:9 window on desktop and a video-on-top / text-below hero on
+   narrow screens; (4) detail photo stage is a true 4:3 frame so the
+   whole product shows with real margins. No prices/products/menu/logo/
+   footer/films/WhatsApp changed. */
+html{overflow-x:clip}
+body{overflow-x:clip}
+.grid-fullbleed{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cat-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card,.card-body{min-width:0}
+@media(max-width:1100px){.grid-fullbleed{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.grid-fullbleed{grid-template-columns:minmax(0,1fr)}}
+/* --- films: full 16:9 frame, never cropped --- */
+.hero-video{object-fit:contain;background:#000}
+/* Round 20 left .hero-list button.current{width:38px} (a dash width) at
+   higher specificity than Round 34's pill width:auto, so the CURRENT tab
+   showed only "DJI" at every width. Restore the full tab name. */
+.hero-list button.current{width:auto}
+@media(min-width:1101px){
+  .hero{aspect-ratio:16/9;min-height:0}
+  .hero-slide{align-items:center}
+  .hero-slide .hero-content{padding:24px 20px 110px}
+}
+/* --- hero on narrow screens: video on top (full 16:9, no crop),
+   headline + tabs below on white. The POSTER holds the 16:9 space in
+   flow and the video overlays it, so the headline never overlaps the
+   poster — even before the JS creates the video element. --- */
+@media(max-width:1100px){
+  .hero{display:block;min-height:0;background:#fff}
+  .hero-slide{position:relative;display:none;opacity:1;background:#fff}
+  .hero-slide.active{display:block}
+  .hero-slide .hero-poster{position:relative;inset:auto;width:100%;height:auto;aspect-ratio:16/9}
+  .hero-slide .hero-video{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain}
+  .hero-slide .hero-overlay{display:none}
+  .hero-slide .hero-content{position:static;opacity:1;visibility:visible;color:#111;padding:26px 20px 10px;text-align:center}
+  .hero-slide h1{color:#111;text-shadow:none}
+  .hero-slide .hero-sub{color:#444;text-shadow:none}
+  .hero-slide .hero-cta .btn{color:#111;border-color:#111;text-shadow:none}
+  .hero-slide .hero-cta .btn:hover{background:#f2f3f5;text-decoration:none}
+  .hero-list{position:static;transform:none;margin:16px auto 0;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:8px;max-width:calc(100% - 32px);padding-bottom:28px}
+  .hero-list button{background:#f2f3f5;color:#111;border:1px solid #e4e6e8;text-shadow:none;border-radius:999px;padding:7px 12px;overflow:visible;max-width:none}
+  .hero-list button.current{background:#111;color:#fff;border-color:#111}
+  .hero-list button.current::before{display:none}
+  .hero-arrow{display:none}
+  .scroll-hint{display:none}
+}
