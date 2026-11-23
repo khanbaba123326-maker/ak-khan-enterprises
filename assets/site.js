@@ -12,6 +12,29 @@ headerState();
 // mobile menu
 var btn=document.getElementById('menuBtn'),nav=document.getElementById('mainNav');
 if(btn&&nav){btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false');});}
+// Round 53 -- Shop/Brands mega-menu on mobile tap: desktop opens on
+// hover/focus via CSS, but touch has no hover and the mobile CSS hid the
+// menu outright. Tap toggles .open on the button's own .nav-item; opening
+// one closes the other; tap outside the nav or Escape closes both.
+var megaBtns=document.querySelectorAll('.nav-item.has-mega>button.nav-link');
+megaBtns.forEach(function(b){
+  b.addEventListener('click',function(e){
+    e.stopPropagation();
+    var item=b.parentElement,was=item.classList.contains('open');
+    megaBtns.forEach(function(x){x.parentElement.classList.remove('open');x.setAttribute('aria-expanded','false');});
+    if(!was){item.classList.add('open');b.setAttribute('aria-expanded','true');}
+  });
+});
+document.addEventListener('click',function(e){
+  if(!e.target.closest||!e.target.closest('#mainNav')){
+    megaBtns.forEach(function(x){x.parentElement.classList.remove('open');x.setAttribute('aria-expanded','false');});
+  }
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    megaBtns.forEach(function(x){x.parentElement.classList.remove('open');x.setAttribute('aria-expanded','false');});
+  }
+});
 // scroll reveal
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:.12});
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});

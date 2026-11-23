@@ -449,7 +449,13 @@ body.no-hero main{padding-top:64px}
   .cat-banner{height:260px}
   .support-hero{height:420px}
   .footer-inner{grid-template-columns:1fr 1fr}
-  .mega-menu{display:none!important}
+  /* Round 53 -- mega-menu on mobile is an accordion inside the opened nav,
+     shown only when its .nav-item carries .open (set by the tap handler in
+     site.js). Hover/focus alone must NOT open it here: on touch a tap leaves
+     focus behind, which would pop the menu up as a floating panel. */
+  .nav-item:hover .mega-menu,.nav-item:focus-within .mega-menu{display:none}
+  .nav-item.open .mega-menu{display:block;position:static;transform:none;width:auto;box-shadow:none;padding:8px 0 4px}
+  .nav-item.open .mega-menu .mega-col{border-left:0;padding:6px 0}
   .menu-btn{display:block}
   .main-nav{display:none;position:absolute;top:100%;left:0;right:0;background:#000;flex-direction:column;align-items:stretch;padding:10px 20px 20px}
   .site-header.solid .main-nav{background:#fff}
