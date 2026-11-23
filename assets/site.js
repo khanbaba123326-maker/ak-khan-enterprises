@@ -117,7 +117,7 @@ if(grid){
   applyFilter();
 }
 // hero carousel: DJI's official YouTube films, ~5s autoplay, crossfade,
-// bottom-left prev / current / next slide list; click a list name to
+// fixed 4-tab list (one tab per slide, static names); click a tab name to
 // jump; pause on real mouse hover only — touch never pauses (see below).
 var hc=document.getElementById('heroCarousel');
 if(hc){
@@ -238,12 +238,11 @@ if(hc){
     hIdx=(i+hSlides.length)%hSlides.length;
     hLastGo=Date.now();
     hSlides.forEach(function(s,j){s.classList.toggle('active',j===hIdx);});
-    var prev=(hIdx-1+hSlides.length)%hSlides.length,next=(hIdx+1)%hSlides.length;
-    if(hList.length===3){
-      hList[0].textContent=hSlides[prev].dataset.name;hList[0].dataset.go=prev;
-      hList[1].textContent=hSlides[hIdx].dataset.name;hList[1].dataset.go=hIdx;
-      hList[2].textContent=hSlides[next].dataset.name;hList[2].dataset.go=next;
-    }
+    // Round 34 -- FIXED hero tabs: one button per slide, static names +
+    // data-go in the markup. hGo only marks which tab is current; it never
+    // rewrites a tab's text or target, so a label can never slide under the
+    // cursor and a click can never land on the wrong slide.
+    hList.forEach(function(b,j){b.classList.toggle('current',j===hIdx);b.setAttribute('aria-selected',j===hIdx?'true':'false');});
     hFilm();
   }
   // Load the film scripts SEQUENTIALLY, active slide first: on a slow
@@ -385,9 +384,11 @@ if(fc){
   // Round 20 -- films FULL-BLEED (DJI): each film fills the whole
   // carousel width, no peeking side cards; the track slides by exactly
   // one card width.
+  // Round 34 -- percentage translate: each film is exactly 100% of the
+  // carousel width, so -100% per index can never leave a sliver of the
+  // next film peeking through (measured px could, on fractional widths).
   function fLayout(){
-    var cardW=fCards[0].getBoundingClientRect().width;
-    fTrack.style.transform='translateX('+(-fIdx*cardW)+'px)';
+    fTrack.style.transform='translateX('+(-fIdx*100)+'%)';
   }
   function fGo(i){fIdx=(i+fCards.length)%fCards.length;fLayout();fDots.forEach(function(d,j){d.classList.toggle('active',j===fIdx);});}
   fc.querySelector('.films-arrow.prev').addEventListener('click',function(){fGo(fIdx-1);});

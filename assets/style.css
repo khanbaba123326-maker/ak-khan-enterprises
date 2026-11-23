@@ -1120,3 +1120,46 @@ body.story .detail-hero .tagline{font-weight:300}
   .buy-grid{grid-template-columns:minmax(0,1fr);gap:26px}
   .buy-gallery{position:static}
 }
+
+/* ================= Round 34 — home-page fixes (23 Nov) =================
+   2. Hero tabs: fixed 4-tab list with VISIBLE static names (Round 20 hid
+      the names as dashes and site.js rewrote them on every advance, so
+      labels shifted under the cursor and clicks landed on the wrong slide).
+      Pills on desktop; compact pills above the arrows on mobile.
+   4. Brands mega-menu: 16 brand columns in 5-col rows; capped height with
+      its own scroll so the panel can never run past the viewport.
+   5. CTA band: static (no .reveal on the element any more) + clear
+      line-height and spacing so lines can never collide.
+   6. Section heads: opacity-only reveal (no translate), faster .45s —
+      the translateY fade ghosted/doubled the big headings while scrolling.
+   7. Featured cards: 3 cols desktop / 2 tablet / 1 mobile; photo 4/3
+      contain on white with an 18px margin so the WHOLE product is always
+      visible, never cropped; no Ken Burns, no hover zoom on card photos;
+      text block flexes so photos align across a row (uniform cards). */
+/* 2 — hero tabs */
+.hero-list{left:50%;transform:translateX(-50%);bottom:26px;flex-direction:row;flex-wrap:wrap;justify-content:center;gap:8px;max-width:calc(100% - 40px);text-align:center}
+.hero-list button{font-size:.8rem;line-height:1.3;padding:7px 12px;width:auto;height:auto;background:rgba(0,0,0,.38);border:1px solid rgba(255,255,255,.4);border-radius:999px;color:rgba(255,255,255,.92);text-shadow:0 1px 3px rgba(0,0,0,.9);white-space:nowrap}
+.hero-list button.current{background:#fff;color:#111;font-weight:700;border-color:#fff;text-shadow:none}
+.hero-list button.current::before{display:none}
+.hero-list button:hover{background:rgba(255,255,255,.9);color:#111;text-shadow:none}
+@media(max-width:720px){
+  .hero-list{left:50%;transform:translateX(-50%);bottom:56px;gap:4px;max-width:calc(100% - 32px)}
+  .hero-list button{font-size:10px;padding:4px 7px}
+}
+/* 4 — brands mega-menu scroll guard */
+.mega-menu.brands-menu{max-height:calc(100vh - 96px);overflow-y:auto}
+/* 5 — CTA band spacing */
+.cta-band p{line-height:1.6;margin-bottom:22px}
+.cta-band .btn{display:inline-block;margin-top:8px}
+.cta-band .cta-addr{margin-top:18px;margin-bottom:0}
+/* 6 — section heads: opacity-only reveal */
+.sec-head.reveal{opacity:0;transform:none;transition:opacity .45s ease}
+.sec-head.reveal.visible{opacity:1;transform:none}
+/* 7 — featured cards */
+.grid-fullbleed{grid-template-columns:repeat(3,1fr)}
+.card-img{background:#fff;animation:none}
+.card-img img{width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;object-position:center;background:#fff;padding:18px;filter:none}
+.card:hover .card-img img{transform:none}
+.card-body{flex:1 0 auto}
+@media(max-width:1100px){.grid-fullbleed{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.grid-fullbleed{grid-template-columns:1fr}}
