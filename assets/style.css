@@ -1181,6 +1181,10 @@ body{overflow-x:clip}
 .card,.card-body{min-width:0}
 @media(max-width:1100px){.grid-fullbleed{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:720px){.grid-fullbleed{grid-template-columns:minmax(0,1fr)}}
+/* Round 35b — showcase counts use .count, NOT .price: Round 28 hides
+   .price on all tiles BY DESIGN (values stay in markup + detail pages),
+   so a count in .price would be invisible. .count shows dark + bold. */
+.card .count{font-size:1.3rem;font-weight:800;color:#111}
 /* --- films: full 16:9 frame, never cropped --- */
 .hero-video{object-fit:contain;background:#000}
 /* Round 20 left .hero-list button.current{width:38px} (a dash width) at
