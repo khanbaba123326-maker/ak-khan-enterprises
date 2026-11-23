@@ -1219,3 +1219,29 @@ body{overflow-x:clip}
   .hero-arrow{display:none}
   .scroll-hint{display:none}
 }
+
+/* ================= Round 36 — uniform premium cards + hero fits first screen (23 Nov) =================
+   Boss (16:23): category section "aur bhi pyara" — a deliberate premium showcase; home page lovely,
+   nothing looking bad anywhere. (1) ONE uniform card style in Featured + Shop by Category: white
+   card, soft even shadow, 16px radius, hairline border, same padding everywhere. The old "middle
+   column carded, outer flat" look came from the card IMAGES' own grey backdrops (IMOU's canvas was
+   a 245-254 grey gradient; Hikvision's lower half a light-grey floor) — card CSS was identical for
+   all cards. Card images are now all reframed to pure-white 1200x900, product centred, longest
+   side 84%, bottoms aligned at 92%, so every photo reads the same size. (2) Hero capped so the
+   full 16:9 video + tabs fit a normal laptop viewport. (3) Cards a touch shorter via tighter text
+   spacing. Prices/products/counts/links/menu/logo/footer/films/WhatsApp untouched. */
+#featured .card, #catshow .card{
+  background:#fff;border:1px solid #ececec;border-radius:16px;
+  box-shadow:0 10px 28px rgba(0,0,0,.08);
+}
+#featured .card:hover, #catshow .card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.13)}
+#featured .card-img, #catshow .card-img{background:#fff}
+#featured .card-img img, #catshow .card-img img{padding:14px}
+#featured .card-body, #catshow .card-body{padding:16px 16px 18px;gap:6px}
+#featured .card-top, #catshow .card-top{gap:5px}
+#featured .card-foot, #catshow .card-foot{gap:6px}
+#featured .sec-head, #catshow .sec-head{margin-bottom:32px}
+#catshow .card-body h3{font-size:1.35rem}
+@media(min-width:1101px){
+  body.home .hero{aspect-ratio:auto;height:min(56.25vw,calc(100vh - 64px));min-height:0}
+}
