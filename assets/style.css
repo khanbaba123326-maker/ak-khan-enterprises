@@ -1205,13 +1205,18 @@ body{overflow-x:clip}
    Poster + video are now 78svh tall, so the media panel fills ~78% of
    the phone screen; the video stays contain (full frame, no crop) on a
    transparent background, so the poster (cover, as on desktop) shows
-   around the frame instead of black bars. --- */
+   around the frame instead of black bars.
+   Round 52 (24 Nov): R51's contain left the 16:9 frame a 219px strip
+   inside the tall panel, poster bleeding around it — looked broken.
+   The video is now cover, so it FILLS the 78svh panel; the frame's
+   sides are cut on narrow screens (the drone is centre-frame in all
+   4 films, so it stays visible). Poster stays cover behind. --- */
 @media(max-width:1100px){
   .hero{display:block;min-height:0;background:#fff}
   .hero-slide{position:relative;display:none;opacity:1;background:#fff}
   .hero-slide.active{display:block}
   .hero-slide .hero-poster{position:relative;inset:auto;width:100%;height:78vh;height:78svh}
-  .hero-slide .hero-video{position:absolute;top:0;left:0;width:100%;height:78vh;height:78svh;object-fit:contain;background:transparent}
+  .hero-slide .hero-video{position:absolute;top:0;left:0;width:100%;height:78vh;height:78svh;object-fit:cover;background:transparent}
   .hero-slide .hero-overlay{display:none}
   .hero-slide .hero-content{position:static;opacity:1;visibility:visible;color:#111;padding:26px 20px 10px;text-align:center}
   .hero-slide h1{color:#111;text-shadow:none}
