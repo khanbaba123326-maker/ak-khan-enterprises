@@ -1242,6 +1242,26 @@ body{overflow-x:clip}
 #featured .card-foot, #catshow .card-foot{gap:6px}
 #featured .sec-head, #catshow .sec-head{margin-bottom:32px}
 #catshow .card-body h3{font-size:1.35rem}
+
+/* ================= Round 37 — hero big again + tabs overlaid; uniform photo sizes (23 Nov) =================
+   Boss (16:40): the R36 hero cap made the home video SMALL on his PC — revert the cap, video back to
+   FULL-WIDTH big; tabs OVERLAID on the video bottom (classic DJI hero) so both big video + visible tabs.
+   Live check R36 (16:41): R36's uniform 1200x900 canvases did NOT equalise visual size (drone 479x215 vs
+   TV 357x361 vs speaker 241x355) — products have different shapes, so contain-fit in a 4:3 frame renders
+   different heights. Fix: each card photo reframed to its OWN aspect (product ~88% of both dims) in a
+   fixed-height photo area (aspect 2/1), so every product renders at the same height; Category cards same
+   height as Featured (foot on one row + same h3 size). Prices/products/counts/links/menu/logo/footer/
+   films/WhatsApp untouched.
+4. CARD HEIGHTS (mobile): the Hikvision card tag was 50 chars and wrapped
+   to 2 lines at 390px, making that card 23px taller than its siblings
+   (355 vs 332). Tag shortened to '5MP outdoor bullet camera for walls,
+   gates.' (42 chars, 1 line at 390) — same meaning, outdoor kept. The
+   detail-page highlight keeps the full wording. */
 @media(min-width:1101px){
-  body.home .hero{aspect-ratio:auto;height:min(56.25vw,calc(100vh - 64px));min-height:0}
+  .hero-carousel::after{content:"";position:absolute;left:0;right:0;bottom:0;height:190px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.5));z-index:4;pointer-events:none}
+  .hero-list{bottom:150px}
 }
+#featured .card-img img, #catshow .card-img img{aspect-ratio:2/1;object-fit:contain;padding:8px}
+#featured .card-body h3{font-size:1.35rem}
+#catshow .card-foot{flex-direction:row;justify-content:space-between;align-items:baseline}
+#featured .card-foot, #catshow .card-foot{min-height:28px}
