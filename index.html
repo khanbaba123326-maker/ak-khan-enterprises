@@ -517,7 +517,7 @@
    on a slow connection, so the cadence is ~6s, not exactly 6s. */
 (function(){var o=window.setInterval;window.setInterval=function(f,d){if(d===5000&&typeof f==='function'&&String(f).indexOf('hTryAdvance')>=0){d=6000;}var a=Array.prototype.slice.call(arguments);a[1]=d;return o.apply(this,a);};})();
 </script>
-<script src="assets/site.js?v=28"></script>
+<script src="assets/site.js?v=50"></script>
 <script>
 /* AK reveal fail-safe (Round 30): the site's .reveal system needs JS + an
    observer. No-JS is covered by the <noscript> style in <head>. If the

@@ -124,39 +124,32 @@ if(hc){
   var hSlides=Array.prototype.slice.call(hc.querySelectorAll('.hero-slide'));
   var hList=hc.querySelectorAll('.hero-list button');
   var hIdx=0,hTimer=null,hLastGo=Date.now(),hPending=-1;
-  // Round 12 -- SELF-HOSTED HERO FILMS (Round 21: native resolution,
-  // 2560x1440 -- Mini 3 Pro 1920x1080 -- no audio) as base64 chunks in
-  // assets/hero-film/<key>-p<N>.js (same origin as the site). No external CDN, no
-  // YouTube dependency. Round 10's 6-12MB CDN mp4s never started on a
-  // slow connection (Slow 3G repro: readyState 0, currentTime 0 after
-  // 18s, proxy up) and Round 11's YouTube films never started on the
-  // boss's machine at all (YT-blocked repro: no API, no players, poster
-  // still on every slide) -- both showed a still poster. Small same-origin
-  // files + preload="auto" + autoplay + play() on canplay mean the film
-  // actually moves. The DJI poster stays the cover until a video really
-  // plays (hero-film-on fires on the video 'playing' event, never on a
-  // timer). Reduced-motion users get the poster still.
+  // Round 50 -- PROGRESSIVE MP4s: the films are real files now
+  // (assets/videos/<key>.mp4 -- the original masters, no re-encode,
+  // faststart moov-first). A <video src> starts playing after a few
+  // hundred KB buffer instead of waiting for the whole 2.5-7MB base64
+  // download + decode, so the hero moves on a slow phone connection.
+  // (The base64 chunks are why the hero NEVER started on the boss's
+  // phone: the video stayed opacity:0 until 'playing', and 'playing'
+  // could not fire until every chunk had downloaded.) The DJI poster
+  // stays the cover until a video really plays (hero-film-on fires on
+  // the video 'playing' event, never on a timer). Reduced-motion users
+  // get the poster still. The base is derived from this script's own
+  // src (same trick as the detail loader) so the URL works from any
+  // page depth; on the homepage it is simply assets/videos/<key>.mp4.
   var hReduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Round 21 -- NATIVE RES serves every screen: one film per product at
   // its native resolution (2560x1440; Mini 3 Pro 1920x1080). Round 20's
   // 3840 "4K" files were upscales of these same masters, so native is the
   // same picture ~35% lighter and starts sooner on slow connections.
   var hVideos={};   // slide index -> <video> element
-  var hBlobUrls={}; // film key -> blob: URL (built once per film)
   window.__akHeroVideos=hVideos; // debug handle: harness reads state via this
-  function hB64ToBlob(b64){
-    var bin=atob(b64),len=bin.length,arr=new Uint8Array(len);
-    for(var i=0;i<len;i++){arr[i]=bin.charCodeAt(i);}
-    return new Blob([arr],{type:'video/mp4'});
-  }
+  var hAssetsBase='assets/';
+  (function(){var ss=document.getElementsByTagName('script');for(var i=0;i<ss.length;i++){var s=ss[i].getAttribute('src')||'';if(s.indexOf('site.js')>=0){hAssetsBase=s.slice(0,s.lastIndexOf('/')+1);break;}}})();
   function hFilmUrl(key){
-    if(hBlobUrls[key])return hBlobUrls[key];
-    var F=window.__HERO_FILMS||{};
-    if(!F[key])return null;
-    try{hBlobUrls[key]=URL.createObjectURL(hB64ToBlob(F[key]));}catch(_){return null;}
-    return hBlobUrls[key];
+    return hAssetsBase+'videos/'+key+'.mp4';
   }
-  window.__akFilmUrl=hFilmUrl; // Round 14: Shot on cards share the hero films' blob URLs.
+  window.__akFilmUrl=hFilmUrl; // Round 14: Shot on cards share the hero films' URLs.
   function hPlayVideo(j){
     var v=hVideos[j];if(!v)return;
     if(v.readyState>=2){var p=v.play();if(p&&p.catch){p.catch(function(){});}}
@@ -198,7 +191,7 @@ if(hc){
     v.className='hero-video';
     v.muted=true;v.loop=true;v.playsInline=true;v.preload='auto';v.autoplay=true;
     v.setAttribute('aria-hidden','true');
-    v.addEventListener('playing',function(){s.classList.add('hero-film-on');hMaybeAdvance();});
+    v.addEventListener('playing',function(){s.classList.add('hero-film-on');hLoadBelowfoldImages();hMaybeAdvance();});
     v.addEventListener('canplay',function(){if(j===hIdx||j===(hIdx+1)%hSlides.length){hPlayVideo(j);}});
     // Insert BEFORE the overlay/text so the video sits under them
     // (z-index 0, same as the poster) and never covers the copy.
@@ -208,11 +201,11 @@ if(hc){
     hVideos[j]=v;
     if(j===hIdx){hPlayVideo(j);}
   }
-  // A film script calls this the moment its base64 lands (film scripts
-  // are deferred, so they run after this file). Also wired on every
-  // slide change, so a late-arriving film is used as soon as it can be.
+  // Round 50 -- with progressive MP4s there is no film script to wait
+  // for: a film is "arrived" the moment its URL is known. Wiring stays
+  // lazy (hFilm wires only the current + next slide) so a slow pipe is
+  // never split four ways at once.
   window.__heroFilmArrived=function(key){
-    hSlides.forEach(function(s,j){if(s.dataset.film===key){hWireVideo(j);}});
     hFilm();
     hMaybeAdvance();
   };
@@ -245,16 +238,11 @@ if(hc){
     hList.forEach(function(b,j){b.classList.toggle('current',j===hIdx);b.setAttribute('aria-selected',j===hIdx?'true':'false');});
     hFilm();
   }
-  // Load the film scripts SEQUENTIALLY, active slide first: on a slow
-  // connection, parallel downloads share the pipe and NO film finishes
-  // for minutes (probe: Slow 3G, 60s, zero films landed); sequential
-  // loading gets the active slide's film first so the hero starts
-  // moving as soon as possible, then the rest follow in slide order.
-  // Round 13: the queue is a live list -- a manual jump to a film that
-  // has not loaded yet (hQueueFilmFirst) moves that film to the FRONT,
-  // so a tap never waits behind films the user did not ask for. A film
-  // that fails to load is marked failed (hFilmFailed) so its slide
-  // falls back to its poster instead of freezing the carousel.
+  // Round 50 -- the queue is kept (active slide first, then the next)
+  // and a manual jump still moves its film to the FRONT (hQueueFilmFirst),
+  // but nothing is downloaded here any more: the MP4 URL is known at
+  // once, so each film is marked loaded in turn and the <video> elements
+  // are wired lazily by hFilm (current + next slide only).
   var hFilmQueue=[],hFilmLoading=null,hFilmLoaded={};
   function hQueueFilm(key){
     if(!key||hFilmLoaded[key]||hFilmLoading===key||hFilmQueue.indexOf(key)>=0)return;
@@ -266,31 +254,23 @@ if(hc){
     if(ix>=0)hFilmQueue.splice(ix,1);
     hFilmQueue.unshift(key);
   }
-  // Round 21 -- native-res: the queue advances ONLY when a film has arrived (or
-  // failed) -- never on a loader's onload, because a chunk loader's onload
-  // fires before its parts land. __heroFilmArrived wires the video;
-  // __heroFilmFailed marks the slide as poster-fallback so one dead film
-  // can never freeze the carousel.
-  var hFilmParts={air3s:1,mavic3pro:3,mini3pro:1,mini4pro:3}; // Round 21 native-res hero parts (manifest)
   window.__heroFilmFailed=function(key){hFilmFailed[key]=1;hMaybeAdvance();};
+  // Round 50 -- no base64 download any more: the film URL is known
+  // immediately, so a film is "loaded" the moment its turn comes.
+  // Below-fold images are NOT released here any more (they used to wait
+  // for all films to land); they load on first hero motion instead
+  // (see the 'playing' listener) or on first scroll, so the hero
+  // keeps the slow pipe first. Reduced-motion users never play a
+  // film, so their below-fold images load at once.
   function hLoadNextFilm(){
     if(hFilmLoading)return;
     var key=hFilmQueue.shift();
     if(!key)return;
     hFilmLoading=key;
-    akLoadFilm(key,'hero',hFilmParts[key]||1,'assets/hero-film/',function(b64){
-      window.__HERO_FILMS=window.__HERO_FILMS||{};
-      window.__HERO_FILMS[key]=b64;
-      hFilmLoaded[key]=1;hFilmLoading=null;
-      if(window.__heroFilmArrived)window.__heroFilmArrived(key);
-      if(hFilmsDone()){hLoadBelowfoldImages();}
-      hLoadNextFilm();
-    },function(){
-      hFilmFailed[key]=1;hFilmLoading=null;
-      if(window.__heroFilmFailed)window.__heroFilmFailed(key);
-      if(hFilmsDone()){hLoadBelowfoldImages();}
-      hLoadNextFilm();
-    });
+    hFilmLoaded[key]=1;hFilmLoading=null;
+    if(window.__heroFilmArrived)window.__heroFilmArrived(key);
+    if(hReduced){hLoadBelowfoldImages();}
+    hLoadNextFilm();
   }
   (function(){
     var order=[];
