@@ -1199,13 +1199,19 @@ body{overflow-x:clip}
 /* --- hero on narrow screens: video on top (full 16:9, no crop),
    headline + tabs below on white. The POSTER holds the 16:9 space in
    flow and the video overlays it, so the headline never overlaps the
-   poster — even before the JS creates the video element. --- */
+   poster — even before the JS creates the video element.
+   Round 51 (24 Nov): the 16:9 aspect locked the media to 219px tall at
+   390px wide, and R49's .hero min-height only stretched the white box.
+   Poster + video are now 78svh tall, so the media panel fills ~78% of
+   the phone screen; the video stays contain (full frame, no crop) on a
+   transparent background, so the poster (cover, as on desktop) shows
+   around the frame instead of black bars. --- */
 @media(max-width:1100px){
   .hero{display:block;min-height:0;background:#fff}
   .hero-slide{position:relative;display:none;opacity:1;background:#fff}
   .hero-slide.active{display:block}
-  .hero-slide .hero-poster{position:relative;inset:auto;width:100%;height:auto;aspect-ratio:16/9}
-  .hero-slide .hero-video{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain}
+  .hero-slide .hero-poster{position:relative;inset:auto;width:100%;height:78vh;height:78svh}
+  .hero-slide .hero-video{position:absolute;top:0;left:0;width:100%;height:78vh;height:78svh;object-fit:contain;background:transparent}
   .hero-slide .hero-overlay{display:none}
   .hero-slide .hero-content{position:static;opacity:1;visibility:visible;color:#111;padding:26px 20px 10px;text-align:center}
   .hero-slide h1{color:#111;text-shadow:none}

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AK Khan Enterprises — Drones, Cameras, Networking, Sound &amp; Displays in Quetta</title>
 <meta name="description" content="AK Khan Enterprises, Quetta — DJI drones, Dahua &amp; Hikvision cameras, networking, Audionic sound and LED TVs. Order on WhatsApp.">
-<link rel="stylesheet" href="assets/style.css?v=33">
+<link rel="stylesheet" href="assets/style.css?v=34">
 <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="icon" href="assets/logo-mark-black.svg" type="image/svg+xml">
 <style>
@@ -284,17 +284,14 @@
 </style>
 <style>
 /* ================= Round 49 — 24 Nov (boss order, voice call) ============
-   1. MOBILE HERO BIG: on the boss's phone the hero film read as a small
-      strip stuck at the top, with all the copy below it on white. On
-      <=720px the hero now fills the phone screen (100svh, 100vh fallback)
-      so the film is big and the copy sits on it, as on desktop. Films,
-      assets/site.js and the desktop hero are NOT touched; .hero-video /
-      .hero-poster already use object-fit:cover and fill the slide.
+   1. MOBILE HERO BIG (Round 51 correction): the 100svh min-height on .hero
+      did NOT make the film bigger — on <=1100px the poster/video heights
+      are locked to the 16:9 aspect (style.css), so a taller .hero box only
+      added white space below the copy. The min-height is removed; the
+      media itself is now 78svh in style.css (Round 51). Films,
+      assets/site.js and the desktop hero are NOT touched.
    2. BANNER/FOOTER DIVIDER: the black CTA band and the black footer merged
       into one black void — a hairline now separates the two blocks. */
-@media(max-width:720px){
-  .hero{min-height:100vh;min-height:100svh}
-}
 .cta-band{border-bottom:1px solid rgba(255,255,255,.15)}
 </style>
 </head>
