@@ -40,9 +40,9 @@
    own .reveal system (site.js + style.css) + stagger via inline delay. */
 .ak-detail{--ink:#111417;--body:#23272b;--muted:#6d7278;--line:#e4e6e8;--green:#0e7a38;--green-dark:#0a5c2b;--wa:#128c4a;--bg:#fff;--soft:#f7f8f7;background:var(--bg);color:var(--body)}
 .ak-detail .film{background:#0b1418;line-height:0}
-.ak-detail .film video,.ak-detail .film img{width:100%;height:82vh;height:82svh;min-height:340px;object-fit:cover;display:block}
+.ak-detail .film video{position:relative;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;display:block;background:#000}.ak-detail .film img{position:relative;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;display:block;background:#fff}
 .ak-detail .film img{background:#fff;object-fit:contain}
-@media (min-aspect-ratio:4/3){.ak-detail .film video,.ak-detail .film img{height:auto;min-height:0;aspect-ratio:16/9}}
+
 .ak-detail .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 8px}
 .ak-detail h1{font-size:clamp(30px,5vw,44px);color:var(--ink);margin:0 0 6px;font-weight:800;letter-spacing:-.01em}
 .ak-detail .price-row{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 16px;margin:4px 0 20px}
@@ -59,7 +59,7 @@
 .ak-detail .specs-line a{color:var(--green);font-weight:600}
 .ak-detail .gallery{position:relative;display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
 .ak-detail .stage-col{min-width:0}
-.ak-detail .stage{position:relative;border:1px solid var(--line);background:#fff;height:min(62vw,560px);overflow:hidden;cursor:crosshair;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.ak-detail .stage{position:relative;border:1px solid var(--line);background:#fff;aspect-ratio:4/3;height:auto;max-height:82vh;overflow:hidden;cursor:crosshair;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .ak-detail .stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
 .ak-detail .lens{position:absolute;border:1.5px solid rgba(14,122,56,.85);background:rgba(14,122,56,.12);display:none;pointer-events:none;z-index:3}
 .ak-detail .touch-ring{position:absolute;width:74px;height:74px;border:2px solid rgba(14,122,56,.9);border-radius:50%;background:rgba(14,122,56,.10);display:none;pointer-events:none;z-index:3;transform:translate(-50%,-50%)}
@@ -71,7 +71,7 @@
 .ak-detail .thumbs button img{width:100%;height:64px;object-fit:contain;display:block}
 .ak-detail .thumbs button[aria-pressed="true"]{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
 @media (min-width:1024px){.ak-detail .zoom-panel{position:absolute;top:0;right:0;width:460px;height:480px;z-index:5;display:block;visibility:hidden}.ak-detail .zoom-panel.on{visibility:visible}}
-@media (max-width:560px){.ak-detail .thumbs{grid-template-columns:repeat(3,1fr)}.ak-detail .thumbs button img{height:74px}.ak-detail .stage{height:74vw}}
+@media (max-width:560px){.ak-detail .thumbs{grid-template-columns:repeat(3,1fr)}.ak-detail .thumbs button img{height:74px}.ak-detail .stage{aspect-ratio:4/3;height:auto;max-height:82vh}}
 .ak-detail .tips{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:760px}
 .ak-detail .tips li{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:14px 16px 14px 46px;position:relative;font-size:clamp(16px,2.5vw,18px)}
 .ak-detail .tips li::before{content:"";position:absolute;left:16px;top:17px;width:18px;height:18px;border-radius:50%;background:var(--green);box-shadow:inset 0 0 0 5px var(--soft);border:2px solid var(--green)}
