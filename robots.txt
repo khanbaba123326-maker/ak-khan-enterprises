@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
 Sitemap: https://khanbaba123326-maker.github.io/ak-khan-enterprises/sitemap.xml
