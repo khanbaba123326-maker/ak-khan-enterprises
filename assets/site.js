@@ -58,7 +58,7 @@ var sForm=document.getElementById('searchForm'),sInput=document.getElementById('
 if(sForm){sForm.addEventListener('submit',function(){closeAllMenus();});}
 if(sInput){sInput.addEventListener('input',function(){closeAllMenus();});}
 // scroll reveal
-var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:.12});
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:.05,rootMargin:'0px 0px 100px 0px'}); // Round 69 (L-5): fire earlier so a fast flick-scroll does not leave cards invisible.
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
 // Round 20 -- CGI reveal: cards + category tiles fade/slide in on scroll,
 // same .reveal language as the tiles. Class added by JS only, so without
@@ -76,19 +76,10 @@ document.querySelectorAll('.video-thumb').forEach(function(t){
   });
 });
 
-// Round 14 -- Shot on: self-hosted looping videos reusing the hero films.
-// The homepage Shot on cards carry a <video class="shot-video" data-film>;
-// when a film's base64 lands, its blob URL (built once by the hero loader)
-// is shared here, so the cards play real video with ZERO new bytes.
-function akWireShotVideos(){
-  if(!window.__akFilmUrl)return;
-  document.querySelectorAll('video.shot-video[data-film]').forEach(function(v){
-    if(v.src)return;
-    var url=window.__akFilmUrl(v.dataset.film);
-    if(url){v.src=url;v.addEventListener('playing',function(){v.classList.add('playing');});var p=v.play();if(p&&p.catch){p.catch(function(){});}}
-  });
-}
-window.__akWireShot=akWireShotVideos;
+// Round 69 (L-7) -- the Shot on wiring lived here and is removed: no page
+// carries such a video element any more (grep: 0 files), so it was dead
+// code. The video-thumb facade above is KEPT: it is live on explore.html
+// (11 buttons with data-vid).
 // Round 21 -- NATIVE-RES CHUNK LOADER (top-level, so the hero loader AND
 // the detail-hero loader both use it): each film is split into <=2.8MB
 // part files (assets/<kind>/<key>-p<N>.js, push limit) holding
@@ -270,7 +261,6 @@ if(hc){
         s.classList.remove('hero-film-on');
       }
     });
-    if(window.__akWireShot){window.__akWireShot();} // Round 14: wire Shot on videos whenever hero films are (re)wired.
   }
   function hGo(i){
     hIdx=(i+hSlides.length)%hSlides.length;

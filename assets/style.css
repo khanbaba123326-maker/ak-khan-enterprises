@@ -304,7 +304,7 @@ body.no-hero main{padding-top:64px}
    DJI mp4s (never base64); none assigned yet -- the video worker supplies
    them into products.json "hero_video" or DETAIL_HERO "video". */
 .detail-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
-.detail-hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.detail-hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;background:#fff} /* Round 69 (M-13): paused/loading poster is a white product shot, so the letterbox bars around it are white, not a black void. Invisible once the film plays (object-fit:cover). */
 /* Round 9 -- YouTube hero: the iframe covers the hero band exactly like
    object-fit:cover (16:9 video into any hero aspect). pointer-events:none
    so the hero text/buttons stay clickable and the video can never be
@@ -1199,6 +1199,78 @@ body.story .detail-hero .tagline{font-weight:300}
 }
 /* 4 — brands mega-menu scroll guard */
 .mega-menu.brands-menu{max-height:calc(100vh - 96px);overflow-y:auto}
+/* Round 69 (M-1) -- Brands mega-menu re-grid: 16 brands in 6 columns = 3
+   rows, so Ubiquiti's links are visible without scrolling. Same colours and
+   typography as before; Shop menu untouched.
+   Round 69 verify (Worker E): 6 columns at the old 860px width did NOT fit --
+   measured scrollHeight 981px vs the 804px guard (columns ~119px wide, so
+   descriptions wrapped to 5 lines and product names to 3-4). Widened to
+   1140px: same 6 columns, ~166px per column, rows drop to fit inside 804px
+   at both 1440px and 1024px (94vw cap). No content removed. */
+.mega-menu.brands-menu{width:min(1140px,94vw);grid-template-columns:repeat(6,1fr)}
+/* Round 69 (H-1) -- Brands menu at narrow desktop: below 1280px the
+   nav-item-centred menu ran off the left edge (left:-125px at 1024px) and
+   over the header/logo. The menu is now centred on the viewport (its
+   containing block is the fixed header) and sits flush below the 64px
+   header; the ::before strip bridges the hover gap so the menu stays open
+   while the pointer travels from the Brands button to the panel. Desktop
+   only: the 901px floor keeps the mobile drawer rules (max-width:900px)
+   authoritative below it. Shop menu untouched. */
+/* Round 69 verify (Worker E) -- hover bridge for the Brands menu, on the
+   NAV-ITEM, hover-only (never intercepts clicks when the menu is closed).
+   A strip on the PANEL (::before) is dead here: the panel has
+   overflow-y:auto, which clips anything above its top edge (verified:
+   elementFromPoint in the strip band hits the nav link, not the panel --
+   so D's 14px bridge never worked for Brands at any width). This strip
+   spans the gap between the Brands button bottom and the panel top, so a
+   stepped mouse move down into the panel keeps :hover alive. Desktop
+   widths: the nav-item is the positioned ancestor, so top:100% is the
+   button bottom and the 24px strip covers the 8px gap plus the panel top.
+   The 901-1280 rule below re-anchors it (there the nav-item is static
+   and the header is the containing block; the wrapped header also puts
+   the button bottom at y 27 instead of ~50 -- see the note there). */
+@media(min-width:901px){
+  .nav-item:has(.brands-menu):hover::before{content:"";position:absolute;left:50%;transform:translateX(-50%);width:min(1140px,94vw);top:100%;height:24px}
+  /* Round 69 verify (Worker E) -- Shop menu hover bridge at desktop widths:
+     the Shop panel has overflow:visible, so a strip on the panel IS live
+     (unlike Brands). The 901-1280 rule below widens it to 44px for the
+     wrapped header; this 14px strip covers the 8px gap (button bottom ~51,
+     panel top ~59) at >1280px, where a stepped mouse move otherwise closed
+     the menu mid-travel (verified FAIL before this rule). */
+  .mega-menu:not(.brands-menu)::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}
+}
+@media(min-width:901px) and (max-width:1280px){
+  .nav-item:has(.brands-menu){position:static}
+  .mega-menu.brands-menu{left:50%;transform:translate(-50%,0);top:100%}
+  /* Bridge re-anchored for this range: the nav-item is static, so the
+     strip positions against the 64px header -- top:24px;height:48px puts
+     it at y 24..72, overlapping the wrapped button bottom (y 27 at
+     901-1028px, ~50 above that) and the panel top (y 64). Verified with
+     a stepped mouse move: menu stays open all the way to the Ubiquiti
+     links. (The Shop panel keeps its own ::before strip -- its panel
+     has overflow:visible, so that strip is live; verified PASS.) */
+  .nav-item:has(.brands-menu):hover::before{top:24px;height:48px}
+
+  /* Round 69 verify (Worker E) -- Shop menu at 1024px measured broken the
+     same way Brands was (left:-195px, top:35px over the header, 9 links
+     off-screen/un-clickable). Same fix, same pattern: centre on the viewport
+     with the same hover bridge. Shop menu keeps its own width/columns. */
+/* Round 69 verify (Worker E) -- Brands menu still overflowed the 804px guard
+     at narrow desktop even at 1140px wide: measured scrollHeight 981px (177px
+     over) at 901px and 851px (47px over) at 1024px, because the 94vw cap
+     narrows the columns and the brand blurbs wrap to 4-5 lines. The blurbs
+     are the only expendable vertical cost (all brand names, product links
+     and View-all links stay): hide them at 901-1150px. Measured after the
+     change: 901px fits with margin; 1440px keeps the full menu (785px). */
+@media(min-width:901px) and (max-width:1150px){
+  .mega-menu.brands-menu .mega-col p{display:none}
+}
+  .nav-item:has(.mega-menu:not(.brands-menu)){position:static}
+  .mega-menu:not(.brands-menu){left:50%;transform:translate(-50%,0);top:100%}
+  /* Same 44px bridge as Brands above -- the Shop button sits at the same
+     wrapped y -10..27, so the 14px strip left the same 23px dead gap. */
+  .mega-menu:not(.brands-menu)::before{content:"";position:absolute;left:0;right:0;top:-44px;height:44px}
+}
 /* 5 — CTA band spacing */
 .cta-band p{line-height:1.6;margin-bottom:22px}
 .cta-band .btn{display:inline-block;margin-top:8px}
@@ -1327,3 +1399,42 @@ body{overflow-x:clip}
 #featured .card-body h3{font-size:1.35rem}
 #catshow .card-foot{flex-direction:row;justify-content:space-between;align-items:baseline}
 #featured .card-foot, #catshow .card-foot{min-height:28px}
+
+/* ================= Round 69 — mobile defects (24 Nov) =================
+   M-1 hero arrows: Round 27 A4 (.hero-arrow{display:none}, line 995) and the
+   R35 narrow rule (line 1298) hid the arrows at every width, and the 720px
+   rule parked them at the hero's bottom (y~933 at 390px, below the 844px
+   fold). On mobile only, show them again, centred on the video panel
+   (top:50% of the 989px hero = y~494, inside the 78svh video and inside the
+   viewport). Video cover behaviour untouched (R52); desktop stays hidden.
+   M-3 search grid: the R35 unconditional .grid 2-col rule (line 1247) beat
+   the 720px 1-col rule (line 557). This later 720px rule restores 1 column
+   for plain .grid — only search.html uses plain .grid for a listing.
+   M-4 drones table: swipe cue (hint + right-edge fade) on mobile only.
+   M-5 Explore tiles: R28-D restyled .cat-tile as a white card (dark text,
+   no scrim), but explore.html's editorial tiles overlay text directly on
+   a photo background — dark text on a dark photo. Scoped to #stories only;
+   the white-card category tiles elsewhere are untouched.
+   L-2 hamburger: hit area to >=44px (padding only; glyph size unchanged;
+   the brand is absolutely centred on mobile, so the wider button cannot
+   move the logo). */
+@media(max-width:1100px){
+  .hero-arrow{display:flex;top:50%;bottom:auto;transform:translateY(-50%);width:44px;height:44px;font-size:2.2rem}
+  .hero-arrow.prev{left:8px;right:auto}
+  .hero-arrow.next{right:8px;left:auto}
+}
+@media(max-width:720px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .table-scroll{-webkit-mask-image:linear-gradient(90deg,#000 84%,transparent 99%);mask-image:linear-gradient(90deg,#000 84%,transparent 99%)}
+}
+.scroll-cue{display:none}
+@media(max-width:720px){
+  .scroll-cue{display:block;text-align:center;color:var(--mut);font-size:.9rem;margin:0 0 10px}
+}
+#stories .cat-tile{flex-direction:row;align-items:flex-end;min-height:340px;color:#fff;background-size:cover;background-position:center}
+#stories .cat-tile::after{display:block;content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,0) 38%,rgba(0,0,0,.82) 100%)}
+#stories .cat-tile h3{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 12px rgba(0,0,0,.75)}
+#stories .cat-tile p{color:#f2f2f2;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 10px rgba(0,0,0,.8)}
+@media(max-width:900px){
+  .menu-btn{padding:10px 12px;line-height:1}
+}
