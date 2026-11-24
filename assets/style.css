@@ -1243,13 +1243,17 @@ body.story .detail-hero .tagline{font-weight:300}
   .nav-item:has(.brands-menu){position:static}
   .mega-menu.brands-menu{left:50%;transform:translate(-50%,0);top:100%}
   /* Bridge re-anchored for this range: the nav-item is static, so the
-     strip positions against the 64px header -- top:24px;height:48px puts
-     it at y 24..72, overlapping the wrapped button bottom (y 27 at
-     901-1028px, ~50 above that) and the panel top (y 64). Verified with
-     a stepped mouse move: menu stays open all the way to the Ubiquiti
-     links. (The Shop panel keeps its own ::before strip -- its panel
-     has overflow:visible, so that strip is live; verified PASS.) */
-  .nav-item:has(.brands-menu):hover::before{top:24px;height:48px}
+     strip positions against the 64px header. R71: top:47px;height:21px
+     puts it at y 47..68 -- measured button bottom is 50.5px and the
+     panel top is y 64, so the strip covers only the 13.5px gap (3.5px
+     overlap above the button bottom, 4px below the panel top). The old
+     y 24..72 strip covered the whole button row, so its ::before
+     intercepted the other nav button and the logo and menu switching
+     failed at 1101-1280px. Verified with a stepped mouse move: menu
+     stays open all the way to the Ubiquiti links. (The Shop panel keeps
+     its own ::before strip -- its panel has overflow:visible, so that
+     strip is live; verified PASS.) */
+  .nav-item:has(.brands-menu):hover::before{top:47px;height:21px}
 
   /* Round 69 verify (Worker E) -- Shop menu at 1024px measured broken the
      same way Brands was (left:-195px, top:35px over the header, 9 links
@@ -1267,9 +1271,11 @@ body.story .detail-hero .tagline{font-weight:300}
 }
   .nav-item:has(.mega-menu:not(.brands-menu)){position:static}
   .mega-menu:not(.brands-menu){left:50%;transform:translate(-50%,0);top:100%}
-  /* Same 44px bridge as Brands above -- the Shop button sits at the same
-     wrapped y -10..27, so the 14px strip left the same 23px dead gap. */
-  .mega-menu:not(.brands-menu)::before{content:"";position:absolute;left:0;right:0;top:-44px;height:44px}
+  /* R71: same gap-only bridge as Brands above -- top:-17px;height:17px
+     puts it at y 47..64 (button bottom 50.5px, panel top y 64). The old
+     44px strip (y 20..64) covered the whole button row and intercepted
+     the Brands button, so switching failed at 1101-1280px. */
+  .mega-menu:not(.brands-menu)::before{content:"";position:absolute;left:0;right:0;top:-17px;height:17px}
 }
 /* 5 — CTA band spacing */
 .cta-band p{line-height:1.6;margin-bottom:22px}
@@ -1548,14 +1554,21 @@ body{overflow-x:clip}
 
 /* R70.3a — hover bridges, narrow desktop 1101-1280px: panels centred on the
    viewport (nav-item static, panel anchors to the fixed 64px header,
-   top:100% = y 64). Button bottom ~54px, so the gap is ~10px.
-   Brands strip y 24..72 and Shop strip y 20..64 both cover the button
-   bottom and the panel top. */
+   top:100% = y 64). Measured button bottom is 50.5px, panel top y 64,
+   so the gap is 13.5px. R71: both strips cover ONLY the gap —
+   Brands strip y 47..68, Shop strip y 47..64 (3.5px overlap above the
+   button bottom, 4px/0px below the panel top). The old strips
+   (y 24..72 / y 20..64) were copied from R69's wrapped-header geometry
+   and covered the whole button row, so the open menu's strip
+   intercepted the other nav button and the logo and switching failed.
+   Direction (b) — pointer-events:none on the strip once open — was
+   rejected: with pure-CSS :hover menus the strip IS the hover target
+   in the gap, so disabling it would close the menu mid-travel. */
 @media(min-width:1101px) and (max-width:1280px){
   .nav-item:has(.mega-menu){position:static}
   .mega-menu{left:50%;transform:translate(-50%,0);top:100%}
-  .nav-item:has(.brands-menu):hover::before{content:"";position:absolute;left:50%;transform:translateX(-50%);width:min(1140px,94vw);top:24px;height:48px}
-  .mega-menu:not(.brands-menu)::before{content:"";position:absolute;left:0;right:0;top:-44px;height:44px}
+  .nav-item:has(.brands-menu):hover::before{content:"";position:absolute;left:50%;transform:translateX(-50%);width:min(1140px,94vw);top:47px;height:21px}
+  .mega-menu:not(.brands-menu)::before{content:"";position:absolute;left:0;right:0;top:-17px;height:17px}
 }
 
 /* R70.3b — hover bridges, wide desktop >1280px: panels stay button-centred
