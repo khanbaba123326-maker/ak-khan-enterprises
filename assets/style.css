@@ -1438,3 +1438,271 @@ body{overflow-x:clip}
 @media(max-width:900px){
   .menu-btn{padding:10px 12px;line-height:1}
 }
+
+/* R70 HEADER REWORK N-1 */
+
+
+/* ================= Round 70 — HEADER REWORK, defect N-1 (24 Nov) =================
+   DEFECT (pre-existing on live R68, not a regression): at 901-1028px the
+   desktop nav wrapped — nav 91px tall inside the 64px header, WhatsApp
+   pill on a second row, link tops clipped ~13px. Reproduced in Playwright
+   on the R68 base with the real logo SVGs (measure-before run):
+   901px navH=91, link tops y=-10..-14; 1024px navH=91 (wraps by 3.2px);
+   1031px navH=44 (fits by 3.3px); 1101px navH=44 (fits by 73.3px).
+   WIDTH MATH (measured, real logos): the 9 nav items need 802px on one
+   row (Shop 59.5 + Brands 72.1 + Explore 75.5 + About Us 86.5 + Support
+   77.2 + Contact 76.3 + Search 72.1 + Compare 86.5 + WhatsApp pill 163.9
+   + 8 x 4px gaps = 801.6). Brand is 148.7px, header padding 33+20px,
+   header gap 24px, so nav room = viewport - 53 - 148.7 - 24. At 901px
+   room is 695px — 107px short, a 13% cut. At 1024px room is 798.8px —
+   3.2px short.
+   FIX CHOSEN: move the drawer (hamburger) breakpoint up, NOT a condensed
+   nav. Condensing was rejected: it would need 107px squeezed out at
+   901px (13% — padding/font cuts big enough to spoil the premium
+   spacing) and still leaves a 3px margin at 1024px. A 1030px breakpoint
+   was also rejected: the first desktop width (1031px) fits by only
+   3.3px, and a classic 15px desktop scrollbar would re-break it.
+   Drawer breakpoint is now 1100px: the first desktop width (1101px)
+   fits with 73px slack, and 1100/1101 already are breakpoints in this
+   file (grid switch, hero aspect-ratio), so no new magic number.
+   Desktop nav from 1101px is pixel-identical to R68 (same spacing,
+   same pill); only a nowrap guard is added so the nav can never wrap
+   again even if fonts render wider.
+   WHAT CHANGED (all inside this R70 block, nothing above touched):
+   R70.1  Desktop guard: .main-nav flex-wrap:nowrap + nav-link
+          white-space:nowrap at min-width:1101px.
+   R70.2  Drawer rules extended from max-width:900px to max-width:1100px
+          (same values as the R68 <=900px drawer block, so <=900px is
+          byte-for-byte the same behaviour; 901-1100px gets the same
+          drawer: hamburger right, logo left — the hamburger-left /
+          logo-centred mobile layout stays <=900px only). The R68 drawer
+          scroll container (.main-nav.open max-height calc(100dvh-64px),
+          flex-wrap:nowrap, own overflow-y) is carried over unchanged.
+          Menu button gets padding 10px 12px (hit area >=44px) at
+          <=1100px. No markup change, no JS change: site.js toggles the
+          same .open / drawer-open classes with no width check.
+   R70.3  Hover bridges REBUILT for the new UNWRAPPED geometry (R69's
+          bridges were calibrated on the wrapped header — button bottom
+          y=27 — and are not in this R68 base at all, so these are fresh
+          and were verified from scratch with stepped-mouse moves, see
+          HEADER-REPORT.md). Unwrapped button bottom is ~51-54px at every
+          desktop width; panel top is 64px (viewport-centred range) or
+          ~58.5px (button-centred range). 1101-1280px: panels are centred
+          on the viewport (button-centred panels would run off the left
+          edge: Shop button centre x~309 at 1101px vs 430px half-panel)
+          with the nav-item made static so the panel anchors to the fixed
+          header; above 1280px panels stay button-centred (Shop centre
+          x>=488, fits). Brands panel has overflow-y:auto, which clips a
+          strip on the panel itself, so its bridge is a hover-only strip
+          on the nav-item; the Shop panel has overflow:visible, so its
+          bridge is a strip on the panel. NOTE for the 1024px check in
+          the brief: at 1024px there is now NO desktop nav (drawer by
+          design), so the hover bridge there is N/A; the equivalent
+          re-verification was done stepped-mouse at 1101px (first desktop
+          width) and 1440px for both menus, plus drawer accordion tests
+          at 1024px and 901px. */
+
+/* R70.1 — desktop nav can never wrap again (min-width:1101px only). */
+@media(min-width:1101px){
+  .main-nav{flex-wrap:nowrap}
+  .main-nav .nav-link{white-space:nowrap}
+}
+
+/* R70.2 — drawer (hamburger) breakpoint raised 900px -> 1100px, header only.
+   Every rule below copies the R68 <=900px drawer block verbatim, so behaviour
+   at <=900px is unchanged; 901-1100px now gets the identical drawer.
+   Non-header responsive rules (grids, hero, footer, etc.) keep their 900px
+   breakpoint — only the header moves. */
+@media(max-width:1100px){
+  .site-header .header-inner{position:relative}
+  .menu-btn{display:block;padding:10px 12px;line-height:1}
+  .main-nav{display:none;position:absolute;top:100%;left:0;right:0;background:#000;flex-direction:column;align-items:stretch;padding:10px 20px 20px}
+  .site-header.solid .main-nav{background:#fff}
+  /* R68 drawer scroll container, unchanged: the open drawer IS the scroll
+     container (max-height calc(100dvh - 64px), own overflow-y, nowrap so
+     the Brands list cannot wrap into sideways columns). */
+  .main-nav.open{display:flex;flex-wrap:nowrap;max-height:calc(100vh - 64px);max-height:calc(100dvh - 64px);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  body.drawer-open .wa-float{display:none}
+  /* Mega-menus are accordions inside the drawer (tap toggles .open);
+     hover/focus alone must NOT open them here. */
+  .nav-item:hover .mega-menu,.nav-item:focus-within .mega-menu{display:none}
+  .nav-item.open .mega-menu{display:block;position:static;transform:none;width:auto;box-shadow:none;padding:8px 0 4px}
+  .nav-item.open .mega-menu .mega-col{border-left:0;padding:6px 0}
+  .nav-item.open .mega-menu{background:#000;color:#fff}
+  .nav-item.open .mega-menu .mega-cat{color:#fff}
+  .nav-item.open .mega-menu .mega-col p{color:#bdbdbd}
+  .nav-item.open .mega-menu .mega-prod{color:#fff;border-top-color:#222}
+  .nav-item.open .mega-menu .mega-all{color:#fff}
+  .site-header.solid .nav-item.open .mega-menu{background:#fff;color:var(--txt)}
+  .site-header.solid .nav-item.open .mega-menu .mega-cat{color:var(--ink)}
+  .site-header.solid .nav-item.open .mega-menu .mega-col p{color:var(--mut)}
+  .site-header.solid .nav-item.open .mega-menu .mega-prod{color:var(--txt);border-top-color:var(--grey2)}
+  .site-header.solid .nav-item.open .mega-menu .mega-all{color:var(--ink)}
+  .nav-link{padding:13px 4px;border-top:1px solid #222;font-size:1.02rem}
+  .site-header.solid .nav-link{border-top-color:var(--line)}
+  .nav-wa{text-align:center;margin-top:10px;border-top:1px solid rgba(255,255,255,.65)}
+  .site-header.solid .nav-wa{border-top-color:rgba(17,17,17,.45)}
+  /* Brands list scrolls with the drawer as one unit, never an inner box. */
+  .nav-item.open .mega-menu.brands-menu{max-height:none;overflow:visible}
+}
+
+/* R70.3a — hover bridges, narrow desktop 1101-1280px: panels centred on the
+   viewport (nav-item static, panel anchors to the fixed 64px header,
+   top:100% = y 64). Button bottom ~54px, so the gap is ~10px.
+   Brands strip y 24..72 and Shop strip y 20..64 both cover the button
+   bottom and the panel top. */
+@media(min-width:1101px) and (max-width:1280px){
+  .nav-item:has(.mega-menu){position:static}
+  .mega-menu{left:50%;transform:translate(-50%,0);top:100%}
+  .nav-item:has(.brands-menu):hover::before{content:"";position:absolute;left:50%;transform:translateX(-50%);width:min(1140px,94vw);top:24px;height:48px}
+  .mega-menu:not(.brands-menu)::before{content:"";position:absolute;left:0;right:0;top:-44px;height:44px}
+}
+
+/* R70.3b — hover bridges, wide desktop >1280px: panels stay button-centred
+   (base geometry). Button bottom ~50.5px, panel top ~58.5px, gap 8px.
+   Brands strip: top:100% of the nav-item, 24px tall (covers gap + panel
+   top). Shop strip: 14px above the panel top. */
+@media(min-width:1281px){
+  .nav-item:has(.brands-menu):hover::before{content:"";position:absolute;left:50%;transform:translateX(-50%);width:min(1140px,94vw);top:100%;height:24px}
+  .mega-menu:not(.brands-menu)::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}
+}
+/* END R70 HEADER REWORK N-1 */
+
+/* R70 MERGE NOTE (rebase onto R69 live head c880307): the N-1 block above was
+   built on the R68 stylesheet, where the Brands panel was 860px wide. R69
+   widened it to 1140px (M-1, 6 columns), so the two Brands hover-bridge
+   strips in R70.3a/R70.3b were widened from min(860px,94vw) to
+   min(1140px,94vw) to match the R69 panel. Every other N-1 line is verbatim:
+   R69's 901-1280 bridge geometry (strips y 24..72 Brands, y 20..64 Shop) is
+   identical to N-1's 1101-1280 geometry because both centre the panel on the
+   64px header, so the two rounds agree there. R69's Shop strips (14px / 44px)
+   are byte-identical to N-1's. No R69 rule was removed or edited. */
+
+/* R70 MERGE NOTE — drawer band 901-1100px: N-1 moves the hamburger drawer up
+   to 1100px, so R69's desktop-only hover-bridge strips (min-width:901px)
+   would now also apply inside the drawer, where they can intercept taps on
+   the item below the Brands button and above an open Shop accordion. The
+   strips are disabled here (same selectors, later in the file, so they win
+   in this band only; desktop >=1101px is untouched). The brand blurbs R69
+   hides at 901-1150px for the narrow desktop dropdown are re-shown inside
+   an open drawer accordion, so the 901-1100 drawer is identical to the
+   <=900px drawer, as N-1 promises. */
+@media(max-width:1100px){
+  .nav-item:has(.brands-menu):hover::before{display:none}
+  .mega-menu:not(.brands-menu)::before{display:none}
+  .nav-item.open .mega-menu.brands-menu .mega-col p{display:block}
+}
+
+/* ================= R70 HOMEPAGE ADDITIONS =================
+   Round 70 §5 — new homepage sections only (brands, collections,
+   why-choose, confidence, about, support, FAQ, contact). Reuses the
+   site's existing tokens (.sec, .wrap, .sec-head, .kicker, .sec-sub,
+   .btn, .more-link, .reveal, .faq-item) and variables (--black,
+   --ink, --grey, --line, --mut, --txt). Black-and-white only, no
+   new colours. Subtle hover lifts only; no new animation systems.
+   Mobile-first: grids collapse at 900px / 720px, no horizontal
+   overflow at 390px. ================= */
+
+/* --- Brand showcase: text links only, no logos --- */
+.r70-brand-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.r70-brand{display:flex;flex-direction:column;gap:2px;padding:20px 22px;border:1px solid var(--line);background:#fff;color:var(--ink);transition:border-color .25s ease,transform .25s ease,box-shadow .25s ease}
+.r70-brand:hover{border-color:#111;transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.r70-brand-name{font-size:1.15rem;font-weight:800;letter-spacing:-.02em}
+.r70-brand-note{font-size:.85rem;color:var(--mut)}
+
+/* --- Collections: dark band, typographic cards --- */
+.r70-collections .sec-head .kicker{color:#999}
+.r70-collections .sec-head .sec-sub{color:#bbb}
+.r70-coll-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.r70-coll{display:flex;flex-direction:column;gap:10px;min-height:230px;padding:28px 26px;background:#141414;border:1px solid #2a2a2a;color:#fff;transition:border-color .25s ease,transform .25s ease,background .25s ease}
+.r70-coll:hover{border-color:#666;transform:translateY(-3px);background:#1b1b1b}
+.r70-coll-num{font-size:.8rem;font-weight:700;letter-spacing:.18em;color:#888}
+.r70-coll h3{font-size:1.35rem;color:#fff}
+.r70-coll p{font-size:.95rem;color:#bbb;flex:1}
+.r70-coll-link{font-weight:700;font-size:.95rem;color:#fff}
+.r70-coll:hover .r70-coll-link{transform:translateX(4px)}
+.r70-coll-link{display:inline-block;transition:transform .25s ease}
+
+/* --- Why Choose: numbered points, hairline top rules --- */
+.r70-why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:44px 56px}
+.r70-why{border-top:2px solid #111;padding-top:20px}
+.r70-why p.r70-why-num{font-size:.85rem;font-weight:800;letter-spacing:.18em;color:var(--mut);margin-bottom:10px}
+.r70-why h3{font-size:1.3rem;margin-bottom:8px}
+.r70-why p{color:#444}
+
+/* --- Shop with Confidence: 3 steps --- */
+.r70-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.r70-step{background:#fff;border:1px solid var(--line);padding:28px 26px}
+.r70-step p.r70-step-num{width:44px;height:44px;border-radius:50%;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.15rem;margin-bottom:16px}
+.r70-step h3{font-size:1.2rem;margin-bottom:8px}
+.r70-step p{color:#444}
+.r70-confidence-note{max-width:760px;margin:36px auto 0;text-align:center;font-size:1.05rem;color:#333}
+
+/* --- About: text + facts card --- */
+.r70-about-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:56px;align-items:start}
+.r70-about .kicker{margin-bottom:10px}
+.r70-about h2{margin-bottom:16px}
+.r70-about p{color:#333;margin-bottom:14px}
+.r70-facts{background:var(--grey);padding:30px 32px}
+.r70-facts p{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--line);color:#111}
+.r70-facts p:last-child{margin-bottom:0;padding-bottom:0;border-bottom:0}
+.r70-facts span{display:block;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--mut);margin-bottom:4px}
+.r70-facts a{color:#111;font-weight:700}
+.r70-facts a:hover{color:var(--mut)}
+
+/* --- Support: three link cards --- */
+.r70-support-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.r70-support-card{background:#fff;border:1px solid var(--line);padding:28px 26px;transition:border-color .25s ease,transform .25s ease,box-shadow .25s ease}
+.r70-support-card:hover{border-color:#111;transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.r70-support-card h3{font-size:1.25rem;margin-bottom:8px}
+.r70-support-card p{color:#444;margin-bottom:12px}
+
+/* --- FAQ: centred list, reuses existing .faq-item styles --- */
+.r70-faq-list{max-width:820px;margin:0 auto;text-align:left}
+.r70-faq-list .faq-item{margin-bottom:12px}
+.r70-faq-more{text-align:center;margin-top:26px}
+
+/* --- Contact: CTA + four contact cards --- */
+.r70-contact-cta{text-align:center;margin-bottom:36px}
+.r70-contact-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.r70-contact-card{border:1px solid var(--line);padding:24px 22px}
+.r70-contact-card span{display:block;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--mut);margin-bottom:6px}
+.r70-contact-card a,.r70-contact-card strong{font-size:1.05rem;font-weight:700;color:#111;word-break:break-word}
+.r70-contact-card a:hover{color:var(--mut)}
+.r70-contact-card p{font-size:.9rem;color:var(--mut);margin-top:8px}
+
+/* --- R70 responsive --- */
+@media(max-width:1100px){
+  .r70-brand-grid{grid-template-columns:repeat(3,1fr)}
+  .r70-coll-grid{grid-template-columns:repeat(2,1fr)}
+  .r70-contact-cards{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:900px){
+  .r70-about-grid{grid-template-columns:1fr;gap:32px}
+  .r70-support-grid{grid-template-columns:1fr}
+  .r70-steps{grid-template-columns:1fr}
+  .r70-why-grid{grid-template-columns:1fr;gap:32px}
+}
+@media(max-width:720px){
+  .r70-brand-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .r70-brand{padding:16px}
+  .r70-brand-name{font-size:1.02rem}
+  .r70-coll-grid{grid-template-columns:1fr}
+  .r70-coll{min-height:0}
+  .r70-contact-cards{grid-template-columns:1fr}
+  .r70-facts{padding:24px 22px}
+}
+@media(prefers-reduced-motion:reduce){
+  .r70-brand,.r70-coll,.r70-support-card,.r70-coll-link{transition:none}
+  .r70-brand:hover,.r70-coll:hover,.r70-support-card:hover{transform:none}
+}
+/* ================= END R70 HOMEPAGE ADDITIONS ================= */
+
+/* ================= R70 SPEC TABLES =================
+   Round 70 §4 — spec tables on product pages where the audit verified
+   specs (52 products). No new colours; reuses the .ak-detail tokens. */
+.ak-detail .spec-table{width:100%;max-width:62ch;border-collapse:collapse;margin:0 0 6px;font-size:clamp(16px,2.5vw,19px)}
+.ak-detail .spec-table th,.ak-detail .spec-table td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.ak-detail .spec-table th{width:38%;color:var(--ink);font-weight:700}
+.ak-detail .spec-table tr:last-child th,.ak-detail .spec-table tr:last-child td{border-bottom:0}
+/* ================= END R70 SPEC TABLES ================= */
