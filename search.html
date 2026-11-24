@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Search — AK Khan Enterprises</title>
 <meta name="description" content="Search all 109 products at AK Khan Enterprises, Quetta — by name, brand or category.">
-<link rel="stylesheet" href="assets/style.css?v=39">
+<link rel="stylesheet" href="assets/style.css?v=40">
 <link rel="icon" href="assets/logo-mark-black.svg" type="image/svg+xml">
 
 </head>
@@ -40,7 +40,7 @@
 <div class="grid" id="searchResults"></div>
 <div style="text-align:center;margin-top:28px"><button class="btn btn-dark" type="button" id="showMoreBtn" style="display:none">Show more</button></div>
 </div></section>
-<script src="assets/search-data.js?v=61"></script>
+<script src="assets/search-data.js?v=62"></script>
 <script>
 var input=document.getElementById('searchInput'),res=document.getElementById('searchResults'),cnt=document.getElementById('searchCount'),moreBtn=document.getElementById('showMoreBtn');
 // Round 69 (M-12) -- progressive reveal: the page used to render all 109
@@ -50,7 +50,7 @@ var input=document.getElementById('searchInput'),res=document.getElementById('se
 var PAGE=24,shown=PAGE,filtered=[];
 function cardHtml(p){
   var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy">':'<div class="no-photo"><span>Photo on request</span></div>';
-  return '<article class="card"><a class="card-img" href="products/'+p.slug+'.html">'+img+'</a><div class="card-body"><div class="card-top"><p class="card-cat">'+p.brand+' &middot; '+p.cat+'</p><h3><a href="products/'+p.slug+'.html">'+p.name+'</a></h3><p class="card-tag">'+p.tag+'</p></div><div class="card-foot"><p class="price">'+(p.price==='Price on request'?'<span class="price por">Price on request</span>':p.price)+'</p><a class="more-link" href="products/'+p.slug+'.html">Learn more &rsaquo;</a></div></div></article>';
+  return '<article class="card"><a class="card-img" href="products/'+p.slug+'.html">'+img+'</a><div class="card-body"><div class="card-top"><p class="card-cat">'+p.brand+' &middot; '+p.cat+'</p><h3><a href="products/'+p.slug+'.html">'+p.name+'</a></h3><p class="card-tag">'+p.tag+'</p></div><div class="card-foot"><p class="price">'+(p.price==='Price on request'||p.price==='Price Verification Required'?'<span class="price por">'+p.price+'</span>':p.price)+'</p><a class="more-link" href="products/'+p.slug+'.html">Learn more &rsaquo;</a></div></div></article>';
 }
 function renderList(){
   var page=filtered.slice(0,shown);
