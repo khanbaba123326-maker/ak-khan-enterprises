@@ -39,10 +39,14 @@ h2{font-size:clamp(1.9rem,4vw,2.75rem)}
 .nav-link:hover{color:#bbb}
 .site-header.solid .nav-link{color:var(--ink)}
 .site-header.solid .nav-link:hover{color:var(--mut)}
-.nav-wa{color:#000!important;background:#fff;border-radius:999px;font-weight:700;padding:9px 16px}
-.nav-wa:hover{color:#000!important;opacity:.85}
-.site-header.solid .nav-wa{background:#000;color:#fff!important}
-.site-header.solid .nav-wa:hover{color:#fff!important;opacity:.85}
+/* Round 67 — WhatsApp pill: outlined, never a heavy filled slab. Transparent
+   state (over hero): white text, thin white border. Solid state (scrolled /
+   no-hero pages): ink text, thin ink border. Same size/weight as the plain
+   Search/Compare text links; hover is a faint wash, not a colour flip. */
+.nav-wa{color:#fff!important;background:transparent;border:1px solid rgba(255,255,255,.65);border-radius:999px;font-weight:600;padding:8px 16px}
+.nav-wa:hover{color:#fff!important;background:rgba(255,255,255,.12);border-color:#fff}
+.site-header.solid .nav-wa{color:var(--ink)!important;background:transparent;border-color:rgba(17,17,17,.45)}
+.site-header.solid .nav-wa:hover{color:var(--ink)!important;background:rgba(0,0,0,.05);border-color:var(--ink)}
 .menu-btn{display:none;background:none;border:0;color:#fff;font-size:1.7rem;cursor:pointer;margin-left:auto}
 .site-header.solid .menu-btn{color:var(--ink)}
 .nav-item{position:relative}
@@ -462,7 +466,13 @@ body.no-hero main{padding-top:64px}
   .main-nav.open{display:flex}
   .nav-link{padding:13px 4px;border-top:1px solid #222;font-size:1.02rem}
   .site-header.solid .nav-link{border-top-color:var(--line)}
-  .nav-wa{text-align:center;margin-top:10px}
+  .nav-wa{text-align:center;margin-top:10px;border-top:1px solid rgba(255,255,255,.65)}
+  .site-header.solid .nav-wa{border-top-color:rgba(17,17,17,.45)}
+  /* Round 67 — mobile Brands list must NOT be an inner scroll box: the
+     desktop max-height guard capped it to one visible brand in the drawer.
+     Higher specificity than the desktop rule so it wins here; desktop
+     behaviour is untouched. */
+  .nav-item.open .mega-menu.brands-menu{max-height:none;overflow:visible}
 }
 @media(max-width:720px){
   .sec{padding:36px 0}
