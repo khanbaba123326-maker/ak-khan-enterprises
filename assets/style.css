@@ -460,10 +460,45 @@ body.no-hero main{padding-top:64px}
   .nav-item:hover .mega-menu,.nav-item:focus-within .mega-menu{display:none}
   .nav-item.open .mega-menu{display:block;position:static;transform:none;width:auto;box-shadow:none;padding:8px 0 4px}
   .nav-item.open .mega-menu .mega-col{border-left:0;padding:6px 0}
+  /* Round 68 -- O-2: the open mega-menu kept its white desktop panel
+     inside the black mobile drawer. Match the panel to the drawer:
+     black panel + light text while the header is transparent (black
+     drawer); the .solid overrides below keep the white panel + dark
+     text on the white drawer (solid-header / no-hero pages). */
+  .nav-item.open .mega-menu{background:#000;color:#fff}
+  .nav-item.open .mega-menu .mega-cat{color:#fff}
+  .nav-item.open .mega-menu .mega-col p{color:#bdbdbd}
+  .nav-item.open .mega-menu .mega-prod{color:#fff;border-top-color:#222}
+  .nav-item.open .mega-menu .mega-all{color:#fff}
+  .site-header.solid .nav-item.open .mega-menu{background:#fff;color:var(--txt)}
+  .site-header.solid .nav-item.open .mega-menu .mega-cat{color:var(--ink)}
+  .site-header.solid .nav-item.open .mega-menu .mega-col p{color:var(--mut)}
+  .site-header.solid .nav-item.open .mega-menu .mega-prod{color:var(--txt);border-top-color:var(--grey2)}
+  .site-header.solid .nav-item.open .mega-menu .mega-all{color:var(--ink)}
   .menu-btn{display:block}
   .main-nav{display:none;position:absolute;top:100%;left:0;right:0;background:#000;flex-direction:column;align-items:stretch;padding:10px 20px 20px}
   .site-header.solid .main-nav{background:#fff}
-  .main-nav.open{display:flex}
+  /* Round 68 — the open drawer IS the scroll container: it hangs off a
+     FIXED header (line 22), so page scroll can never move it, and with no
+     max-height/overflow of its own the ~3100px Brands list ran past the
+     viewport with nothing scrollable — brands below the fold were
+     unreachable by finger. Capped to the viewport below the 64px header,
+     with its own vertical scroll; the Brands list stays max-height:none
+     (Round 67) and scrolls with the drawer as one unit.
+     flex-wrap:nowrap is load-bearing here: .main-nav inherits
+     flex-wrap:wrap from the desktop rule (line 37), and a column flexbox
+     with a capped height wraps its items into SIDEWAYS columns — the open
+     Brands item (3146px) wrapped to column 2 and Explore/About/…/WhatsApp
+     to column 3 at x=405, off the 390px viewport and unreachable by any
+     vertical scroll. With nowrap everything stacks in one column.
+     Desktop untouched (this block is max-width:900px only). */
+  .main-nav.open{display:flex;flex-wrap:nowrap;max-height:calc(100vh - 64px);max-height:calc(100dvh - 64px);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  /* Round 68 -- D-9: the fixed WhatsApp float (z-index 150) sat over the
+     open drawer's bottom-right links (Tiandy/Networking rows) and stole
+     their taps. While the drawer is open (body.drawer-open, set by
+     site.js) hide the float on mobile only; it returns the moment the
+     drawer closes (closeAllMenus removes the class). */
+  body.drawer-open .wa-float{display:none}
   .nav-link{padding:13px 4px;border-top:1px solid #222;font-size:1.02rem}
   .site-header.solid .nav-link{border-top-color:var(--line)}
   .nav-wa{text-align:center;margin-top:10px;border-top:1px solid rgba(255,255,255,.65)}

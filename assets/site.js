@@ -11,7 +11,7 @@ window.addEventListener('scroll',headerState,{passive:true});
 headerState();
 // mobile menu
 var btn=document.getElementById('menuBtn'),nav=document.getElementById('mainNav');
-if(btn&&nav){btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false');});}
+if(btn&&nav){btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false');btn.setAttribute('aria-label',o?'Close menu':'Open menu');document.body.classList.toggle('drawer-open',o);});}
 // Round 53 -- Shop/Brands mega-menu on mobile tap: desktop opens on
 // hover/focus via CSS, but touch has no hover and the mobile CSS hid the
 // menu outright. Tap toggles .open on the button's own .nav-item; opening
@@ -32,9 +32,31 @@ document.addEventListener('click',function(e){
 });
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'){
-    megaBtns.forEach(function(x){x.parentElement.classList.remove('open');x.setAttribute('aria-expanded','false');});
+    closeAllMenus();
   }
 });
+// Round 68 -- drawer + menu behaviour fixes.
+// (a) The menu must close when a search starts, on a tap outside the
+// header, or on any link tap inside the drawer. The old outside-click
+// handler above only closed the open mega-menus, never the drawer itself,
+// and nothing closed anything when the search box was used. (b) The menu
+// button's aria-label now flips open/closed (set in the toggle above).
+// closeAllMenus is a function declaration, so the Escape handler above
+// can call it even though it is defined here.
+function closeAllMenus(){
+  if(nav){nav.classList.remove('open');}
+  document.body.classList.remove('drawer-open'); // Round 68 D-9: float returns when the drawer closes
+  if(btn){btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Open menu');}
+  megaBtns.forEach(function(x){x.parentElement.classList.remove('open');x.setAttribute('aria-expanded','false');});
+}
+document.addEventListener('click',function(e){
+  if(!e.target||!e.target.closest)return;
+  if(e.target.closest('#mainNav a')){closeAllMenus();return;}
+  if(!e.target.closest('#siteHeader')){closeAllMenus();}
+});
+var sForm=document.getElementById('searchForm'),sInput=document.getElementById('searchInput');
+if(sForm){sForm.addEventListener('submit',function(){closeAllMenus();});}
+if(sInput){sInput.addEventListener('input',function(){closeAllMenus();});}
 // scroll reveal
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:.12});
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
@@ -234,7 +256,7 @@ if(hc){
   };
   function hFilm(){
     hSlides.forEach(function(s,j){
-      var keep=(j===hIdx)||(j===(hIdx+1)%hSlides.length);
+      var keep=(j===hIdx)||(j===(hIdx+1)%hSlides.length)||(j===hPending); // Round 68: a pending manual jump's film stays wired/playing too
       if(keep&&!hReduced){
         hWireVideo(j);
         var v=hVideos[j];
@@ -326,20 +348,35 @@ if(hc){
   // next film has not arrived yet it stays on the current (playing)
   // slide and tries again on the next tick -- the hero never shows a
   // poster after the first motion.
+  // Round 68 -- a pending manual jump owns the next advance: autoplay
+  // must never jump PAST the slide the user asked for (it used to:
+  // Previous from slide 1 landed on slide 2).
   function hTryAdvance(){
+    if(hPending>=0){
+      if(hReady(hPending)){var p=hPending;hPending=-1;hGo(p);}
+      else{hFilm();}
+      return;
+    }
     var nxt=(hIdx+1)%hSlides.length;
     if(hReady(nxt)){hGo(nxt);}
     else{hFilm();}
   }
   function hStart(){hStop();hTimer=setInterval(function(){hTryAdvance();},5000);}
   function hStop(){if(hTimer){clearInterval(hTimer);hTimer=null;}}
-  // Manual navigation: switch at once if the target film is ready;
-  // otherwise wait for it -- jump its film to the front of the load
-  // queue and switch the moment it plays.
+  // Manual navigation: switch AT ONCE (poster until the film plays; a
+  // stall is not acceptable). The old code only queued the jump and
+  // waited for the target film to play, but hFilm() wired only the
+  // current + next slides, so a jump to any other slide could never
+  // resolve on its own and autoplay could jump past it. Wiring +
+  // playing the target first means hReady can become true; the slide
+  // itself switches immediately, and hStart() keeps autoplay running
+  // from the new slide.
   function hRequestGo(i){
     var t=(i+hSlides.length)%hSlides.length;
-    if(hReady(t)){hPending=-1;hGo(t);hStart();}
-    else{hPending=t;hQueueFilmFirst(hSlides[t].dataset.film);hLoadNextFilm();hFilm();}
+    if(t===hIdx){hStart();return;}
+    hPending=-1;
+    if(!hReduced){hWireVideo(t);hPlayVideo(t);}
+    hGo(t);hStart();
   }
   hList.forEach(function(b){b.addEventListener('click',function(){hRequestGo(parseInt(b.dataset.go,10));});});
   hc.querySelectorAll('.hero-arrow').forEach(function(a){a.addEventListener('click',function(){hRequestGo(hIdx+parseInt(a.dataset.dir,10));});});
