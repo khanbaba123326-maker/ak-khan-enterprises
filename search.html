@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Search — AK Khan Enterprises</title>
 <meta name="description" content="Search all 109 products at AK Khan Enterprises, Quetta — by name, brand or category.">
-<link rel="stylesheet" href="assets/style.css?v=38">
+<link rel="stylesheet" href="assets/style.css?v=39">
 <link rel="icon" href="assets/logo-mark-black.svg" type="image/svg+xml">
 
 </head>
@@ -38,19 +38,34 @@
 <form class="search-box" id="searchForm" action="search.html" method="get" role="search"><input type="search" id="searchInput" name="q" placeholder="Try &lsquo;Mini 4 Pro&rsquo;, &lsquo;Dahua&rsquo; or &lsquo;NVR&rsquo;&hellip;" aria-label="Search products"><button class="btn btn-dark" type="submit" id="searchBtn">Search</button></form>
 <p style="text-align:center;color:var(--mut)" id="searchCount"></p>
 <div class="grid" id="searchResults"></div>
+<div style="text-align:center;margin-top:28px"><button class="btn btn-dark" type="button" id="showMoreBtn" style="display:none">Show more</button></div>
 </div></section>
 <script src="assets/search-data.js?v=61"></script>
 <script>
-var input=document.getElementById('searchInput'),res=document.getElementById('searchResults'),cnt=document.getElementById('searchCount');
+var input=document.getElementById('searchInput'),res=document.getElementById('searchResults'),cnt=document.getElementById('searchCount'),moreBtn=document.getElementById('showMoreBtn');
+// Round 69 (M-12) -- progressive reveal: the page used to render all 109
+// cards at once (36,622px tall). Show the first 24; "Show more" reveals the
+// rest in steps of 24. The ?q= filter and Enter run on the FULL set first,
+// then the filtered results are paginated, so a search never hides matches.
+var PAGE=24,shown=PAGE,filtered=[];
+function cardHtml(p){
+  var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy">':'<div class="no-photo"><span>Photo on request</span></div>';
+  return '<article class="card"><a class="card-img" href="products/'+p.slug+'.html">'+img+'</a><div class="card-body"><div class="card-top"><p class="card-cat">'+p.brand+' &middot; '+p.cat+'</p><h3><a href="products/'+p.slug+'.html">'+p.name+'</a></h3><p class="card-tag">'+p.tag+'</p></div><div class="card-foot"><p class="price">'+(p.price==='Price on request'?'<span class="price por">Price on request</span>':p.price)+'</p><a class="more-link" href="products/'+p.slug+'.html">Learn more &rsaquo;</a></div></div></article>';
+}
+function renderList(){
+  var page=filtered.slice(0,shown);
+  res.innerHTML=page.map(cardHtml).join('')||'<p>No products match that search. Try a brand name such as Dahua, DJI or Audionic.</p>';
+  var rest=filtered.length-shown;
+  if(rest>0){moreBtn.style.display='';moreBtn.textContent='Show more ('+rest+' more)';}
+  else{moreBtn.style.display='none';}
+}
 function run(){
   var q=input.value.trim().toLowerCase();
-  var list=window.AK_PRODUCTS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>-1||p.brand.toLowerCase().indexOf(q)>-1||p.cat.toLowerCase().indexOf(q)>-1||p.tag.toLowerCase().indexOf(q)>-1;});
-  cnt.textContent=list.length+' product'+(list.length===1?'':'s')+(q?' for \u201c'+input.value.trim()+'\u201d':'');
-  res.innerHTML=list.map(function(p){
-    var img=p.thumb?'<img src="'+p.thumb+'" alt="'+p.name+'" loading="lazy">':'<div class="no-photo"><span>Photo on request</span></div>';
-    return '<article class="card"><a class="card-img" href="products/'+p.slug+'.html">'+img+'</a><div class="card-body"><div class="card-top"><p class="card-cat">'+p.brand+' &middot; '+p.cat+'</p><h3><a href="products/'+p.slug+'.html">'+p.name+'</a></h3><p class="card-tag">'+p.tag+'</p></div><div class="card-foot"><p class="price">'+(p.price==='Price on request'?'<span class="price por">Price on request</span>':p.price)+'</p><a class="more-link" href="products/'+p.slug+'.html">Learn more &rsaquo;</a></div></div></article>';
-  }).join('')||'<p>No products match that search. Try a brand name such as Dahua, DJI or Audionic.</p>';
+  filtered=window.AK_PRODUCTS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>-1||p.brand.toLowerCase().indexOf(q)>-1||p.cat.toLowerCase().indexOf(q)>-1||p.tag.toLowerCase().indexOf(q)>-1;});
+  cnt.textContent=filtered.length+' product'+(filtered.length===1?'':'s')+(q?' for \u201c'+input.value.trim()+'\u201d':'');
+  shown=PAGE;renderList();
 }
+moreBtn.addEventListener('click',function(){shown+=PAGE;renderList();});
 input.addEventListener('input',run);document.getElementById('searchBtn').addEventListener('click',run);document.getElementById('searchForm').addEventListener('submit',function(e){e.preventDefault();run();});
 try{var q=new URLSearchParams(location.search).get('q');if(q){input.value=q;}}catch(e){}
 run();
@@ -100,6 +115,6 @@ run();
 </footer>
 <button class="to-top" id="toTop" type="button" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <a class="wa-float" href="https://wa.me/923067000682?text=Assalam-o-Alaikum%21%20I%20would%20like%20to%20ask%20about%20a%20product%20at%20AK%20Khan%20Enterprises." aria-label="Chat on WhatsApp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4 0-.5.1-.7l.4-.5c.1-.2.1-.3 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.9 2.9 4.5 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3z"/></svg><span>WhatsApp</span></a>
-<script src="assets/site.js?v=52"></script>
+<script src="assets/site.js?v=53"></script>
 </body>
 </html>
