@@ -1107,6 +1107,8 @@ body.story .detail-hero .tagline{font-weight:300}
 .story-shot--overlay .story-kicker{color:#767676}
 .story-shot img{filter:none}
 /* R28-G — no price on feature/category/field tiles (values untouched, detail pages keep prices). R74 (26 Nov 2026, boss order): prices back on product cards — .card .price removed from the hide list; .card .price-note stays hidden. */
+/* R74 FIX (26 Nov 2026) — card prices must be DARK on white: R28-A made every .card a white-background tile (text above photo, dark text), but the only .card .price colour rule (line ~111, white + text-shadow) was written for the old photo-overlay design — white on white is invisible. This mirrors the proven #featured override in index.html (color:#111, no shadow), which is why Featured prices already showed correctly. Placed after line ~542 so it also beats the mobile text-shadow. */
+.card .price{color:#111;text-shadow:none}
 .card .price-note,.feature-tile .price,.feature-tile .price-note,.cat-tile .price,.field-tile .price{display:none}
 /* R28-H — no-photo placeholder keeps its square stage now that .card-img
    is static (was 1:1 by the old absolute tile); brands-page WhatsApp pill
