@@ -1106,8 +1106,8 @@ body.story .detail-hero .tagline{font-weight:300}
 .story-shot--overlay figcaption p{color:#425466;margin:14px auto 0;text-shadow:none}
 .story-shot--overlay .story-kicker{color:#767676}
 .story-shot img{filter:none}
-/* R28-G — no price on any tile (values untouched, detail pages keep prices) */
-.card .price,.card .price-note,.feature-tile .price,.feature-tile .price-note,.cat-tile .price,.field-tile .price{display:none}
+/* R28-G — no price on feature/category/field tiles (values untouched, detail pages keep prices). R74 (26 Nov 2026, boss order): prices back on product cards — .card .price removed from the hide list; .card .price-note stays hidden. */
+.card .price-note,.feature-tile .price,.feature-tile .price-note,.cat-tile .price,.field-tile .price{display:none}
 /* R28-H — no-photo placeholder keeps its square stage now that .card-img
    is static (was 1:1 by the old absolute tile); brands-page WhatsApp pill
    goes black on the now-white card (was white-on-dark, invisible on white). */
