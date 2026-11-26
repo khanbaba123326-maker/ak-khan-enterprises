@@ -1682,7 +1682,8 @@ body{overflow-x:clip}
 .r70-contact-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .r70-contact-card{border:1px solid var(--line);padding:24px 22px}
 .r70-contact-card span{display:block;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--mut);margin-bottom:6px}
-.r70-contact-card a,.r70-contact-card strong{font-size:1.05rem;font-weight:700;color:#111;word-break:break-word}
+.r70-contact-card a{font-size:.85rem;font-weight:700;color:#111;word-break:normal;white-space:nowrap}
+.r70-contact-card strong{font-size:1.05rem;font-weight:700;color:#111;word-break:break-word}
 .r70-contact-card a:hover{color:var(--mut)}
 .r70-contact-card p{font-size:.9rem;color:var(--mut);margin-top:8px}
 
